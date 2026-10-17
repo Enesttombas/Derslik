@@ -1,0 +1,27 @@
+=== Ödev 11: Veri Yapıları Performans Karşılaştırması ===
+
+1. Çalışma Süreleri Tablosu (ms):
+N      | List Baş   | List Son   | Deq Baş    | Deq Son    | BL Baş     | BL Son    
+---------------------------------------------------------------------------
+  2000 |       1.05 |       0.11 |       0.11 |       0.10 |       1.91 |       1.31
+  4000 |       3.59 |       0.19 |       0.21 |       0.20 |       1.29 |       1.25
+  8000 |      12.03 |       0.39 |       0.35 |       0.40 |       2.57 |       3.43
+
+2. Deterministik İşlem / Kaydırma Adımları Tablosu:
+N      | List Baş Kaydırma  | List Son Adım  | Deque Adım   | BL Adım   
+----------------------------------------------------------------------
+  2000 |            1999000 |           2000 |         2000 |       2000
+  4000 |            7998000 |           4000 |         4000 |       4000
+  8000 |           31996000 |           8000 |         8000 |       8000
+
+3. Teorik Karmaşıklık Özet Tablosu:
+Veri Yapısı       | Ekleme (Ort/En Kötü)   | Arama      | Silme       
+--------------------------------------------------------------------
+Dizi / list       | O(1) / O(n) sona       | O(n)       | O(n)        
+Bağlı liste       | O(1) başa/sona         | O(n)       | O(1) bilinen
+Deque             | O(1) uçlardan          | O(n)       | O(1) uçlardan
+Yığın (Stack)     | O(1) itme              | O(n)       | O(1) çekme  
+Kuyruk (Queue)    | O(1) kuyruğa           | O(n)       | O(1) kuyruktan
+İkili Yığın       | O(log n)               | O(n)       | O(log n) kök
+Hash Tablosu      | O(1) / O(n)            | O(1) / O(n) | O(1) / O(n) 
+BST (Arama)       | O(log n) / O(n)        | O(log n)   | O(log n)    

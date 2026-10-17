@@ -1,0 +1,12 @@
+=== Ödev 9: İkili Yığın (Min-Heap) Çalışma Raporu ===
+Eleman sayisi: 1000
+Ardisil ekleme islem sayisi: 3557
+Floyd ile kurma islem sayisi: 2591
+Floyd avantaji: 1.37 kat daha az islem
+Yigin siralamasi baslangic 5: [3, 4, 18, 19, 23], bitis 5: [9971, 9978, 9992, 9996, 9999]
+
+Boyut (N) | Ardışıl Ekleme Adımı | Floyd Kurma Adımı | Oran
+-------------------------------------------------------
+      100 |                  336 |               253 |   1.33x
+      500 |                 1692 |              1280 |   1.32x
+     1000 |                 3482 |              2609 |   1.33x

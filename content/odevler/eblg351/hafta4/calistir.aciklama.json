@@ -1,0 +1,209 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "calistir.py genel amacı ve görev listesi",
+    "aciklama": "Docstring Hafta 4 ana orkestrasyon betiğinin amacını özetler. Betik 4.1'den 4.7'ye kadar olan 7 kenar tespiti ödevini ardışık olarak çalıştırır ve en az 12 PNG görseli ile analiz panolarını üretir.",
+    "sinav": "Tanım: Orkestrasyon betikleri tüm ödev adımlarını tek komutla baştan sona deterministik olarak yürütür.\nSık hata: Ödevleri tek tek elle çalıştırıp çıktı sıralamasını karıştırmak."
+  },
+  {
+    "satirlar": [
+      6,
+      9
+    ],
+    "baslik": "Ölçüm, raporlama ve loglama kapsamı",
+    "aciklama": "Docstring her yöntemin çalışma süresi ve F1 doğruluk ölçümlerinin CSV formatında kaydedildiğini, Markdown ve PDF raporlarının güncellendiğini ve özet log dosyasının diske yazıldığını açıklar.",
+    "sinav": "Tanım: Bilimsel karşılaştırma performansı medyan çalışma süresi (ms) ve F1 skoru ile nesnel biçimde değerlendirir.\nSık hata: Ölçümleri CSV'ye kaydetmeden rapor üretmeye kalkışmak."
+  },
+  {
+    "satirlar": [
+      11,
+      16
+    ],
+    "baslik": "Sistem ve yardımcı modülleri yükle",
+    "aciklama": "datetime zaman damgası üretir, pathlib yolları yönetir, runpy alt betikleri modül olarak yürütür, sys arama yollarını genişletir, time süre ölçer ve pymupdf PDF sayfa sayısını denetler.",
+    "sinav": "Tanım: `runpy.run_path` harici Python dosyalarını yeni bir ad alanında programatik olarak çalıştırır.\nSık hata: `os.system` veya `subprocess` ile çağırmak yerine `runpy` kullanmanın aynı Python yorumlayıcısını paylaştırdığını unutmak."
+  },
+  {
+    "satirlar": [
+      18,
+      23
+    ],
+    "baslik": "Repo ve hafta 4 dizinlerini sys.path'e bağla",
+    "aciklama": "Betiğin bulunduğu konum ve repo kökü hesaplanarak sys.path listesine eklenir. Bu işlem alt ödevlerin hafta4 ortak modüllerini içe aktarabilmesini güvenceye alır.",
+    "sinav": "Tanım: `sys.path.insert(0, d)` modül arama önceliğini yerel paket dizinine verir.\nSık hata: sys.path ayarlamasını atlayıp alt betiklerde import hatası almak."
+  },
+  {
+    "satirlar": [
+      25,
+      25
+    ],
+    "baslik": "Toplu rapor güncelleme fonksiyonunu aktar",
+    "aciklama": "hafta4.rapor_uret modülünden tum_raporlari_guncelle fonksiyonu içe aktarılır. Bu fonksiyon tüm ödevlerin ölçüm sonuçlarını okuyarak karşılaştırma PDF ve Markdown dokümanlarını derler.",
+    "sinav": "Tanım: Rapor üreteci ölçüm CSV'sini tabloya ve grafiklere dönüştürerek 3 sayfalık nihai PDF üretir.\nSık hata: Ölçümler güncellenmeden raporları derlemeye çalışmak."
+  },
+  {
+    "satirlar": [
+      28,
+      30
+    ],
+    "baslik": "calistir fonksiyonu ve zamanlayıcı başlangıcı",
+    "aciklama": "calistir fonksiyonu ana süreci başlatır. t_basla time.time() ile başlangıç zamanını kaydeder ve log_satirlari listesi tüm konsol çıktılarını biriktirmek üzere boş olarak açılır.",
+    "sinav": "Tanım: `time.time()` epoch saniyesini döner; toplam yürütme süresini ölçmek için kullanılır.\nSık hata: Logları bellekte toplamayıp dosyaya yazma aşamasında kaybetmek."
+  },
+  {
+    "satirlar": [
+      32,
+      35
+    ],
+    "baslik": "Eşzamanlı loglama yardımcı fonksiyonu",
+    "aciklama": "log(msg) iç fonksiyonu parametre olarak verilen metni print ile konsola basarken aynı anda log_satirlari listesine ekler. Bu çift yönlü kayıt hem canlı izleme hem de disk günlüğü sağlar.",
+    "sinav": "Tanım: Çift yönlü loglama konsol çıktısı ile dosya günlüğünün birebir senkronize olmasını temin eder.\nSık hata: Konsola basılan çıktıyı dosya günlüğüne eklemeyi unutmak."
+  },
+  {
+    "satirlar": [
+      36,
+      39
+    ],
+    "baslik": "Başlangıç başlık bandı ve zaman damgası",
+    "aciklama": "Konsola ve log listesine 65 karakterlik ayraç çizgisi ve geçerli tarih-saat damgasını içeren bilgilendirici başlık yazdırılır. Bu format çalışma kayıtlarının arşivlenmesini kolaylaştırır.",
+    "sinav": "Tanım: `datetime.now().strftime('%Y-%m-%d %H:%M:%S')` okunabilir ISO benzeri zaman damgası üretir.\nSık hata: Zaman damgası eklemeyip farklı testlerin loglarını birbirine karıştırmak."
+  },
+  {
+    "satirlar": [
+      40,
+      44
+    ],
+    "baslik": "Ödev listesi tanımları (4.1 - 4.4)",
+    "aciklama": "gorevler listesi ilk 4 ödevin klasör adını ve Türkçe açıklama etiketini demet (tuple) olarak saklar: Prewitt X, Prewitt Y, Sobel ve Prewitt-Sobel karşılaştırması.",
+    "sinav": "Tanım: Veri odaklı görev listesi döngü ile temiz ve genişletilebilir yürütme sağlar.\nSık hata: Klasör adlarını hardcoded döngü içine dağıtıp yönetimi zorlaştırmak."
+  },
+  {
+    "satirlar": [
+      45,
+      49
+    ],
+    "baslik": "Ödev listesi tanımları (4.5 - 4.7)",
+    "aciklama": "Listenin devamında Laplacian (4.5), LoG (4.6) ve Canny ölçümleri (4.7) görevleri tanımlanır. Bu liste hafta boyunca geliştirilen tüm algoritmaları eksiksiz kapsar.",
+    "sinav": "Tanım: Liste sıralaması birinci mertebe gradyanlardan ikinci mertebe ve histerezisli yöntemlere doğru mantıksal bir sıra izler.\nSık hata: Canny gibi ölçüm yapan nihai betiği ilk sıraya koymak."
+  },
+  {
+    "satirlar": [
+      50,
+      52
+    ],
+    "baslik": "Görev döngüsü ve süre ölçümü",
+    "aciklama": "enumerate ile 7 görev sırayla taranır, her görevin başladığı konsola yazılır ve t0 ile göreve özel kronometre başlatılır.",
+    "sinav": "Tanım: `enumerate(gorevler, 1)` indeksleri 1'den başlatarak kullanıcı dostu ilerleme göstergesi sağlar.\nSık hata: Görevler arası süre ölçümlerini sıfırlamayı unutup kümülatif süre yazmak."
+  },
+  {
+    "satirlar": [
+      53,
+      56
+    ],
+    "baslik": "runpy ile ödev betiğini yürüt",
+    "aciklama": "runpy.run_path ilgili ödevin cozum.py dosyasını __main__ adıyla çalıştırır. Tamamlandığında geçen süre saniye cinsinden konsola ve log listesine kaydedilir.",
+    "sinav": "Tanım: `run_name='__main__'` alt betiğin doğrudan çalıştırılmış gibi tüm `if __name__ == '__main__'` bloklarını tetiklemesini sağlar.\nSık hata: `run_name` belirtmeyip ana fonksiyonun çağrılmasını engellemek."
+  },
+  {
+    "satirlar": [
+      57,
+      61
+    ],
+    "baslik": "Toplu raporları ve PDF'leri güncelle",
+    "aciklama": "Tüm ödevler tamamlandıktan sonra tum_raporlari_guncelle() fonksiyonu çağrılır ve üretilen en güncel CSV verileri üzerinden PDF/Markdown belgeleri yeniden derlenir.",
+    "sinav": "Tanım: Toplu rapor güncellemesi tüm varyantların süre ve doğruluk verilerini tek bir karşılaştırma tablosunda birleştirir.\nSık hata: Çözüm betikleri çalışmadan rapor üreticisini çağırıp eski ölçümleri rapora basmak."
+  },
+  {
+    "satirlar": [
+      62,
+      65
+    ],
+    "baslik": "PNG görselleri ve CSV dosyasını tara",
+    "aciklama": "Hafta 4 cikti klasöründeki tüm PNG dosyaları glob ile taranır ve olcumler.csv dosyasının diskteki varlığı doğrulanır. Bu adım çıktı bütünlüğünü denetler.",
+    "sinav": "Tanım: `list(genel_cikti.glob('*.png'))` üretilen tüm görsel çıktıların listesini verir.\nSık hata: Dosya sayısını denetlemeden başarılı kabul etmek."
+  },
+  {
+    "satirlar": [
+      66,
+      68
+    ],
+    "baslik": "PDF ve Markdown rapor yollarını belirle",
+    "aciklama": "raporlar klasöründeki KARSILASTIRMA.pdf ve KARSILASTIRMA.md rapor dosyalarının dosya yolları tanımlanır. Bu belgeler ödevin ana teslim çıktılarıdır.",
+    "sinav": "Tanım: PDF ve Markdown eşzamanlı raporlama hem okunabilirlik hem de otomatik doğrulama avantajı sağlar.\nSık hata: Rapor dosyalarının varlığını denetlememek."
+  },
+  {
+    "satirlar": [
+      69,
+      71
+    ],
+    "baslik": "PyMuPDF ile PDF sayfa sayısını oku",
+    "aciklama": "pymupdf.open ile PDF raporu açılır ve sayfa_sayisi len(doc_pdf) ile okunur. Ödev isterlerine göre toplu raporun tam 3 sayfa olması şarttır.",
+    "sinav": "Tanım: `pymupdf.open` PDF dokümanının yapısını inceler; `len(doc)` kesin sayfa sayısını döner.\nÖrnek: `pdf_sayfa == 3`.\nSık hata: PDF'in 4 sayfaya taşmasını gözden kaçırmak."
+  },
+  {
+    "satirlar": [
+      72,
+      75
+    ],
+    "baslik": "Doğrulama özeti başlığı ve görsel sayısı",
+    "aciklama": "Konsola kontrol ve doğrulama başlığı basılır ve üretilen PNG görsel adedi loglanır. Hedeflenen en az 12 görselin eksiksiz üretildiği raporlanır.",
+    "sinav": "Tanım: Çıktı adetlerinin loglanması sistem doğrulaması için nesnel kanıt sunar.\nSık hata: Üretilen görsel adedinin 12'nin altında kalması."
+  },
+  {
+    "satirlar": [
+      76,
+      80
+    ],
+    "baslik": "CSV, MD, PDF ve süre raporu loglama",
+    "aciklama": "CSV dosya boyutu, Markdown mevcudiyeti, PDF sayfa sayısı ve toplam çalışma süresi biçimlendirilmiş olarak loglanır ve 65 karakterlik çizgiyle kapatılır.",
+    "sinav": "Tanım: Kapsamlı denetim özeti pipeline'ın tüm bileşenlerinin başarıyla sonuçlandığını doğrular.\nSık hata: Hata ayıklama için kritik olan toplam süreyi ve dosya boyutunu kaydetmemek."
+  },
+  {
+    "satirlar": [
+      81,
+      83
+    ],
+    "baslik": "En az 12 PNG görsel kısıtını doğrula",
+    "aciklama": "Üretilen PNG sayısı 12'den azsa ValueError fırlatılır. Bu katı kontrol herhangi bir filtrenin görsel çıktı üretmeden sessizce geçmesini engeller.",
+    "sinav": "Tanım: Sayısal çıktı doğrulama test otomasyonunun en temel savunma mekanizmasıdır.\nÖrnek: `if len(png_dosyalari) < 12: raise ValueError(...)`.\nSık hata: Eksik görsellerle teslim yapıp değerlendirmeden puan kaybetmek."
+  },
+  {
+    "satirlar": [
+      84,
+      85
+    ],
+    "baslik": "olcumler.csv mevcudiyetini doğrula",
+    "aciklama": "olcumler.csv dosyası bulunamazsa FileNotFoundError fırlatılır. Ölçüm verisi olmadan raporların doğrulanması imkansızdır.",
+    "sinav": "Tanım: Ölçüm dosyası tüm sayısal analizlerin omurgasıdır.\nSık hata: CSV dosyasının üretilemediği durumları fark etmemek."
+  },
+  {
+    "satirlar": [
+      86,
+      87
+    ],
+    "baslik": "PDF tam 3 sayfa kısıtını doğrula",
+    "aciklama": "pdf_sayfa tam 3'e eşit değilse ValueError fırlatılarak rapor biçimlendirme hatası yakalanır. Bu kural sayfa taşmalarını önler.",
+    "sinav": "Tanım: Sayfa sayısı kısıtı raporun tasarım şablonuna tam uyduğunu garantiler.\nSık hata: 3 sayfadan fazla veya eksik PDF üretmek."
+  },
+  {
+    "satirlar": [
+      88,
+      91
+    ],
+    "baslik": "Çalışma özetini calisma_raporu.txt'ye yaz",
+    "aciklama": "Biriktirilen tüm log_satirlari UTF-8 kodlamasıyla hafta4/cikti/calisma_raporu.txt dosyasına yazılır ve konsola dosya yolu bildirilir.",
+    "sinav": "Tanım: `write_text(..., encoding='utf-8')` metin raporunu kayıpsız diske aktarır.\nSık hata: Kodlama belirtmeyip Türkçe karakter bozulması yaşamak."
+  },
+  {
+    "satirlar": [
+      94,
+      95
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart modül kontrol bloğudur.\nSık hata: Bu denetimi koymayıp import yan etkileri yaratmak."
+  }
+]

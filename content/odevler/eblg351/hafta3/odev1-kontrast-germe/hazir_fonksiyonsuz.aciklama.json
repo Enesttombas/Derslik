@@ -1,0 +1,47 @@
+[
+  {
+    "satirlar": [
+      1,
+      6
+    ],
+    "baslik": "Gerekli kütüphaneleri yükle",
+    "aciklama": "Pathlib dosya yollarını yönetirken, cv2 görüntü giriş ve çıkışlarını yürütür, numpy ise vektörel matris matematiği sağlar. Klasör değişkeni betiğin bulunduğu klasörün yolunu tutarak dosyaların tutarlı bulunmasını garanti eder. Bu temel kütüphaneler hazır görüntü işleme fonksiyonlarına ihtiyaç duymadan saf dizi işlemleri yapmamızı sağlar.",
+    "sinav": "Tanım: `numpy` dizi yayınlama (broadcasting) ve vektörel aritmetik ile döngü kurmadan piksel işlemlerini hızlandırır.\nSık hata: NumPy olmadan saf Python döngüleriyle matris dönüştürüp ciddi performans kaybı yaşamak."
+  },
+  {
+    "satirlar": [
+      8,
+      9
+    ],
+    "baslik": "Görüntü dosyasını gri modda oku",
+    "aciklama": "Program belirlenen adlar üzerinde dönerek girdi klasöründeki dağ ve sis dosyalarını sırayla belleğe alır. cv2.imread çağrısı IMREAD_GRAYSCALE modunda her pikseli 0 ile 255 arasında değişen 8-bitlik tek bir sayı olarak okur. Bu ham matris hazır fonksiyon kullanmadan uygulayacağımız matematiksel kontrast germe formülünün girdisini oluşturur.",
+    "sinav": "Tanım: 8-bit gri görüntü her pikseli `uint8` türünde tek bir parlaklık seviyesi olarak saklar.\nSık hata: Görüntü okunamadığında dönen `None` nesnesini denetlemeden matris işlemlerine geçmek."
+  },
+  {
+    "satirlar": [
+      11,
+      13
+    ],
+    "baslik": "Minimum ve maksimum değerleri hesapla",
+    "aciklama": "gri.min() ve gri.max() metotları matristeki en karanlık ve en aydınlık piksellerin sayısal değerlerini çıkarır. Bulunan değerler int türüne dönüştürülerek sonraki matematiksel formülde tamsayı taşmalarını önlemek üzere saklanır. Bu değerler görüntünün o anki dinamik aralığının sınırlarını kesin olarak tanımlar.",
+    "sinav": "Tanım: Dinamik aralık bir görüntüde mevcut en yüksek ve en düşük parlaklık arasındaki farktır.\nÖrnek: `dag` için `min=0, max=237`, `sis` için `min=92, max=249`.\nSık hata: `uint8` türündeki aşırı değerleri doğrudan çıkarma işleminde kullanıp negatif taşmaya uğratmak."
+  },
+  {
+    "satirlar": [
+      14,
+      16
+    ],
+    "baslik": "Doğrusal kontrast germe formülünü uygula",
+    "aciklama": "Matris float32 türüne dönüştürülerek her pikselden en_kucuk çıkarılır ve 255 ile çarpılıp toplam aralığa bölünür. Formül dar aralıktaki parlaklık dağılımını 0 ile 255 arasına doğrusal olarak esnetir. np.round ve astype(np.uint8) adımları ondalıklı değerleri en yakın tamsayıya yuvarlayarak standart piksel aralığına sınırlar.",
+    "sinav": "Formül: `y = round((x - min) * 255 / (max - min))`\nÖrnek: `min=100, max=200` ise `x=150` pikseli `(150-100)*255/100 = 127.5 -> 128` olur.\nSık hata: `float32` dönüşümü yapmadan doğrudan `uint8` üzerinde çıkarma ve bölme yapıp sıfırlanma hatası almak."
+  },
+  {
+    "satirlar": [
+      18,
+      19
+    ],
+    "baslik": "Çıktıyı kaydet ve sınırları yazdır",
+    "aciklama": "Oluşturulan yeni kontrastlı görüntü matrisi cv2.imwrite ile cikti klasörüne kaydedilir. Konsola yazdırılan eski ve yeni min/max değerleri formülün başarıyla çalıştığını ve aralığın 0-255'e genişlediğini kanıtlar. Bu sonuç hazır normalize fonksiyonu ile elde edilen sonuçla piksel düzeyinde birebir örtüşür.",
+    "sinav": "Tanım: Doğrusal kontrast germe (min-max scaling) piksellerin histogram şeklini bozmadan dinamik aralığı açar.\nSık hata: Çıktı dosya yolunda var olmayan bir klasöre yazmaya çalışıp sessizce başarısız olmak."
+  }
+]

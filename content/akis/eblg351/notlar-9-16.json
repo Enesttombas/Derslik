@@ -1,0 +1,840 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-n9-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 9,
+   "etiketler": [
+    "hsv",
+    "renk-maskeleme"
+   ],
+   "kod": "hsv = cv2.cvtColor(input_img, cv2.COLOR_BGR2HSV)\nmask = cv2.inRange(hsv, (35, 60, 40), (85, 255, 255))\nout = cv2.bitwise_and(input_img, input_img, mask=mask)",
+   "soru": "Bu üç satır görüntüye ne yapar?",
+   "secenekler": [
+    "Yeşil tonlu pikselleri bırakır, geri kalanı siyaha çevirir",
+    "Görüntüyü griye çevirir",
+    "Yeşil pikselleri siler",
+    "Yeşili maviye çevirir"
+   ],
+   "dogru": 0,
+   "aciklama": "HSV'de renk tonu (H) ışıktan bağımsız ayrıldığı için aralıkla seçilir. `inRange` maske üretir, `bitwise_and(..., mask=mask)` maskenin beyaz olduğu yerde orijinal pikseli geçirir, diğerlerini 0 yapar."
+  },
+  {
+   "id": "351-n9-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 9,
+   "etiketler": [
+    "hsv",
+    "hue"
+   ],
+   "kod": "bgr = np.array([[[0, 255, 0], [255, 0, 0], [0, 0, 255]]], np.uint8)\nprint(cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)[0, :, 0])",
+   "soru": "Saf yeşil, mavi, kırmızının OpenCV Hue değerleri sırasıyla nedir?",
+   "secenekler": [
+    "[60 120 0]",
+    "[120 240 0]",
+    "[60 240 0]",
+    "[0 120 240]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: yeşil 60, mavi 120, kırmızı 0 (sarı (0,255,255) → 30).",
+   "aciklama": "8-bit görüntülerde OpenCV Hue'yu 0–179 aralığında tutar (derece/2). Kırmızı 0, sarı 30, yeşil 60, mavi 120. S ve V 0–255'tir. Tuzak: başka kütüphanelerdeki 0–360 değerleri doğrudan kullanılamaz.",
+   "sinav": "Kaynak: Hafta 9 notları, İşlem Çağrıları. Hue 0–179, S ve V 0–255."
+  },
+  {
+   "id": "351-n9-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 9,
+   "etiketler": [
+    "hsv",
+    "mavi-maske"
+   ],
+   "kod": "lower = np.array([35, 60, 40]); upper = np.array([85, 255, 255])",
+   "soru": "Sınırları `[100, 100, 50]` – `[130, 255, 255]` yaparsak hangi nesne izole edilir?",
+   "degisiklik": {
+    "eski": "[35, 60, 40] – [85, 255, 255]",
+    "yeni": "[100, 100, 50] – [130, 255, 255]"
+   },
+   "secenekler": [
+    "Mavi daire",
+    "Yeşil dikdörtgen",
+    "Kırmızı daire",
+    "Hepsi"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 9 notları, Küçük Parametre Denemesi. Mavi Hue ≈ 120 (gerçek koşu).",
+   "aciklama": "Hue 100–130 mavi bandını kapsar (mavi ≈ 120). Yeşil 60 civarındadır, kırmızı 0/179 uçlarındadır; ikisi aralığa girmez."
+  },
+  {
+   "id": "351-n9-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 9,
+   "etiketler": [
+    "hsv",
+    "renk-sirasi"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_COLOR)\nhsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)\nmask = cv2.inRange(hsv, (35, 60, 40), (85, 255, 255))",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: yeşil nesne neden seçilemiyor?",
+   "aciklama": "`imread` BGR verir; `COLOR_RGB2HSV` kırmızı ile maviyi yer değiştirir. Hue kayar ve yeşil bandı tutmayabilir. Doğrusu `COLOR_BGR2HSV`."
+  },
+  {
+   "id": "351-n9-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 9,
+   "etiketler": [
+    "hsv",
+    "isik-bagimsizligi"
+   ],
+   "kod": "hsv = cv2.cvtColor(input_img, cv2.COLOR_BGR2HSV)",
+   "soru": "Renk maskelemede neden BGR yerine HSV kullanırız?",
+   "aciklama": "BGR'de bir rengin tonu ile parlaklığı kanallara karışıktır; gölgede aynı nesnenin üç kanalı da değişir. HSV'de ton (H) ayrı bir kanaldır; aydınlık değişse de H çoğunlukla sabit kalır, tek aralıkla seçim yapılabilir.",
+   "secenekler": [
+    "HSV'de ton ayrı kanaldır; aydınlık değişse de H çoğunlukla sabit kalır",
+    "HSV daha az bellek kullanır",
+    "BGR renkleri tanıyamaz",
+    "HSV'de parlaklık hiç değişmez"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-n10-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 10,
+   "etiketler": [
+    "afin",
+    "donme"
+   ],
+   "kod": "M = cv2.getRotationMatrix2D((200, 150), 30.0, 0.85)\nout = cv2.warpAffine(img, M, (400, 300))",
+   "soru": "Bu iki satır görüntüye ne yapar?",
+   "secenekler": [
+    "Merkez (200,150) etrafında 30° saat yönünün tersine döndürüp %85 ölçekler",
+    "Görüntüyü 30 piksel kaydırır",
+    "Yatay ayna yapar",
+    "Perspektif düzeltir"
+   ],
+   "dogru": 0,
+   "aciklama": "`getRotationMatrix2D` 2×3 afin matrisi üretir; pozitif açı saat yönünün tersidir. `warpAffine` her pikseli bu matrisle eşler. Merkez, açı ve ölçek tek matriste toplanır."
+  },
+  {
+   "id": "351-n10-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 10,
+   "etiketler": [
+    "afin",
+    "matris"
+   ],
+   "kod": "M = cv2.getRotationMatrix2D((200, 150), 30.0, 0.85)\nprint(M.shape, round(M[0, 0], 4), round(M[0, 1], 4))",
+   "soru": "Yazdırılan şekil ve ilk iki eleman nedir?",
+   "secenekler": [
+    "(2, 3), 0.7361, 0.425",
+    "(3, 3), 0.866, 0.5",
+    "(2, 3), 0.866, 0.5",
+    "(2, 2), 0.7361, 0.425"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (2, 3); M[0,0] = 0.7361, M[0,1] = 0.425.",
+   "aciklama": "M[0,0] = ölçek·cos θ = 0.85·cos 30° ≈ 0.7361, M[0,1] = ölçek·sin θ = 0.85·0.5 = 0.425. Afin matris 2×3'tür; perspektif dönüşüm ise 3×3'tür.",
+   "sinav": "Formül: M = [[s·cosθ, s·sinθ, tx], [−s·sinθ, s·cosθ, ty]]."
+  },
+  {
+   "id": "351-n10-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 10,
+   "etiketler": [
+    "afin",
+    "sinir-modu"
+   ],
+   "kod": "out = cv2.warpAffine(img, M, (w, h), borderMode=cv2.BORDER_CONSTANT, borderValue=(40, 40, 40))",
+   "soru": "`BORDER_CONSTANT` yerine `BORDER_REFLECT` kullanılırsa köşelerde açıkta kalan üçgenler nasıl dolar?",
+   "degisiklik": {
+    "eski": "borderMode=cv2.BORDER_CONSTANT",
+    "yeni": "borderMode=cv2.BORDER_REFLECT"
+   },
+   "secenekler": [
+    "Görüntünün kenar pikselleri ayna gibi yansıtılarak",
+    "Koyu gri sabit renkle",
+    "Siyahla",
+    "Hata verir"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 10 notları, Küçük Parametre Denemesi.",
+   "aciklama": "Dönme sonrası köşelerde kaynak görüntüde karşılığı olmayan alanlar kalır. `BORDER_CONSTANT` sabit renk, `BORDER_REFLECT` ayna yansıması, `BORDER_REPLICATE` kenar pikselini tekrarlar."
+  },
+  {
+   "id": "351-n10-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 10,
+   "etiketler": [
+    "warpaffine",
+    "dsize"
+   ],
+   "kod": "h, w = img.shape[:2]\nM = cv2.getRotationMatrix2D((w / 2, h / 2), 30, 0.85)\nout = cv2.warpAffine(img, M, (h, w))",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: çıktı neden kırpılır ya da yanlış boyutta olur?",
+   "aciklama": "`dsize` `(genişlik, yükseklik)` ister; `(h, w)` verirsek ters olur. Dikdörtgen görüntüde çıktı kırpılır veya boyutu yanlış çıkar. Doğrusu `(w, h)`."
+  },
+  {
+   "id": "351-n10-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 10,
+   "etiketler": [
+    "afin",
+    "piramit"
+   ],
+   "kod": "M = cv2.getRotationMatrix2D(center, angle, scale)",
+   "soru": "Afin dönüşümde doğrular neden doğru, paralellik neden korunur?",
+   "aciklama": "Afin dönüşüm koordinatlara doğrusal bir matris artı öteleme uygular (x' = A·x + t). Doğrusal eşleme doğruları doğruya taşır ve paralel doğruları paralel bırakır; ama açıları ve uzunlukları genel olarak korumaz (kayma, ölçek). Perspektif ise paralelliği de bozar.",
+   "secenekler": [
+    "Afin dönüşüm uzunlukları ve açıları korur",
+    "Afin dönüşüm paralelliği bozar",
+    "Doğrusal matris + öteleme doğruyu doğruya taşır ve paralelliği korur; açı/uzunluk korunmaz",
+    "Afin dönüşüm yalnız döndürmedir"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-n11-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 11,
+   "etiketler": [
+    "addweighted",
+    "filigran"
+   ],
+   "kod": "cv2.addWeighted(overlay, 0.6, watermarked, 0.4, 0.0, watermarked)",
+   "soru": "Bu çağrı her piksel için ne hesaplar?",
+   "secenekler": [
+    "0.6·overlay + 0.4·watermarked + 0",
+    "overlay · watermarked",
+    "overlay − watermarked",
+    "max(overlay, watermarked)"
+   ],
+   "dogru": 0,
+   "aciklama": "`addWeighted` iki görüntünün ağırlıklı toplamıdır: dst = α·src1 + β·src2 + γ. Ağırlıklar toplamı 1 seçilirse parlaklık korunur; yarı saydam filigran böyle yapılır.",
+   "sinav": "Formül: dst = α·src1 + β·src2 + γ."
+  },
+  {
+   "id": "351-n11-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 11,
+   "etiketler": [
+    "addweighted",
+    "alfa"
+   ],
+   "kod": "o = np.full((2, 2, 3), 30, np.uint8); w = np.full((2, 2, 3), 200, np.uint8)\ncv2.addWeighted(o, 0.6, w, 0.4, 0.0, w)\nprint(w[0, 0])",
+   "soru": "`w[0, 0]` ne olur?",
+   "secenekler": [
+    "[98 98 98]",
+    "[115 115 115]",
+    "[130 130 130]",
+    "[200 200 200]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [98 98 98].",
+   "aciklama": "0.6·30 + 0.4·200 = 18 + 80 = 98. Sonuç uint8'e yuvarlanıp doyurulur. Ağırlıkların toplamı 1 olduğundan değer iki girdinin arasında kalır."
+  },
+  {
+   "id": "351-n11-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 11,
+   "etiketler": [
+    "jpeg",
+    "kalite"
+   ],
+   "kod": "enc = [int(cv2.IMWRITE_JPEG_QUALITY), 12]\nok, buf = cv2.imencode(\".jpg\", img, enc)",
+   "soru": "Kalite 12'den 95'e çıkarsa ne olur?",
+   "degisiklik": {
+    "eski": "IMWRITE_JPEG_QUALITY = 12",
+    "yeni": "IMWRITE_JPEG_QUALITY = 95"
+   },
+   "secenekler": [
+    "Bloklaşma neredeyse kaybolur ama dosya boyutu büyür",
+    "Dosya küçülür",
+    "Görüntü griye döner",
+    "Hiçbir fark olmaz"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu (400×300 gradyan): q=95 → 8757 bayt, q=12 → 2844 bayt. Kaynak: Hafta 11 notları, Küçük Parametre Denemesi.",
+   "aciklama": "Düşük kalite, DCT katsayılarını kabaca nicemler: 8×8 blok artefaktları ve halkalanma çıkar, dosya küçülür. Yüksek kalite ayrıntıyı korur, dosya büyür. Kayıp bir sıkıştırmada kalite ile boyut ters orantılı değişir."
+  },
+  {
+   "id": "351-n11-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 11,
+   "etiketler": [
+    "imencode",
+    "donus-tipi"
+   ],
+   "kod": "sonuc = cv2.imencode(\".jpg\", img)\nprint(type(sonuc[0]).__name__, sonuc[1].dtype, sonuc[1].ndim)",
+   "soru": "`imencode` ne döndürür?",
+   "secenekler": [
+    "bool, uint8, 1: başarı bayrağı ve bayt dizisi",
+    "ndarray, uint8, 3: kodlanmış görüntü",
+    "int, float32, 2",
+    "None"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: bool uint8 1.",
+   "aciklama": "`imencode` (başarı, tampon) çifti verir: tampon 1 boyutlu uint8 bayt dizisidir. `imdecode(tampon, flags)` bunu tekrar görüntü dizisine çevirir. Diske yazmadan sıkıştırmayı ölçmek için kullanılır."
+  },
+  {
+   "id": "351-n11-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 11,
+   "etiketler": [
+    "jpeg",
+    "dct",
+    "kayipli"
+   ],
+   "kod": "ok, buf = cv2.imencode(\".jpg\", watermarked, [int(cv2.IMWRITE_JPEG_QUALITY), 12])",
+   "soru": "JPEG düşük kalitede neden 8×8 kareler gösterir?",
+   "aciklama": "JPEG görüntüyü 8×8 bloklara böler, her bloğu DCT ile frekans katsayılarına çevirir ve yüksek frekansları kabaca nicemler. Düşük kalitede bloklar arasındaki geçişler farklı nicemlendiği için blok sınırları görünür olur.",
+   "secenekler": [
+    "JPEG görüntüyü her zaman 8×8 piksele küçültür",
+    "8×8 bloklar ayrı DCT + nicemleme alır; düşük kalitede blok sınırlarındaki farklı nicemleme görünür olur",
+    "8×8 kareler kameranın sensör ızgarasıdır",
+    "Düşük kalite yalnız renkleri bozar"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "351-n12-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 12,
+   "etiketler": [
+    "morfoloji",
+    "acma-kapama"
+   ],
+   "kod": "kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))\nopened = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)\nclosed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, kernel)",
+   "soru": "Bu iki işlemin birleşik etkisi nedir?",
+   "secenekler": [
+    "Küçük beyaz parazitleri siler, nesne içindeki küçük siyah delikleri doldurur",
+    "Yalnız kenarları çıkarır",
+    "Nesneleri büyütür",
+    "Görüntüyü tersler"
+   ],
+   "dogru": 0,
+   "aciklama": "Açma = erozyon sonra genişletme: çekirdekten küçük beyaz öğeleri siler. Kapama = genişletme sonra erozyon: çekirdekten küçük siyah boşlukları kapatır.",
+   "sinav": "Tanım: Açma = dilate(erode(x)); Kapama = erode(dilate(x))."
+  },
+  {
+   "id": "351-n12-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 12,
+   "etiketler": [
+    "erozyon",
+    "genisletme",
+    "gradient"
+   ],
+   "kod": "sq = np.zeros((20, 20), np.uint8); sq[5:15, 5:15] = 255   # 10×10 beyaz kare\nk = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))\nprint(int(cv2.erode(sq, k).sum() // 255), int(cv2.dilate(sq, k).sum() // 255))",
+   "soru": "Erozyon ve genişletme sonrası beyaz piksel sayıları?",
+   "secenekler": [
+    "64 ve 144",
+    "100 ve 100",
+    "36 ve 196",
+    "81 ve 121"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: erode 64 (8×8), dilate 144 (12×12), gradient 80.",
+   "aciklama": "3×3 çekirdek her yönden 1 piksel yer: erozyon 10×10 kareyi 8×8'e (64), genişletme 12×12'ye (144) çevirir. Gradient = genişletme − erozyon = 144 − 64 = 80 piksellik sınır halkasıdır.",
+   "sinav": "Formül: gradient = dilate − erode."
+  },
+  {
+   "id": "351-n12-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 12,
+   "etiketler": [
+    "morph-gradient"
+   ],
+   "kod": "out = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)",
+   "soru": "İşlemi `MORPH_GRADIENT` yaparsak çıktı ne olur?",
+   "degisiklik": {
+    "eski": "cv2.MORPH_OPEN",
+    "yeni": "cv2.MORPH_GRADIENT"
+   },
+   "secenekler": [
+    "Nesnelerin yalnız dış sınır çizgisi (genişletme eksi erozyon)",
+    "Gürültü silinmiş doldurulmuş nesneler",
+    "Tamamen siyah görüntü",
+    "Görüntü terslenir"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 12 notları, Küçük Parametre Denemesi. Gerçek koşu: 10×10 karede gradient 80 piksel (kenar halkası).",
+   "aciklama": "Genişletme nesneyi büyütür, erozyon küçültür; farkları sınır bandıdır. Bu yüzden `MORPH_GRADIENT` morfolojik kenar bulucudur."
+  },
+  {
+   "id": "351-n12-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 12,
+   "etiketler": [
+    "acma",
+    "parazit"
+   ],
+   "kod": "sp = np.zeros((20, 20), np.uint8); sp[10, 10] = 255   # tek beyaz nokta\nk = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))\nprint(cv2.morphologyEx(sp, cv2.MORPH_OPEN, k).sum())",
+   "soru": "Açma sonrası toplam kaç olur?",
+   "secenekler": [
+    "0: nokta çekirdekten küçük olduğu için silinir",
+    "255",
+    "2295 (9·255)",
+    "Hata verir"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 0. Tersi: tek siyah delik kapamayla kapanır (en küçük değer 255).",
+   "aciklama": "Açma önce erozyon uygular; 1 pikselden büyük olmayan nesne yok olur ve genişletme geri getirecek bir şey bulamaz. Aynı mantıkla kapama, çekirdekten küçük siyah delikleri kapatır."
+  },
+  {
+   "id": "351-n12-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 12,
+   "etiketler": [
+    "morfoloji",
+    "yapilandirici-eleman"
+   ],
+   "kod": "kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))",
+   "soru": "Yapılandırıcı elemanın boyutu ve şekli sonucu nasıl belirler?",
+   "aciklama": "Eleman, 'bu ölçekten küçük her şey gürültüdür' eşiğini tanımlar: açma çekirdekten küçük beyazları, kapama küçük siyahları temizler. Dikdörtgen elemana göre elips köşeleri daha az keskinleştirir; çapraz eleman yalnız yatay-dikey komşuluğu kullanır.",
+   "secenekler": [
+    "Eleman yalnız hızı etkiler",
+    "Eleman büyüdükçe gürültü artar",
+    "Dikdörtgen ve elips eleman her zaman aynı sonucu verir",
+    "Eleman 'bundan küçük her şey gürültü' eşiğini belirler; şekli köşelerin ve komşuluğun davranışını değiştirir"
+   ],
+   "dogru": 3
+  },
+  {
+   "id": "351-n13-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 13,
+   "etiketler": [
+    "otsu",
+    "esikleme"
+   ],
+   "kod": "otsu, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)",
+   "soru": "Eşik değeri neden `0` yazılıyor, sonuç nerede?",
+   "secenekler": [
+    "Verilen eşik OTSU bayrağıyla yok sayılır; hesaplanan eşik `otsu` değişkeninde döner",
+    "Eşik 0 olur, görüntü tamamen beyaz kalır",
+    "Eşik 255 alınır",
+    "Kod hata verir"
+   ],
+   "dogru": 0,
+   "aciklama": "`THRESH_OTSU` ile eşik girdisi anlamsızdır; algoritma histogramdan sınıflar arası varyansı en çok yapan eşiği seçer ve tuple'ın ilk elemanı olarak döndürür."
+  },
+  {
+   "id": "351-n13-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 13,
+   "etiketler": [
+    "otsu",
+    "kontur"
+   ],
+   "kod": "sc = np.full((120, 160), 90, np.uint8)\ncv2.circle(sc, (40, 40), 20, 200, -1); cv2.rectangle(sc, (80, 20), (130, 70), 200, -1)\nt, bi = cv2.threshold(sc, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)\ncs, hi = cv2.findContours(bi, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)\nprint(t, len(cs))",
+   "soru": "`t` ve kontur sayısı?",
+   "secenekler": [
+    "90.0 ve 2",
+    "145.0 ve 2",
+    "90.0 ve 3",
+    "200.0 ve 1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 90.0 ve 2 kontur (hierarchy şekli (1, 2, 4)).",
+   "aciklama": "Görüntü yalnız iki seviyeli (90 ve 200). OpenCV Otsu eşiğini düşük sınıfın üst ucunda (90) verir; `THRESH_BINARY` ile > 90 olanlar (200) beyaz kalır. İki nesne = iki dış kontur. Eşik float döner."
+  },
+  {
+   "id": "351-n13-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 13,
+   "etiketler": [
+    "findcontours",
+    "retr-tree"
+   ],
+   "kod": "contours, hier = cv2.findContours(ring, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)",
+   "soru": "İçi boş bir halka için `RETR_TREE` kullanırsak kontur sayısı ne olur?",
+   "degisiklik": {
+    "eski": "cv2.RETR_EXTERNAL",
+    "yeni": "cv2.RETR_TREE"
+   },
+   "secenekler": [
+    "2: dış sınır ve iç delik konturu",
+    "1: yalnız dış sınır",
+    "0",
+    "4"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 13 notları, Küçük Parametre Denemesi. Gerçek koşu (halka): RETR_EXTERNAL 1, RETR_TREE 2.",
+   "aciklama": "`RETR_EXTERNAL` yalnız en dış konturları, `RETR_TREE` iç içe geçmiş tüm konturları hiyerarşiyle listeler; deliğin iç sınırı da ayrı bir kontur olur."
+  },
+  {
+   "id": "351-n13-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 13,
+   "etiketler": [
+    "chain-approx",
+    "kontur"
+   ],
+   "kod": "rc = np.zeros((50, 50), np.uint8); cv2.rectangle(rc, (10, 10), (40, 30), 255, -1)\nsade = cv2.findContours(rc, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0][0]\ntam = cv2.findContours(rc, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[0][0]\nprint(len(sade), len(tam))",
+   "soru": "Dikdörtgen konturunda iki yaklaşımın nokta sayıları?",
+   "secenekler": [
+    "4 ve 100",
+    "4 ve 4",
+    "100 ve 100",
+    "2 ve 50"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 4 ve 100.",
+   "aciklama": "`CHAIN_APPROX_SIMPLE` yatay, dikey ve çapraz doğru parçalarındaki gereksiz ara noktaları atar; dikdörtgen yalnız 4 köşe olarak saklanır. `CHAIN_APPROX_NONE` sınırdaki bütün pikselleri tutar (burada 2·(31+21)−4 = 100)."
+  },
+  {
+   "id": "351-n13-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 13,
+   "etiketler": [
+    "otsu",
+    "bolutleme"
+   ],
+   "kod": "otsu, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)",
+   "soru": "Otsu eşiği elle denemeden nasıl bulur?",
+   "aciklama": "Histogramı iki sınıfa (arka plan, nesne) bölen her eşik adayı için sınıflar arası varyansı hesaplar ve en büyüğünü seçer. İki tepeli (bimodal) histogramlarda iki tepe arasındaki vadiye yerleşir. Tek tepeli ya da eşitsiz aydınlatmalı görüntülerde zayıf kalır.",
+   "secenekler": [
+    "Her eşik adayı için sınıflar arası varyansı hesaplar, en büyüğünü seçer",
+    "Histogramın ortalamasını eşik alır",
+    "Görüntüyü rastgele eşikler",
+    "En parlak pikselin yarısını eşik alır"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-n14-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 14,
+   "etiketler": [
+    "orb",
+    "anahtar-nokta"
+   ],
+   "kod": "orb = cv2.ORB_create(nfeatures=250)\nkeypoints, descriptors = orb.detectAndCompute(gray, None)",
+   "soru": "Dönen iki nesne nedir?",
+   "secenekler": [
+    "Anahtar nokta listesi ve her biri için bir tanımlayıcı (descriptor) matrisi",
+    "İki ayrı görüntü",
+    "Kenar haritası ve histogram",
+    "Yalnız köşe sayısı"
+   ],
+   "dogru": 0,
+   "aciklama": "ORB, FAST köşe dedektörü ile BRIEF tanımlayıcısını yönelim ve ölçek piramidiyle birleştirir. `detectAndCompute` hem konumları/ölçek/açıyı hem de eşleştirme için tanımlayıcıyı tek adımda verir."
+  },
+  {
+   "id": "351-n14-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 14,
+   "etiketler": [
+    "orb",
+    "descriptor"
+   ],
+   "kod": "orb = cv2.ORB_create(nfeatures=50)\nkp, ds = orb.detectAndCompute(dama_tahtasi, None)\nprint(len(kp) <= 50, ds.shape[1], ds.dtype)",
+   "soru": "Yazdırılan üç değer?",
+   "secenekler": [
+    "True 32 uint8: her tanımlayıcı 32 bayt (256 bit)",
+    "True 128 float32",
+    "False 64 uint8",
+    "True 32 float32"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu (dama tahtası): True, shape (38, 32), uint8.",
+   "aciklama": "`nfeatures` üst sınırdır, garanti sayı değil. ORB tanımlayıcısı ikili (BRIEF tabanlı) 256 bit = 32 uint8 bayttır; eşleştirmede Hamming mesafesi kullanılır (SIFT gibi float tanımlayıcılarda L2)."
+  },
+  {
+   "id": "351-n14-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 14,
+   "etiketler": [
+    "orb",
+    "nfeatures"
+   ],
+   "kod": "orb = cv2.ORB_create(nfeatures=250)",
+   "soru": "`nfeatures` 50'ye indirilirse?",
+   "degisiklik": {
+    "eski": "nfeatures=250",
+    "yeni": "nfeatures=50"
+   },
+   "secenekler": [
+    "En keskin (en yüksek yanıtlı) köşeler kalır; zayıf doku noktaları elenir",
+    "Hiç nokta çıkmaz",
+    "Daha çok nokta çıkar",
+    "Görüntü küçülür"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 14 notları, Küçük Parametre Denemesi. Sayı 1000'e çıkarılırsa zayıf doku değişimleri de listelenir.",
+   "aciklama": "ORB adayları köşe yanıtına göre sıralar ve ilk `nfeatures` tanesini tutar. Küçük değer, az ama güvenilir nokta demektir; büyük değer daha çok ayrıntı ama daha çok gürültü getirir."
+  },
+  {
+   "id": "351-n14-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 14,
+   "etiketler": [
+    "orb",
+    "duz-yuzey"
+   ],
+   "kod": "kp, ds = cv2.ORB_create(250).detectAndCompute(np.full((100, 100), 80, np.uint8), None)\nprint(len(kp), ds)",
+   "soru": "Tamamen düz gri görüntüde ne yazdırılır?",
+   "secenekler": [
+    "0 None",
+    "250 (250, 32) dizisi",
+    "1 [[0 ... 0]]",
+    "Hata fırlatır"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 0 None.",
+   "aciklama": "Köşe (kontrast değişimi) olmayan düz yüzeyde FAST hiçbir aday bulamaz: anahtar nokta listesi boş, tanımlayıcı `None` olur. Kodda `ds is not None` kontrolü gerekir."
+  },
+  {
+   "id": "351-n14-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 14,
+   "etiketler": [
+    "orb",
+    "ozellik"
+   ],
+   "kod": "out = cv2.drawKeypoints(img, kp, None, flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)",
+   "soru": "ORB anahtar nokta çiziminde daire ve çizgi neyi gösterir; düz yüzeylerde neden nokta yoktur?",
+   "aciklama": "Dairenin yarıçapı noktanın bulunduğu ölçeği, içindeki çizgi baskın yönelimi gösterir. Köşe ve doku kesişimleri her yöne değişim içerdiği için ayırt edicidir; düz yüzeyde komşuluk birbirine benzer olduğundan hiçbir nokta ayırt edilemez.",
+   "secenekler": [
+    "Daire parlaklığı, çizgi rengi gösterir",
+    "Düz yüzeyde nokta yoktur çünkü kamera odaklanamaz",
+    "Yarıçap ölçeği, çizgi baskın yönü gösterir; düz yüzey ayırt edici olmadığı için nokta çıkmaz",
+    "Her piksel anahtar noktadır, yalnız çizim sadeleştirilir"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-n15-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 15,
+   "etiketler": [
+    "sablon-esleme",
+    "matchtemplate"
+   ],
+   "kod": "res = cv2.matchTemplate(scene, tpl, cv2.TM_CCOEFF_NORMED)\nmin_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)",
+   "soru": "`max_loc` neyi verir?",
+   "secenekler": [
+    "En iyi eşleşmenin şablonun sol üst köşesinin sahnedeki (x, y) konumunu",
+    "Sahnenin merkezini",
+    "Şablonun boyutunu",
+    "Eşleşme sayısını"
+   ],
+   "dogru": 0,
+   "aciklama": "`matchTemplate` şablonu sahnede kaydırarak benzerlik haritası çıkarır; `minMaxLoc` en yüksek korelasyonun konumunu verir. Konum şablon sol üst köşesine aittir; çerçeve çizmek için (x+w, y+h) eklenir."
+  },
+  {
+   "id": "351-n15-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 15,
+   "etiketler": [
+    "matchtemplate",
+    "cikti-boyutu"
+   ],
+   "kod": "scene = np.random.randint(0, 255, (300, 400), np.uint8)   # 300×400\ntpl = scene[115:175, 175:235].copy()                        # 60×60\nres = cv2.matchTemplate(scene, tpl, cv2.TM_CCOEFF_NORMED)\nprint(res.shape)",
+   "soru": "`res.shape` nedir?",
+   "secenekler": [
+    "(241, 341)",
+    "(300, 400)",
+    "(240, 340)",
+    "(60, 60)"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (241, 341) float32; tepe 1.0, konum (175, 115).",
+   "aciklama": "Şablon sahnede (H−h+1)×(W−w+1) farklı konuma oturabilir: 300−60+1 = 241 satır, 400−60+1 = 341 sütun. Şablon sahneden kesildiyse kendi konumunda `TM_CCOEFF_NORMED` skoru tam 1.0 olur.",
+   "sinav": "Formül: sonuç boyutu = (H − h + 1, W − w + 1)."
+  },
+  {
+   "id": "351-n15-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 15,
+   "etiketler": [
+    "tm-sqdiff",
+    "minmaxloc"
+   ],
+   "kod": "res = cv2.matchTemplate(scene, tpl, cv2.TM_CCOEFF_NORMED)\n_, max_val, _, max_loc = cv2.minMaxLoc(res)",
+   "soru": "Yöntem `TM_SQDIFF_NORMED` olursa en iyi eşleşme nerede aranır?",
+   "degisiklik": {
+    "eski": "TM_CCOEFF_NORMED",
+    "yeni": "TM_SQDIFF_NORMED"
+   },
+   "secenekler": [
+    "Minimumda (`min_loc`): mükemmel eşleşme 0'dır",
+    "Yine maksimumda",
+    "Ortalamada",
+    "Aranamaz"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 15 notları, Küçük Parametre Denemesi. Gerçek koşu: SQDIFF_NORMED minimumu 0.0, konum (175, 115).",
+   "aciklama": "Kare farkı yöntemlerinde değer ne kadar küçükse o kadar iyi eşleşme vardır: tam eşleşme 0'dır. Korelasyon yöntemlerinde ise en iyi eşleşme maksimumdur (normalize versiyonda 1)."
+  },
+  {
+   "id": "351-n15-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 15,
+   "etiketler": [
+    "matchtemplate",
+    "koordinat"
+   ],
+   "kod": "res = cv2.matchTemplate(scene, tpl, cv2.TM_CCOEFF_NORMED)\n_, max_val, _, max_loc = cv2.minMaxLoc(res)\nalt_sag = (max_loc[0] + h, max_loc[1] + w)\ncv2.rectangle(out, max_loc, alt_sag, (0, 0, 255), 3)",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: çerçeve neden yamuk çıkar?",
+   "aciklama": "`max_loc` (x, y) = (sütun, satır) sırasındadır. x'e genişlik (w), y'ye yükseklik (h) eklenmeli: `(max_loc[0] + w, max_loc[1] + h)`. Kare şablonda fark görünmez, dikdörtgen şablonda çerçeve bozulur."
+  },
+  {
+   "id": "351-n15-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 15,
+   "etiketler": [
+    "sablon-esleme",
+    "sinirlama"
+   ],
+   "kod": "res = cv2.matchTemplate(scene, tpl, cv2.TM_CCOEFF_NORMED)",
+   "soru": "Şablon eşlemenin ölçek ve dönmeye karşı zayıflığı ve ORB'den farkı nedir?",
+   "aciklama": "Şablon eşleme piksel desenini birebir karşılaştırır; hedef döndürülürse ya da ölçeği değişirse korelasyon düşer. ORB gibi öznitelik yöntemleri ölçek ve yönelim bilgisini tanımlayıcıya katar; bu yüzden döndürme ve ölçeğe daha dayanıklıdır, ama daha çok işlem ister.",
+   "secenekler": [
+    "Şablon eşleme ölçek ve dönmeye dayanıklıdır, ORB değildir",
+    "Şablon eşleme piksel desenini birebir karşılaştırır; ORB ölçek/yönelimi tanımlayıcıya katar",
+    "İkisi de aynı korelasyonu kullanır",
+    "ORB şablon eşlemeden her zaman daha hızlıdır"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "351-n16-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 16,
+   "etiketler": [
+    "perspektif",
+    "homografi"
+   ],
+   "kod": "M = cv2.getPerspectiveTransform(src_pts, dst_pts)\nwarped = cv2.warpPerspective(scene, M, (300, 400))",
+   "soru": "Bu iki satır ne yapar?",
+   "secenekler": [
+    "Yamuk görünen belgenin dört köşesini dik dikdörtgene eşleyip düzeltir",
+    "Görüntüyü 30° döndürür",
+    "Belgenin metnini okur",
+    "Gürültü siler"
+   ],
+   "dogru": 0,
+   "aciklama": "Dört nokta çifti 3×3 homografi matrisini belirler; `warpPerspective` görüntüyü bu matrisle yeniden örnekler. Belge taramada eğik fotoğraf düz sayfaya dönüşür."
+  },
+  {
+   "id": "351-n16-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 16,
+   "etiketler": [
+    "perspektif",
+    "matris-boyutu"
+   ],
+   "kod": "src = np.float32([[80, 50], [310, 30], [350, 260], [60, 220]])\ndst = np.float32([[0, 0], [299, 0], [299, 399], [0, 399]])\nM = cv2.getPerspectiveTransform(src, dst)\nprint(M.shape, cv2.warpPerspective(img, M, (300, 400)).shape)",
+   "soru": "İki şekil nedir? (img 400×300×3)",
+   "secenekler": [
+    "(3, 3) ve (400, 300, 3)",
+    "(2, 3) ve (300, 400, 3)",
+    "(3, 3) ve (300, 400, 3)",
+    "(4, 4) ve (400, 300)"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (3, 3) float64 ve (400, 300, 3).",
+   "aciklama": "Homografi 3×3'tür (afin 2×3). `dsize = (300, 400)` genişlik 300, yükseklik 400 demektir → çıktı dizisi `(400, 300, 3)`. Dikey A4 benzeri belge için genişlik < yükseklik seçilmiş."
+  },
+  {
+   "id": "351-n16-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 16,
+   "etiketler": [
+    "adaptif-esik",
+    "blocksize"
+   ],
+   "kod": "warped_gray = cv2.cvtColor(warped, cv2.COLOR_BGR2GRAY)\nscanned = cv2.adaptiveThreshold(warped_gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 14, 8)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: neden `cv2.error` alırız?",
+   "aciklama": "`blockSize` (komşuluk penceresi) tek sayı olmalıdır (3, 5, …, 15). 14 çift olduğu için hata verir; notlardaki değer 15'tir. Çift boyutlu pencerenin merkez pikseli olmaz."
+  },
+  {
+   "id": "351-n16-4",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 16,
+   "etiketler": [
+    "adaptif-esik",
+    "golge"
+   ],
+   "kod": "scanned = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 15, 8)",
+   "soru": "Gölgeli bir belgeye adaptif eşik yerine tek bir global eşik (`cv2.threshold(gray, 127, 255, ...)`) uygularsak?",
+   "degisiklik": {
+    "eski": "cv2.adaptiveThreshold(...)",
+    "yeni": "cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)"
+   },
+   "secenekler": [
+    "Gölgedeki alan tek parça siyah/beyaza düşer, yazı gölgede kaybolur",
+    "Daha temiz sonuç verir",
+    "Fark olmaz",
+    "Görüntü terslenir"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 16 notları, Python Kod Örneği. Adaptif eşikleme yerel gölgeleri temizlemek için seçilmiştir.",
+   "aciklama": "Global eşik tüm görüntüye tek değer uygular; aydınlatma eşit değilse gölgeli bölge tamamen eşiğin altında kalır. Adaptif eşik her pikselin eşiğini komşuluğunun ortalamasından/Gauss ağırlıklı ortalamasından hesaplar."
+  },
+  {
+   "id": "351-n16-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 16,
+   "etiketler": [
+    "belge-tarayici",
+    "boru-hatti"
+   ],
+   "kod": "M = cv2.getPerspectiveTransform(src_pts, dst_pts)\nwarped = cv2.warpPerspective(scene, M, (dst_w, dst_h))\nscanned = cv2.adaptiveThreshold(...)",
+   "soru": "Belge tarayıcı boru hattının doğru sırası hangisidir?",
+   "aciklama": "1) Dört köşeyi bul: belgenin sınırını tanımla. 2) Perspektif düzeltme: yamuk görüntüyü dik dikdörtgene çevir. 3) Griye çevir. 4) Adaptif eşik: yerel gölgeleri kaldırıp yazıyı siyah-beyaz yap. Sıra önemlidir: eşikleme perspektiften sonra yapılırsa blok boyutu tutarlı olur.",
+   "secenekler": [
+    "Eşik → köşe → perspektif → gri",
+    "Gri → eşik → perspektif → köşe",
+    "Perspektif → köşe bul → gri → eşik",
+    "Köşeleri bul → perspektifi düzelt → griye çevir → adaptif eşikle"
+   ],
+   "dogru": 3
+  }
+ ]
+}

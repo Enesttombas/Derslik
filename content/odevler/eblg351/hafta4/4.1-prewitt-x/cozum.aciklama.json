@@ -1,0 +1,146 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Ödev 4.1 amacı ve Prewitt X tanımı",
+    "aciklama": "Docstring Prewitt X operatörü ile dikey kenar tespiti ödevinin amacını, girdi ve çıktı dosyalarını özetler. 5x5 Gauss yumuşatma uygulanarak yüksek frekanslı kamera gürültüsü bastırılır. Ardından 3x3 Prewitt X çekirdeği ile yatay türev hesaplanır.",
+    "sinav": "Tanım: Prewitt X çekirdeği `Gx = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]` yatay yoğunluk değişimini ölçer; bu nedenle dikey kenarları tespit eder.\nSık hata: X çekirdeğinin yatay kenarları bulduğunu sanmak (x türevi dikey kenara diktir)."
+  },
+  {
+    "satirlar": [
+      6,
+      9
+    ],
+    "baslik": "İşaretli türev ve pano çıktısı",
+    "aciklama": "Docstring türev değerlerinin negatif ve pozitif yönlerini kaybetmemek için işaretli float32 türünde işlendiğini açıklar. uint8 formatına dönüştürülürken sıfır değeri 128 gri seviyesine ötelenir. Girdi, yumuşatılmış ve sonuç panosu cikti klasörüne kaydedilir.",
+    "sinav": "Tanım: Gradyan işaretli bir büyüklüktür; negatif değerler koyu-açık geçişini, pozitif değerler açık-koyu geçişini temsil eder.\nSık hata: Türevi mutlak değer almadan doğrudan uint8'e kesip negatifleri sıfırlamak."
+  },
+  {
+    "satirlar": [
+      11,
+      15
+    ],
+    "baslik": "Temel kütüphaneleri içe aktar",
+    "aciklama": "Pathlib dosya yollarını yönetir, sys Python arama yolunu genişletir, cv2 filtreleme ve görüntü I/O işlemlerini yürütür, numpy ise matris matematiği sağlar. Bu standart kütüphaneler görüntü işleme algoritmalarının temel yapı taşlarıdır.",
+    "sinav": "Tanım: `sys` ve `pathlib` modülleri yerel modül importlarının çalışma dizininden bağımsız kararlı çalışmasını sağlar.\nSık hata: Modülleri içe aktarmadan fonksiyonlarını çağırmak."
+  },
+  {
+    "satirlar": [
+      16,
+      20
+    ],
+    "baslik": "Hafta 4 ve repo dizinlerini sys.path'e ekle",
+    "aciklama": "Betiğin bulunduğu konumdan iki üst klasör olan hafta4 ve repo kök dizinleri çözümlenir. sys.path listesine eklenerek ortak hafta4 modüllerinin içe aktarılması güvenceye alınır. Bu sayede betik reponun herhangi bir yerinden çağrıldığında import hatası vermez.",
+    "sinav": "Tanım: `sys.path.insert(0, d)` modül arama önceliğini yerel repo klasörüne vererek doğru paketlerin yüklenmesini sağlar.\nSık hata: Üst klasörü sys.path'e eklemeyip `ModuleNotFoundError` almak."
+  },
+  {
+    "satirlar": [
+      21,
+      25
+    ],
+    "baslik": "Ortak kenar modüllerini içe aktar",
+    "aciklama": "hafta4.kenarlar modülünden gauss_yumusat, isaretli_goruntu_uint8 ve panel_olustur fonksiyonları içe aktarılır. gauss_yumusat 5x5 Gauss çekirdeği ile gürültüyü azaltır, isaretli_goruntu_uint8 negatif türevleri 128 seviyesine öteler, panel_olustur ise karşılaştırma paneli hazırlar.",
+    "sinav": "Tanım: `isaretli_goruntu_uint8` formülü `clip(Gx * 0.5 + 128, 0, 255)` ile türevi görselleştirir.\nSık hata: Ortak fonksiyonları her ödevde sıfırdan yazıp kod tekrarına düşmek."
+  },
+  {
+    "satirlar": [
+      27,
+      29
+    ],
+    "baslik": "prewitt_x fonksiyonu ve çekirdek tanımı",
+    "aciklama": "prewitt_x fonksiyonu gri görüntü üzerinde 3x3 Prewitt X çekirdeğini konvolüsyonla uygular. kx çekirdeği sol sütunda -1, orta sütunda 0 ve sağ sütunda +1 değerlerini içerir. Bu matris x ekseni boyunca merkezi fark türevinin komşu satırlarla yumuşatılmış halidir.",
+    "sinav": "Formül: `kx = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]`; yatay türev `df/dx` yaklaşımıdır.\nÖrnek: Sol piksel 50, sağ piksel 200 ise fark `+150` çıkar.\nSık hata: Çekirdeğin sütunlarını ters çevirip gradyan yönünü 180 derece saptırmak."
+  },
+  {
+    "satirlar": [
+      30,
+      32
+    ],
+    "baslik": "cv2.filter2D ile 2B konvolüsyon",
+    "aciklama": "Görüntü float32 türüne çevrilir ve cv2.filter2D fonksiyonu ile kx çekirdeği uygulanır. cv2.CV_32F hedef türü negatif türev değerlerinin korunmasını sağlar; BORDER_REFLECT_101 ise kenar piksellerinde yansıtma dolgusu yapar. Sonuçta dikey kenarlar yüksek mutlak genlikle öne çıkar.",
+    "sinav": "Tanım: `cv2.filter2D` çekirdeği matris üzerinde kaydırarak konvolüsyon hesaplar; `CV_32F` negatif taşmaları önler.\nSık hata: Çıktı derinliğini `CV_8U` seçip negatif türevleri sıfırlayarak kenarların yarısını kaybetmek."
+  },
+  {
+    "satirlar": [
+      34,
+      39
+    ],
+    "baslik": "Çıktı klasörlerini oluştur",
+    "aciklama": "calistir fonksiyonu çalıştırıldığında betiğin yanındaki yerel cikti klasörünü ve genel hafta4/cikti klasörünü oluşturur. mkdir(parents=True, exist_ok=True) klasörler önceden varsa hata vermeden işlemi sürdürür. Bu adım tüm görsel sonuçların düzenli arşivlenmesini sağlar.",
+    "sinav": "Tanım: `mkdir(parents=True, exist_ok=True)` eksik üst dizinleri otomatik oluşturur.\nSık hata: Çıktı klasörünü oluşturmadan imwrite çağırıp sessiz dosya kaybı yaşamak."
+  },
+  {
+    "satirlar": [
+      41,
+      44
+    ],
+    "baslik": "Girdi dosyasının varlığını denetle",
+    "aciklama": "girdi_yol değişkeni hafta4/girdi/kamera.png dosyasını işaret eder. if not girdi_yol.exists() denetimi dosyanın diskte gerçekten bulunduğunu doğrular; bulunamazsa açık bir FileNotFoundError fırlatır. Bu koruma sessiz çökmelerin önüne geçer.",
+    "sinav": "Tanım: Girdi dosyası denetimi programın kararlılığını ve hata ayıklanabilirliğini artırır.\nSık hata: Dosya varlığını denetlemeden işleme başlayıp belirsiz hatalar almak."
+  },
+  {
+    "satirlar": [
+      45,
+      47
+    ],
+    "baslik": "Kamera görüntüsünü gri tonda oku",
+    "aciklama": "cv2.imread kamera.png dosyasını IMREAD_GRAYSCALE modunda 512x512 boyutunda tek kanallı 8-bit matris olarak okur. Okuma başarısız olursa None kontrolü ile ValueError fırlatılır. Standart kamera (cameraman) görseli kenar tespiti literatürünün temel başvuru testidir.",
+    "sinav": "Tanım: Literatür standardı `cameraman` görüntüsü keskin dikey ve yatay kenarlarıyla filtre testleri için idealdir.\nSık hata: Okuma sonucunu denetlemeyip None matris üzerinden işlem yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      49,
+      51
+    ],
+    "baslik": "5x5 Gauss yumuşatma ile gürültüyü bastır",
+    "aciklama": "gauss_yumusat fonksiyonu 5x5 boyutunda ve sigma=1.0 parametreli Gauss filtresini gri görüntüye uygular. Sayısal türev alma işlemi yüksek frekanslı gürültüyü fazlasıyla büyüteceğinden, türevden önce alçak geçiren Gauss filtresi uygulamak zorunludur. Bu adım sahte kenar üretimini engeller.",
+    "sinav": "Tanım: Sayısal türev gürültüye karşı aşırı duyarlıdır; türev öncesi Gauss yumuşatma gürültü amplifikasyonunu bastırır.\nFormül: `G(x, y) = 1/(2*pi*sigma^2) * exp(-(x^2+y^2)/(2*sigma^2))`.\nSık hata: Gürültülü görüntüye doğrudan türev operatörü uygulayıp sahte kenarlar üretmek."
+  },
+  {
+    "satirlar": [
+      52,
+      55
+    ],
+    "baslik": "Prewitt X türevini ve işaretli görseli hesapla",
+    "aciklama": "prewitt_x fonksiyonu yumuşatılmış görüntüye uygulanarak yatay türev matrisi gx (float32) üretilir. isaretli_goruntu_uint8 fonksiyonu bu türevi 0-255 aralığına öteler; türevin sıfır olduğu düz bölgeler 128 gri tonunu alır, sol-sağ geçişleri siyah ve beyaz parlar. Bu görselleştirme dikey kenarların yapısını netleştirir.",
+    "sinav": "Tanım: İşaretli görselde `128` nötr zemin (sıfır türev), `< 128` negatif eğim, `> 128` pozitif eğimdir.\nÖrnek: Kameramanın dikey palto çizgileri siyah ve beyaz çift hat olarak belirir.\nSık hata: İşaretli türevin gri arka planını hatalı hesaplama sanmak."
+  },
+  {
+    "satirlar": [
+      56,
+      61
+    ],
+    "baslik": "1x3 görsel paneli oluştur",
+    "aciklama": "panel_olustur fonksiyonu orijinal gri görüntüyü, Gauss yumuşatılmış görüntüyü ve Prewitt X türev sonucunu yan yana koyarak 1x3 ızgara paneli oluşturur. Her panelin üstüne bilgilendirici beyaz başlık şeridi eklenir. Bu panel filtreleme adımlarının etkisini tek bir görselde inceleme olanağı tanır.",
+    "sinav": "Tanım: Karşılaştırma paneli işlem zincirindeki girdileri ve ara sonuçları yan yana sunarak nitel inceleme sağlar.\nSık hata: Farklı boyutlardaki görselleri yeniden boyutlandırmadan aynı ızgarada birleştirmeye çalışmak."
+  },
+  {
+    "satirlar": [
+      63,
+      67
+    ],
+    "baslik": "Yerel çıktı klasörüne görselleri kaydet",
+    "aciklama": "cv2.imwrite fonksiyonu ile kamera_gauss.png, kamera_prewitt_gx.png ve panel_prewitt_x.png yerel cikti klasörüne yazılır. Kayıpsız PNG formatı piksellerin sayısal doğruluğunu korur. Bu çıktılar ödev klasörünün bağımsız doğrulanmasını sağlar.",
+    "sinav": "Tanım: `cv2.imwrite` görüntü matrislerini dosya sistemine yazar.\nSık hata: Çıktı dosyasının izinlerini kontrol etmemek."
+  },
+  {
+    "satirlar": [
+      68,
+      72
+    ],
+    "baslik": "Genel çıktı klasörünü güncelle ve tamamla",
+    "aciklama": "Aynı görsel çıktıları merkezi hafta4/cikti klasörüne de kaydedilerek toplu raporlama betiklerinin erişimine sunulur. print fonksiyonu Ödev 4.1'in başarıyla tamamlandığını konsola bildirir. Bu merkezi depolama karşılaştırma analizlerini kolaylaştırır.",
+    "sinav": "Tanım: Genel çıktı klasörü tüm haftanın ölçüm ve görsellerini tek merkezde toplar.\nSık hata: Çıktıyı yalnız yerel klasöre yazıp ana rapor üreticisinden mahrum bırakmak."
+  },
+  {
+    "satirlar": [
+      75,
+      76
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan komut satırından çalıştırıldığında calistir() fonksiyonunu yürütür. Betik başka bir programdan import edildiğinde çalıştırma adımlarının kendiliğinden başlamasını engeller.",
+    "sinav": "Tanım: `__name__ == '__main__'` Python'da doğrudan çalıştırma ile modül importunu ayıran standart yapıdır.\nSık hata: Bu denetimi koymayıp modül import edildiğinde tüm dosya yazma adımlarını tetiklemek."
+  }
+]

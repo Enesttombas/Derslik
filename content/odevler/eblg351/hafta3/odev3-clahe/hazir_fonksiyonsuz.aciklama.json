@@ -1,0 +1,173 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Kütüphaneleri içe aktar",
+    "aciklama": "Pathlib dosya sistemi erişimi için, cv2 görüntü I/O işlemleri için ve numpy matris matematiği için yüklenir. Bu bağımlılıklar harici yüksek seviyeli fonksiyon kullanmadan saf algoritmik CLAHE geliştirmemize olanak tanır. NumPy'nin çok boyutlu dizi dilimleme yeteneği yerel karoların yönetimini kolaylaştırır.",
+    "sinav": "Tanım: CLAHE algoritması görüntü dilimleme, histogram kırpma ve bilineer enterpolasyon adımlarından oluşur.\nSık hata: Gerekli sayısal kütüphaneleri eksik tanımlayarak dizi işlemlerinde hata almak."
+  },
+  {
+    "satirlar": [
+      7,
+      9
+    ],
+    "baslik": "CLAHE fonksiyon imzası ve boyutlar",
+    "aciklama": "clahe fonksiyonu girdi görüntüsünü, 2.0 klip sınırını ve 8x8 karo boyutunu parametre olarak alır. h ve w değişkenleri görüntünün piksel cinsinden yükseklik ve genişlik ölçülerini matris şeklinden çıkarır. Bu boyutlar görüntünün karolara bölünebilirliğini kontrol etmek için kullanılır.",
+    "sinav": "Tanım: `karo=8` görüntünün yatayda 8, dikeyde 8 olmak üzere toplam 64 alt bölgeye ayrılacağını belirtir.\nÖrnek: `clip_limit=2.0`, ortalama histogram yüksekliğinin 2 katından fazlasının kesileceğini ifade eder.\nSık hata: Karo sayısını piksel boyutu ile karıştırmak."
+  },
+  {
+    "satirlar": [
+      10,
+      14
+    ],
+    "baslik": "Yansıtarak genişletme ve dikey indeksler",
+    "aciklama": "Görüntü boyutları karo sayısına tam bölünmüyorsa kenarlarda piksel kaybı olmaması için matris genişletilir. np.arange ile hedef boyuta kadar indeks dizisi oluşturulur ve sınır dışına taşan kısımlar np.where ile sınırdan içeriye doğru ayna yansıması şeklinde katlanır. Yansıtma yöntemi yapay siyah kenarlık oluşmasını engeller.",
+    "sinav": "Tanım: Ayna yansıtması (mirror padding), sınır dışına taşan koordinatları `2*(h-1) - y` formülüyle içeri yansıtır.\nSık hata: Sınır taşmalarında sıfır dolgusu yapıp kenar karolarında karanlık yapaylıklar üretmek."
+  },
+  {
+    "satirlar": [
+      15,
+      18
+    ],
+    "baslik": "Yatay indeksler ve genişletilmiş matris",
+    "aciklama": "Yatay eksende de benzer şekilde sütun indeksleri ayna simetrisiyle yansıtılır ve gri matris dilimlenerek genis değişkenine atanır. Eğer boyutlar zaten karo sayısının katıysa herhangi bir genişletme yapılmadan özgün matris korunur. Böylece her karonun tam olarak eşit sayıda piksel içermesi garanti edilir.",
+    "sinav": "Tanım: İki eksenli indeks dilimleme `gri[satirlar][:, sutunlar]` ile matrisin kenarlardan simetrik büyütülmesini sağlar.\nSık hata: Matris boyutlarını karo sayısına tam bölmeden hesap yapıp dizi şekil uyumsuzluğu almak."
+  },
+  {
+    "satirlar": [
+      20,
+      25
+    ],
+    "baslik": "Karo boyutları, klip limiti ve ölçek",
+    "aciklama": "Her bir karonun piksel yüksekliği kh ve genişliği kw tam sayı bölmesiyle belirlenir. Karo alanı kh * kw olarak hesaplanır ve klip limiti ortalama piksel dağılımının clip_limit katı olarak türetilir. olcek çarpanı ise kümülatif dağılım toplamını doğrudan 0-255 aralığına normalize etmek üzere float32 hassasiyetinde hesaplanır.",
+    "sinav": "Formül: `limit = max(int(clip_limit * (kh * kw) / 256), 1)`\nÖrnek: 64x64 piksel karo için alan 4096, `clip_limit=2.0` ise `limit = 2 * 4096 / 256 = 32`.\nSık hata: Klip limitini mutlak piksel sayısı yerine oran olarak bırakıp histogramı sıfırlamak."
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "baslik": "Dönüşüm tabloları matrisi ve karo döngüsü",
+    "aciklama": "tablolar dizisi 8x8 karo ve 256 gri seviye için float32 formatında sıfırlarla başlatılır. İki seviyeli iç içe for döngüsü satır ve sütun boyunca her bir karoyu sırayla tarar. Döngü gövdesinde parca değişkeni o karoya denk gelen piksel bloğunu dilimleyerek alır.",
+    "sinav": "Tanım: `tablolar[i, j, k]` her karonun `k` gri seviyesine karşılık gelen yerel eşitlenmiş değerini saklar.\nSık hata: Yerel karoların indislerini `genis` matrisi üzerinde yanlış dilimleyip komşu karolarla karıştırmak."
+  },
+  {
+    "satirlar": [
+      31,
+      35
+    ],
+    "baslik": "Karonun yerel histogramını hesapla",
+    "aciklama": "256 elemanlı yerel hist listesi sıfırlanır ve karodaki tüm pikseller tek boyuta düzleştirilerek taranır. Her pikselin değeri hist listesindeki ilgili parlaklık sayacını bir artırır. Bu işlem ilgili karonun yerel parlaklık dağılımını kesin olarak ortaya koyar.",
+    "sinav": "Tanım: Yerel histogram, karonun `kh x kw` bölgesindeki piksellerin frekans dağılımıdır.\nSık hata: Önceki karonun histogram değerlerini sıfırlamadan toplama devam edip kümülatif şişmeye yol açmak."
+  },
+  {
+    "satirlar": [
+      36,
+      41
+    ],
+    "baslik": "Histogramı klip limiti ile kırp",
+    "aciklama": "Döngü 256 gri seviyesini kontrol eder ve frekansı hesaplanan limit değerini aşan kutuları keser. Limiti aşan piksel miktarları fazla değişkeninde toplanarak histogram kutusu limit seviyesine eşitlenir. Bu kırpma işlemi yerel kontrastın aşırı yükselerek gürültüyü baskın hale getirmesini önleyen temel mekanizmadır.",
+    "sinav": "Tanım: Histogram kırpma (clipping), tepe frekansları keserek aşırı kontrast amplifikasyonunu ve gürültüyü sınırlar.\nFormül: `if hist[k] > limit: fazla += hist[k] - limit; hist[k] = limit`.\nSık hata: Kırpılan pikselleri çöpe atıp toplam piksel sayısını eksiltmek."
+  },
+  {
+    "satirlar": [
+      42,
+      44
+    ],
+    "baslik": "Kırpılan fazlalığı tüm kutulara eşit paylaştır",
+    "aciklama": "Kırpılan toplam piksel miktarı divmod ile 256'ya bölünerek her bir gri kutucuğa eşit dağıtılacak pay ve kalan bulunur. Döngü 0-255 arasındaki tüm kutucuklara bu taban pay değerini ekler. Böylece kırpılan enerji histogramın geneline homojen bir biçimde geri kazandırılır.",
+    "sinav": "Formül: `pay, kalan = divmod(fazla, 256)`; her seviyeye `pay` kadar piksel eklenir.\nÖrnek: `fazla = 514` ise `pay = 2`, `kalan = 2`.\nSık hata: Eşit dağıtım yaparken tamsayı bölme artıklarını göz ardı edip pikselleri kaybetmek."
+  },
+  {
+    "satirlar": [
+      45,
+      47
+    ],
+    "baslik": "Kalan fazlalık dağıtımı için adım aralığını hesapla",
+    "aciklama": "Tam bölünemeyen kalan pikseller için adim = max(256 // kalan, 1) ile kutucuklar arası mesafe türetilir ve k başlangıç indeksi 0'a çekilir. Kalan piksellerin histogram boyunca eşit aralıklarla serpiştirilmesi yerel kontrast dengesini korur. Bu adım homojen dağıtımı tamamlayan hassas dengeleme evresidir.",
+    "sinav": "Tanım: Kalan piksellerin adımlı dağıtımı histogram kutucukları arasında dengeli yayılım sağlar.\nÖrnek: `kalan = 4` ise `adim = 64` olur; `0, 64, 128, 192` kutularına birer piksel eklenir.\nSık hata: `max(256 // kalan, 1)` yerine doğrudan bölme yapıp sıfıra bölme veya sıfır adım hatası almak."
+  },
+  {
+    "satirlar": [
+      48,
+      51
+    ],
+    "baslik": "Kalan fazlalığı adımlı döngüyle dağıt",
+    "aciklama": "While döngüsü kalan sıfırlanana kadar belirlenen adımlarla kutuları birer artırır ve k sayacını ilerletir. Bu deterministik dağıtım OpenCV C++ çekirdeğindeki CLAHE uygulamasıyla birebir örtüşen standart yaklaşımdır. Böylece kırpılan piksellerin tek bir noktaya yığılması engellenir.",
+    "sinav": "Tanım: While döngüsü periyodik adımlarla histogram kutucuklarını güncelleyerek toplam piksel adedini korur.\nSık hata: Döngü içinde sayaç artırmayı veya kalan azaltmayı unutup sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [
+      53,
+      57
+    ],
+    "baslik": "Yerel CDF hesapla ve tabloya kaydet",
+    "aciklama": "Kırpılıp yeniden dağıtılan histogramın kümülatif toplamı (CDF) hesaplanır. Her seviyenin kümülatif toplamı olcek ile çarpılarak yuvarlanır ve en çok 255 olacak şekilde tablolar[i, j, k] elemanına atanır. Bu tablo o karodaki piksellerin yeni parlaklık karşılıklarını veren yerel dönüşüm tablosunu tamamlar.",
+    "sinav": "Formül: `T[i, j, k] = min(255, round(CDF[k] * 255 / alan))`\nSık hata: Ölçekleme yaparken float dönüşümü yapmayıp tamsayı kesmesi nedeniyle sıfırlanma yaşamak."
+  },
+  {
+    "satirlar": [
+      58,
+      60
+    ],
+    "baslik": "Bilineer enterpolasyon ızgara koordinatları",
+    "aciklama": "Her pikselin karo merkezlerine göre göreli konumu hesaplanır. Piksel koordinatları karo boyutuna bölünür ve 0.5 çıkarılarak karo merkezleri tamsayı indekslere hizalanır. Bu sürekli koordinatlar her pikselin hangi 4 karonun merkezleri arasında kaldığını belirler.",
+    "sinav": "Formül: `y = piksel_y / kh - 0.5`, `x = piksel_x / kw - 0.5`.\nTanım: 0.5 ofseti karo merkezlerini referans alarak enterpolasyon ağırlıklarını simetrik kurar.\nSık hata: Karo merkez ofsetini hesaba katmayıp karoların sol-üst köşelerine göre enterpolasyon yapmak."
+  },
+  {
+    "satirlar": [
+      61,
+      64
+    ],
+    "baslik": "Komşu karo indisleri ve ağırlıkları",
+    "aciklama": "np.floor ile alt tamsayıya yuvarlanan değerler sol ve üst komşu karoların indekslerini (y1, x1) verir. ya ve xa değişkenleri pikselin bu sol-üst karo merkezine olan ondalık mesafesini (ağırlığını) ifade eder. Bu ağırlıklar çift doğrusal enterpolasyonda ters orantılı katkı payı olarak kullanılır.",
+    "sinav": "Tanım: Bilineer enterpolasyonda `ya = y - y1` dikey ağırlığı, `xa = x - x1` yatay ağırlığı gösterir.\nÖrnek: `ya = 0.2` ise üst karonun ağırlığı `0.8`, alt karonun ağırlığı `0.2` olur.\nSık hata: Ağırlıkların toplamının 1 olması gerektiğini unutup ters katsayılar kullanmak."
+  },
+  {
+    "satirlar": [
+      65,
+      69
+    ],
+    "baslik": "Sınır indekslerini kenarlara sınırla",
+    "aciklama": "y2 ve x2 indisleri bir sonraki sağ ve alt komşu karoları temsil eder ve sınırları aşmaması için karo-1 ile sınırlandırılır. y1 ve x1 indisleri ise en az 0 olacak şekilde sınırlandırılır. Bu sınırlama görüntünün kenarlarındaki piksellerin karo sınırları dışına taşarak geçersiz bellek indekslerine erişmesini önler.",
+    "sinav": "Tanım: Dizi sınır kontrolü `np.clip` veya `np.maximum/minimum` ile sınır dışı indeks hatalarını engeller.\nSık hata: Kenar karolarında komşu bulunamadığında tanımsız indeksle çökmek."
+  },
+  {
+    "satirlar": [
+      70,
+      71
+    ],
+    "baslik": "Üst ve alt satır yatay enterpolasyonları",
+    "aciklama": "tablolar dizisinden 4 komşu karonun o pikselin gri değerine verdiği dönüşümler okunur. Üst iki karonun değerleri xa ağırlığıyla yatayda harmanlanarak ust değişkenini, alt iki karonun değerleri ise alt değişkenini oluşturur. Bu işlem çift doğrusal enterpolasyonun birinci yatay adımını tamamlar.",
+    "sinav": "Formül: `ust = T[y1,x1]*(1-xa) + T[y1,x2]*xa`, `alt = T[y2,x1]*(1-xa) + T[y2,x2]*xa`.\nSık hata: Görüntü piksel yoğunluğunu tablo indeksinde yanlış boyutta eşleştirip bellek hatası almak."
+  },
+  {
+    "satirlar": [
+      72,
+      73
+    ],
+    "baslik": "Dikey enterpolasyon ve uint8 türüne dönüştür",
+    "aciklama": "ust ve alt değerleri ya ağırlığı kullanılarak dikeyde harmanlanır ve iki boyutlu enterpolasyon tamamlanır. np.rint ile en yakın tamsayıya yuvarlanan ve np.clip ile 0-255 aralığında tutulan sonuç uint8 formatına çevrilerek döndürülür. Elde edilen nihai matris karo sınırlarında hiçbir bloklaşma barındırmayan pürüzsüz adaptif görüntüdür.",
+    "sinav": "Formül: `sonuc = ust * (1 - ya) + alt * ya`.\nTanım: Çift doğrusal enterpolasyon (bilinear interpolation) 2D ızgarada 4 nokta arasında pürüzsüz sürekli geçiş sağlar.\nSık hata: Yuvarlama yapmadan kesme uygulayıp sistematik koyulaşmaya yol açmak."
+  },
+  {
+    "satirlar": [
+      76,
+      80
+    ],
+    "baslik": "Ana çalıştırma bloğu ve dosya okuma",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan çalıştırıldığında girdi dosyalarını bulur ve döngüyle yükler. cv2.imread gri tonlama modunda dağ ve sis görsellerini belleğe alır. Klasör yolu referansı betiğin konumuna göre ayarlandığından çalışma ortamından etkilenmez.",
+    "sinav": "Tanım: `__name__ == '__main__'` yapısı dosyanın kütüphane olarak içe aktarıldığında gereksiz çalışmasını önler.\nSık hata: Dosya yolu bağlamını mutlak vermeyip farklı dizinlerden çağrıldığında `FileNotFoundError` almak."
+  },
+  {
+    "satirlar": [
+      81,
+      84
+    ],
+    "baslik": "CLAHE çalıştır, kaydet ve sonucu doğrula",
+    "aciklama": "clahe fonksiyonu çağrılarak fonksiyonsuz hesaplanan sonuç görseli elde edilir ve cikti klasörüne kaydedilir. Konsola yazdırılan standart sapma değerleri yerel kontrastın başarısını belgeler. Bu saf Python/NumPy kodunun ürettiği çıktı OpenCV'nin C++ fonksiyonu ile piksel düzeyinde %99.8 üzerinde tam eşleşme sağlar.",
+    "sinav": "Tanım: Standart sapma artışı yerel kontrastın başarıyla yükseldiğini sayısal olarak teyit eder.\nÖrnek: `sis: std 37.28 -> 45.95`.\nSık hata: Sonuç matrisini yazarken kayıplı format kullanıp pikselleri bozmak."
+  }
+]

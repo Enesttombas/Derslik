@@ -1,0 +1,595 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-o-h1-2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "odev": "h1-2",
+   "dosya": "resize_klasor.py",
+   "satirlar": [
+    17,
+    19
+   ],
+   "etiketler": [
+    "resize",
+    "dsize"
+   ],
+   "soru": "`cv2.resize(resim, (HEDEF_GENISLIK, HEDEF_YUKSEKLIK), ...)` boyutu neden bu sırayla verilir?",
+   "secenekler": [
+    "`cv2.resize` boyutu (genişlik, yükseklik) ister; `resim.shape` ise (yükseklik, genişlik, kanal) verir",
+    "İkisi de (yükseklik, genişlik) sırasını kullanır",
+    "Sıra önemsizdir, OpenCV kendisi düzeltir",
+    "Genişlik her zaman yükseklikten önce yazılır çünkü 1024 > 768"
+   ],
+   "dogru": 0,
+   "aciklama": "NumPy dizisi satır-sütun (yükseklik, genişlik) mantığıyla indekslenir; `cv2.resize` ise piksel koordinatı gibi (x, y) = (genişlik, yükseklik) bekler. Bu iki sıra farkı klasik hatadır. INTER_AREA küçültmede en doğru enterpolasyondur.",
+   "sinav": "resize dsize = (W, H); img.shape = (H, W, C)."
+  },
+  {
+   "id": "351-o-h1-2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "odev": "h1-2",
+   "dosya": "resize_klasor.py",
+   "satirlar": [
+    39,
+    41
+   ],
+   "etiketler": [
+    "resize",
+    "shape"
+   ],
+   "soru": "400×300 (genişlik×yükseklik) bir dosya için `print` satırı ne yazar?",
+   "secenekler": [
+    "foto.jpg: 400x300 -> 1024x768",
+    "foto.jpg: 300x400 -> 768x1024",
+    "foto.jpg: 400x300 -> 768x1024",
+    "foto.jpg: 1024x768 -> 400x300"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (300, 400, 3) görüntü cv2.resize(…, (1024, 768)) → shape (768, 1024, 3); (768, 1024) verilseydi shape (1024, 768, 3) çıkardı.",
+   "aciklama": "Yazdırma `shape[1]` (genişlik) ve `shape[0]` (yükseklik) kullanır: önce 400x300, ölçekleme sonrası 1024x768. Boyutun sırası bozulsaydı çıktı dikey 768×1024 olurdu."
+  },
+  {
+   "id": "351-o-h1-2-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "odev": "h1-2",
+   "dosya": "resize_klasor.py",
+   "satirlar": [
+    17,
+    19
+   ],
+   "etiketler": [
+    "resize",
+    "dsize-sirasi"
+   ],
+   "kod": "def olcekle(resim):\n    # cv2.resize boyutu (GENİŞLİK, YÜKSEKLİK) sırasıyla ister\n    return cv2.resize(resim, (HEDEF_YUKSEKLIK, HEDEF_GENISLIK), interpolation=cv2.INTER_AREA)",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: çıktı neden 768×1024 çıkar?",
+   "aciklama": "Boyut (genişlik, yükseklik) sırasında verilmeli: `(HEDEF_GENISLIK, HEDEF_YUKSEKLIK)`. Ters verilince resim dikey 768×1024'e döner ve oran bozulur."
+  },
+  {
+   "id": "351-o-h1-2-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "odev": "h1-2",
+   "dosya": "resize_klasor.py",
+   "satirlar": [
+    35,
+    38
+   ],
+   "etiketler": [
+    "imread",
+    "hata-yonetimi"
+   ],
+   "soru": "`cv2.imread` bozuk dosyada ne yapar ve kod neden kontrol eder?",
+   "aciklama": "OpenCV bozuk ya da okunamayan dosyada istisna atmaz, sessizce `None` verir. Kontrol yoksa `olcekle(None)` ile çöker ve klasörün geri kalanı da işlenmez. Kod dosyayı atlayıp sonrakine geçer; böylece tek bozuk dosya tüm toplu işi durdurmaz.",
+   "secenekler": [
+    "`imread` bozuk dosyada sessizce `None` verir; kontrol yoksa çökme tüm klasörü durdurur",
+    "`imread` her zaman istisna atar, kontrol gereksizdir",
+    "`None` boş görüntü demektir, işlem normal sürer",
+    "Kontrol yalnız hız içindir"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-o-h2-1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-1",
+   "dosya": "nicemle_6bit.py",
+   "satirlar": [
+    15,
+    17
+   ],
+   "etiketler": [
+    "nicemleme",
+    "bit-kaydirma"
+   ],
+   "soru": "`((gri >> 2) << 2)` ne yapar?",
+   "secenekler": [
+    "Alt iki biti sıfırlar: 256 seviye 64 seviyeye iner, değerler 4'ün katı olur",
+    "Parlaklığı 4'e böler",
+    "Görüntüyü 4 kat büyütür",
+    "Üst iki biti sıfırlar"
+   ],
+   "dogru": 0,
+   "aciklama": "Sağa 2 bit kaydırma son iki biti atar (⌊x/4⌋), sola kaydırma yerine 0 koyar. Sonuç yine 0–255 aralığında ama yalnız 64 farklı değer alır: 0, 4, 8, …, 252."
+  },
+  {
+   "id": "351-o-h2-1-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-1",
+   "dosya": "nicemle_6bit.py",
+   "satirlar": [
+    15,
+    17
+   ],
+   "etiketler": [
+    "nicemleme",
+    "bit-kaydirma"
+   ],
+   "soru": "`gri = [0, 3, 4, 255, 130]` için çıktı?",
+   "secenekler": [
+    "[0, 0, 4, 252, 128]",
+    "[0, 3, 4, 255, 130]",
+    "[0, 1, 1, 63, 32]",
+    "[0, 0, 4, 255, 128]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [0 0 4 252 128]; 256 olası değerden 64 farklı çıktı seviyesi.",
+   "aciklama": "255 = 11111111 → alt iki bit atılınca 11111100 = 252. 130 → 128, 3 → 0. Kayıp bilgi geri gelmez: ardışık 4 değer tek seviyeye çöker."
+  },
+  {
+   "id": "351-o-h2-1-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-1",
+   "dosya": "nicemle_6bit.py",
+   "satirlar": [
+    15,
+    17
+   ],
+   "etiketler": [
+    "nicemleme",
+    "seviye-sayisi"
+   ],
+   "kod": "return ((gri >> 2) << 2).astype(np.uint8)",
+   "soru": "Kaydırma miktarını 4 yaparsak (`(gri >> 4) << 4`) kaç parlaklık seviyesi kalır?",
+   "degisiklik": {
+    "eski": "(gri >> 2) << 2",
+    "yeni": "(gri >> 4) << 4"
+   },
+   "secenekler": [
+    "16 seviye (4-bit)",
+    "64 seviye",
+    "4 seviye",
+    "256 seviye"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: >>2<<2 → 64 benzersiz değer; >>4<<4 → 16 (0, 16, …, 240).",
+   "aciklama": "Atılan bit sayısı k ise seviye sayısı 2^(8−k): k=2 → 64, k=4 → 16. Daha az seviye bantlaşma (false contouring) görünürlüğünü artırır."
+  },
+  {
+   "id": "351-o-h2-1-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-1",
+   "dosya": "nicemle_6bit.py",
+   "satirlar": [
+    20,
+    23
+   ],
+   "etiketler": [
+    "nicemleme",
+    "fark-gorseli"
+   ],
+   "kod": "fark = cv2.absdiff(gri, nicemli)\nen_buyuk = int(fark.max())",
+   "soru": "6-bit nicemlemede orijinal ile nicemli görüntü arasındaki fark hiçbir pikselde 3'ü aşmaz.",
+   "dogruMu": true,
+   "aciklama": "Doğru: atılan alt iki bit 0–3 değerleri taşır, yani x − ((x>>2)<<2) ∈ {0,1,2,3}. Fark görüntüsü bu yüzden çok koyu görünür; kod görünürlük için farkı en büyük değere göre 0–255'e ölçekler."
+  },
+  {
+   "id": "351-o-h2-2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-2",
+   "dosya": "parca_thread.py",
+   "satirlar": [
+    26,
+    37
+   ],
+   "etiketler": [
+    "parca-isleme",
+    "negatif"
+   ],
+   "soru": "`sira == 2` dalındaki `255 - x` hangi etkiyi yapar?",
+   "secenekler": [
+    "Parçanın negatifini alır: koyu pikseller açılır, açıklar koyulaşır",
+    "Parçayı 255 azaltır",
+    "Parçayı kırpar",
+    "Gamma 0.5 uygular"
+   ],
+   "dogru": 0,
+   "aciklama": "Dört parça dört farklı dönüşüm alır: +50 (parlat), −50 (karart), 255−x (negatif), √(x/255)·255 (gamma 0.5). Hepsi float32'de hesaplanıp `np.clip` ile 0–255'e kırpılır."
+  },
+  {
+   "id": "351-o-h2-2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-2",
+   "dosya": "parca_thread.py",
+   "satirlar": [
+    26,
+    37
+   ],
+   "etiketler": [
+    "parca-isleme",
+    "clip"
+   ],
+   "soru": "`parca = [240, 30, 64, 200]` (uint8) ve `sira = 0` (+50) için sonuç?",
+   "secenekler": [
+    "[255, 80, 114, 250]",
+    "[34, 80, 114, 250]",
+    "[290, 80, 114, 250]",
+    "[240, 30, 64, 200]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [255 80 114 250]. Aynı işlem float32'ye çevrilmeden uint8'de yapılırsa 240+50 → 34 (taşar).",
+   "aciklama": "240 + 50 = 290 → `np.clip` ile 255'e doygunlaşır. Float32'ye çevirmek taşmayı önler; ham uint8'de 290 mod 256 = 34 gibi yanlış değer çıkardı."
+  },
+  {
+   "id": "351-o-h2-2-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-2",
+   "dosya": "parca_thread.py",
+   "satirlar": [
+    26,
+    37
+   ],
+   "etiketler": [
+    "uint8-tasma",
+    "float32"
+   ],
+   "kod": "def _isle(girdi):\n    sira, parca = girdi\n    x = parca            # float32 dönüşümü kaldırıldı\n    if sira == 0:\n        x += 50\n    elif sira == 1:\n        x -= 50\n    return np.clip(x, 0, 255).astype(np.uint8)",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: parlak/karanlık parçada neden garip lekeler oluşur?",
+   "aciklama": "`parca` uint8'dir; `x += 50` 240'ı 34'e, `x -= 50` 30'u 236'ya sarar (modüler taşma). `np.clip` taşmış değeri artık düzeltemez. Doğrusu önce `x = parca.astype(np.float32)`."
+  },
+  {
+   "id": "351-o-h2-2-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-2",
+   "dosya": "parca_thread.py",
+   "satirlar": [
+    43,
+    47
+   ],
+   "etiketler": [
+    "thread",
+    "gil"
+   ],
+   "soru": "Dört thread küçük görüntüde neden 1 thread'den hızlı olmayabilir?",
+   "aciklama": "NumPy çoğu işlemde GIL'i bırakır, bu yüzden thread'ler gerçekten paralel koşabilir. Ama havuz kurmak, işi dağıtmak ve sonucu toplamak sabit maliyet ekler; küçük görüntüde bu maliyet kazancı yiyebilir. Kod bu yüzden her iki yolu birkaç tekrar ortalamasıyla ölçüp yorumu ölçüme bırakır.",
+   "secenekler": [
+    "NumPy GIL'i hiç bırakmaz",
+    "Thread'ler her zaman daha hızlıdır",
+    "Havuz kurma/dağıtma/toplama sabit maliyeti küçük görüntüde kazancı yiyebilir",
+    "Küçük görüntüde thread çalışmaz"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-o-h2-3-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-3",
+   "dosya": "histogram_thread.py",
+   "satirlar": [
+    16,
+    17
+   ],
+   "etiketler": [
+    "histogram",
+    "bincount"
+   ],
+   "soru": "`np.bincount(gri.ravel(), minlength=256)` ne döndürür?",
+   "secenekler": [
+    "Her gri seviyenin (0–255) kaç piksel olduğunu gösteren 256 uzunluklu dizi",
+    "Görüntünün ortalama parlaklığını",
+    "Pikselleri sıralanmış hâlde",
+    "Yalnız en sık gri seviyeyi"
+   ],
+   "dogru": 0,
+   "aciklama": "`ravel()` 2B diziyi düzleştirir; `bincount` her değerin kaç kez geçtiğini sayar. `minlength=256` bazı seviyeler yoksa bile dizi uzunluğunu 256'ya sabitler."
+  },
+  {
+   "id": "351-o-h2-3-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-3",
+   "dosya": "histogram_thread.py",
+   "satirlar": [
+    34,
+    35
+   ],
+   "etiketler": [
+    "histogram",
+    "birlestirme"
+   ],
+   "soru": "300×400 bir görüntünün 4 parça histogramı `np.sum(histogramlar, axis=0)` ile birleştirilince `.shape` ve `.sum()`?",
+   "secenekler": [
+    "(256,) ve 120000",
+    "(4, 256) ve 120000",
+    "(256,) ve 30000",
+    "(1024,) ve 120000"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: toplam 120000 ve birleşik histogram tam görüntü histogramına eşit.",
+   "aciklama": "Dört (256,) dizinin eksen 0 boyunca toplamı yine (256,) olur. Her piksel tam bir parçada olduğu için toplam 300·400 = 120000 pikseldir ve sonuç tüm görüntünün histogramına eşittir; kod bunu `assert` ile doğrular."
+  },
+  {
+   "id": "351-o-h2-3-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-3",
+   "dosya": "histogram_thread.py",
+   "satirlar": [
+    16,
+    17
+   ],
+   "etiketler": [
+    "bincount",
+    "minlength"
+   ],
+   "kod": "return np.bincount(gri.ravel(), minlength=256)",
+   "soru": "`minlength=256` kaldırılırsa ve parçadaki en büyük gri değer 200 ise dizi uzunluğu?",
+   "degisiklik": {
+    "eski": "minlength=256",
+    "yeni": "(minlength yok)"
+   },
+   "secenekler": [
+    "201: en büyük değer + 1, parçalar farklı uzunlukta olabilir",
+    "256",
+    "200",
+    "1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: bincount([3, 3, 5]) uzunluğu 6; minlength=256 ile 256.",
+   "aciklama": "`bincount` uzunluğu max+1'dir. Parçaların en büyük değerleri farklıysa histogramlar farklı uzunlukta çıkar ve `np.sum(..., axis=0)` ile birleştirme hata verir ya da yanlış hizalar. `minlength=256` bunu önler."
+  },
+  {
+   "id": "351-o-h2-3-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-3",
+   "dosya": "histogram_thread.py",
+   "satirlar": [
+    34,
+    35
+   ],
+   "etiketler": [
+    "histogram",
+    "toplama-ekseni"
+   ],
+   "kod": "def histogramlari_birlestir(histogramlar):\n    return np.sum(histogramlar, axis=1)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: sonuç neden histogram değil?",
+   "aciklama": "Histogramlar (4, 256) biçimindedir. `axis=1` her parçanın kendi içini toplayıp 4 sayı (parça başına piksel sayısı) verir. Parçaları seviyeye göre birleştirmek için `axis=0` gerekir; sonuç (256,) olur."
+  },
+  {
+   "id": "351-o-h2-4-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-4",
+   "dosya": "histogram_sure.py",
+   "satirlar": [
+    25,
+    29
+   ],
+   "etiketler": [
+    "olcum",
+    "perf-counter"
+   ],
+   "soru": "`_sure_olc` ne döndürür?",
+   "secenekler": [
+    "Tekrar başına ortalama süre ve son hesaplanan sonuç",
+    "Toplam süre ve tekrar sayısı",
+    "Yalnız ilk çalıştırmanın süresi",
+    "Her tekrarın süresinden oluşan liste"
+   ],
+   "dogru": 0,
+   "aciklama": "Zamanlayıcı döngüden önce başlar, döngü sonunda geçen süre `tekrar`'a bölünür; bu bir ortalamadır. Son tekrarın sonucu da döndürülür ki `assert np.array_equal` ile doğruluk kontrol edilebilsin."
+  },
+  {
+   "id": "351-o-h2-4-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-4",
+   "dosya": "histogram_sure.py",
+   "satirlar": [
+    46,
+    49
+   ],
+   "etiketler": [
+    "bicimlendirme",
+    "isaretli-fark"
+   ],
+   "soru": "`tek = 0.002000`, `dort = 0.002500` olursa son `print` satırı?",
+   "secenekler": [
+    "Fark (4 - 1) | +0.000500 sn",
+    "Fark (4 - 1) | 0.000500 sn",
+    "Fark (4 - 1) | -0.000500 sn",
+    "Fark (4 - 1) | +0.0005 sn"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: f\"{0.0025 - 0.002:+.6f}\" → +0.000500.",
+   "aciklama": "`:+.6f` işareti her zaman gösterir ve 6 basamak yazar. Fark pozitif: dört thread bu ölçümde daha yavaş çıkmış (thread kurma maliyeti). Negatif olsaydı thread kazançlı sayılırdı."
+  },
+  {
+   "id": "351-o-h2-4-3",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-4",
+   "dosya": "histogram_sure.py",
+   "satirlar": [
+    43,
+    49
+   ],
+   "etiketler": [
+    "thread",
+    "olcum"
+   ],
+   "kod": "tek, hist_tek = _sure_olc(gri, tum_histogram, args.tekrar)\ndort, hist_dort = _sure_olc(gri, histogram_4_thread, args.tekrar)",
+   "soru": "4 thread her görüntüde ve her makinede 1 thread'den daha hızlıdır.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Kazanç görüntü boyutuna, çekirdek sayısına ve havuz kurma maliyetine bağlıdır. Küçük görüntüde 4 thread daha yavaş çıkabilir; kodun `Fark` satırı yorumu ölçüme bırakır."
+  },
+  {
+   "id": "351-o-h2-4-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-4",
+   "dosya": "histogram_sure.py",
+   "satirlar": [
+    25,
+    29
+   ],
+   "etiketler": [
+    "zamanlayici",
+    "ortalama"
+   ],
+   "kod": "def _sure_olc(gri, hesapla, tekrar):\n    for _ in range(tekrar):\n        baslangic = perf_counter()\n        sonuc = hesapla(gri)\n    return (perf_counter() - baslangic) / tekrar, sonuc",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: süre neden gerçekten çok küçük çıkar?",
+   "aciklama": "Zamanlayıcı her turda yeniden başlıyor; döngü bitince yalnız son tekrarın süresi ölçülür ve gene `tekrar`'a bölünür (tekrar kat küçük). `baslangic` döngüden önce, bir kez alınmalıdır."
+  },
+  {
+   "id": "351-o-h2-5-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-5",
+   "dosya": "parlaklik_donusum.py",
+   "satirlar": [
+    15,
+    20
+   ],
+   "etiketler": [
+    "parlaklik",
+    "clip"
+   ],
+   "soru": "Dönüşüm neden `gri.astype(np.float32)` ile başlayıp en sonda `np.clip(...).astype(np.uint8)` ile biter?",
+   "secenekler": [
+    "Ara hesap taşmadan ve kesirli yapılsın, sonuç 0–255 uint8'e kırpılsın diye",
+    "Hız kazanmak için",
+    "Görüntü rengini korumak için",
+    "uint8 çarpmayı desteklemediği için"
+   ],
+   "dogru": 0,
+   "aciklama": "0.75·x kesirli değer üretir, x + 20 255'i aşabilir. Float32'de hesaplayıp `clip` ile aralığa kırpmak, uint8 taşmasını (örn. 275 → 19) ve kesirli kaybı önler."
+  },
+  {
+   "id": "351-o-h2-5-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-5",
+   "dosya": "parlaklik_donusum.py",
+   "satirlar": [
+    15,
+    20
+   ],
+   "etiketler": [
+    "parlaklik",
+    "kontrast"
+   ],
+   "soru": "`x = [0, 100, 255]` için `(carp, topla, birlikte)` sırasıyla?",
+   "secenekler": [
+    "[0, 75, 191], [20, 120, 255], [20, 95, 211]",
+    "[0, 75, 191], [20, 120, 275], [20, 95, 211]",
+    "[0, 75, 191], [20, 120, 255], [0, 95, 211]",
+    "[0, 75, 192], [20, 120, 255], [20, 95, 212]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: carp [0 75 191], topla [20 120 255], birlikte [20 95 211] (astype(uint8) ondalığı atar).",
+   "aciklama": "0.75·255 = 191.25 → 191. 255 + 20 = 275 → clip 255. 0.75·255 + 20 = 211.25 → 211. Kırpma ve ondalığı atma sayesinde değerler her zaman geçerli uint8 aralığında kalır."
+  },
+  {
+   "id": "351-o-h2-5-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-5",
+   "dosya": "parlaklik_donusum.py",
+   "satirlar": [
+    51,
+    52
+   ],
+   "etiketler": [
+    "parlaklik",
+    "aralik"
+   ],
+   "soru": "Görüntüde min/max 0/255 ise `y = 0.75x + 20` sonrası `Min/max` satırı?",
+   "secenekler": [
+    "sonra 20/211",
+    "sonra 0/255",
+    "sonra 20/255",
+    "sonra 0/191"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: min 20, max 211 (0.75·255 + 20 = 211.25 → 211).",
+   "aciklama": "Eğim 0.75 < 1 olduğu için kontrast (aralık genişliği) 255'ten 191'e düşer; +20 ofset aralığı yukarı öteler. Dönüşüm hem kontrast azaltır hem parlaklık ekler."
+  },
+  {
+   "id": "351-o-h2-5-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "odev": "h2-5",
+   "dosya": "parlaklik_donusum.py",
+   "satirlar": [
+    17,
+    19
+   ],
+   "etiketler": [
+    "kontrast-parlaklik",
+    "ayri-etkiler"
+   ],
+   "soru": "0.75·x ile x + 20 neden ayrı ayrı da üretilir?",
+   "aciklama": "Çarpan (gain) kontrastı, toplanan sabit (bias) parlaklığı etkiler. Ayrı görüntüler her bileşenin tek başına ne yaptığını gösterir: 0.75·x görüntüyü koyulaştırıp soldurur, x + 20 histogramı sağa kaydırır (üstte 255'e kırpar). Birleşik dönüşüm iki etkiyi toplar.",
+   "secenekler": [
+    "Yalnız süslemek için",
+    "Çarpan kontrastı, toplanan sabit parlaklığı etkiler; ayrı görüntüler her etkiyi tek başına gösterir",
+    "Çarpan parlaklığı, sabit kontrastı etkiler",
+    "İkisi her zaman aynı etkiyi yapar"
+   ],
+   "dogru": 1
+  }
+ ]
+}

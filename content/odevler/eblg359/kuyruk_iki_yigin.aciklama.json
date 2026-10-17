@@ -1,0 +1,104 @@
+[
+  {
+    "satirlar": [1, 7],
+    "aciklama": "Bu modül iki ayrı LIFO yığını birleştirerek FIFO kuyruk davranışı elde eden veri yapısını ele alır. Gelen elemanlar bir yığında toplanırken, çıkarma işlemleri diğer yığından yapılır. Her eleman yaşam döngüsü boyunca en fazla bir kez aktarılır. Bu sayede işlemler tekil olarak değişse de amortize analizde O(1) maliyet elde edilir.",
+    "sinav": "Tanım: İki yığınlı kuyruk, iki adet LIFO yığını zıt yönlü bağlayarak FIFO kuyruk davranışını simüle eder.\nÖrnek: Fonksiyon çağrı yığınlarıyla kuyruk benzeri iş kuyruğu mekanizmaları tasarlamak.\nSık hata: Her çıkarma işleminde elemanları tekrar gelen yığınına geri aktarmak.",
+    "baslik": "Modül Dokümanı ve İki Yığın Kuyruk"
+  },
+  {
+    "satirlar": [10, 11],
+    "aciklama": "`IkiYiginKuyruk` sınıfı çift yığın mantığını nesne tabanlı yapıda modeller. Bu mimari yığınların ters çevirme özelliğini avantaja dönüştürür. Bir yığından diğerine dökülen elemanların sırası doğal olarak tersine döner. İki kez ters çevrilen sıra baştaki giriş sırasını yeniden kazandırır.",
+    "sinav": "Tanım: Çift yığın mimarisi, iki LIFO evresinin birleşerek mantıksal bir FIFO düzeni kurmasını sağlar.\nÖrnek: [1, 2, 3] sırasıyla aktarıldığında [3, 2, 1] olur ve çıkarırken 1, 2, 3 sırası döner.\nSık hata: İki yığın kullanmanın kuyruk mantığını bozduğunu zannetmek.",
+    "baslik": "İki Yığın Kuyruk Sınıf Tanımı"
+  },
+  {
+    "satirlar": [13, 17],
+    "aciklama": "`__init__` metodunda `self.gelen` ve `self.giden` adlı iki boş Python listesi tanımlanır. Ayrıca yapılan toplam işlemleri sayan `self.islem` sayacı oluşturulur. Yığınlar arası taşınan eleman sayısını takip eden `self.aktarim` sayacı sıfırlanır. Bu yapıcı yöntem O(1) sürede çalışır.",
+    "sinav": "Tanım: Durum değişkenleri (`gelen`, `giden`), giriş ve çıkış tamponlarını ayrı ayrı yönetir.\nFormül: Alan karmaşıklığı: O(n).\nÖrnek: Başlangıçta her iki liste boş olup eleman sayısı 0'dır.\nSık hata: Aktarım sayacını genel işlem sayacına dahil etmeyip analizi eksik yapmak.",
+    "baslik": "Yığın Listeleri ve Sayaçların Başlatılması"
+  },
+  {
+    "satirlar": [19, 22],
+    "aciklama": "`kuyruga_ekle` metodu yeni gelen elemanı doğrudan `self.gelen` listesine `append` eder. Bu işlem sadece gelen yığınının tepesine ekleme yaptığı için daima O(1) adımda tamamlanır. `self.islem` sayacı bir artırılır. Eleman sırası daha sonraki çıkarma adımına kadar saklanır.",
+    "sinav": "Tanım: Kuyruğa ekleme (enqueue), gelen yığınının tepesine yapılan O(1) itme işlemidir.\nFormül: Ekleme karmaşıklığı: O(1).\nÖrnek: Sırasıyla 1, 2, 3 eklendiğinde `gelen = [1, 2, 3]` olur.\nSık hata: Ekleme anında giden yığınını gelen yığınına geri aktarmaya çalışarak O(n) gecikme yaratmak.",
+    "baslik": "Gelen Yığına Eleman Ekleme"
+  },
+  {
+    "satirlar": [24, 30],
+    "aciklama": "`_aktar` özel yardımcı metodu, `self.giden` yığını boşaldığında devreye girer. `self.gelen` yığınındaki tüm elemanlar sırayla çıkarılıp `self.giden` listesine itilir. Bu aktarım sırasında her eleman için `self.aktarim` ve `self.islem` sayaçları artırılır. Aktarılan n eleman için bu işlem tek seferde O(n) adım sürer.",
+    "sinav": "Tanım: Yığınlar arası aktarım (transfer), gelen elemanların sırasını tersine çevirerek FIFO sırasına sokar.\nFormül: Tek seferlik aktarım maliyeti: O(k) (k = gelen yığındaki eleman sayısı).\nÖrnek: `gelen = [1, 2, 3]` iken aktarım sonrası `giden = [3, 2, 1]` olur.\nSık hata: Giden yığınında henüz eleman varken aktarım yaparak kuyruk sırasını altüst etmek.",
+    "baslik": "Yığınlar Arası Eleman Aktarım Mekanizması"
+  },
+  {
+    "satirlar": [32, 38],
+    "aciklama": "`kuyruktan_cikar` metodu sıradaki elemanı kuyruktan silip döndürür. Kuyruk boşsa `IndexError` hatası fırlatılarak yapısal bütünlük korunur. Gerekirse `_aktar` çağrısı yapıldıktan sonra `self.giden.pop()` ile O(1) sürede eleman alınır. Her eleman yaşamında en çok 1 kez aktarıldığından amortize maliyet O(1)'dir.",
+    "sinav": "Tanım: Kuyruktan çıkarma (dequeue), giden yığınının tepesindeki elemanı çeken işlemdir.\nFormül: En kötü durum: O(n), Amortize durum: O(1).\nÖrnek: [3, 2, 1] durumundaki giden yığınından pop() ile 1 değeri döner.\nSık hata: Amortize O(1) maliyeti her tekil çağrının O(1) süreceği şeklinde yorumlamak.",
+    "baslik": "Giden Yığından Eleman Çıkarma"
+  },
+  {
+    "satirlar": [40, 46],
+    "aciklama": "`on` metodu kuyruğun en başındaki elemanı silmeden görmeyi sağlar. Kuyruk tamamen boşsa `IndexError` ile çalışmayı durdurur. Giden yığını boşsa aktarım çalıştırılır ve ardından `self.giden[-1]` değeri okunur. Okuma işlemi O(1) zamanda gerçekleşir ve veri yapısı değişmez.",
+    "sinav": "Tanım: Ön eleman inceleme (front/peek), FIFO sırasındaki ilk elemanın değerini silmeden döndürür.\nFormül: Amortize karmaşıklık: O(1).\nÖrnek: Kuyruk başındaki değer 1 ise `on()` çağrısı 1 döner, eleman kuyrukta kalır.\nSık hata: `on()` metodunda giden yığınının boş olabileceği durumunu göz ardı etmek.",
+    "baslik": "Kuyruk Başı Elemanını İnceleme"
+  },
+  {
+    "satirlar": [48, 53],
+    "aciklama": "`bos_mu` metodu her iki yığının da tamamen boş olup olmadığını denetler. `__len__` metodu ise gelen ve giden listelerindeki toplam eleman sayısını verir. Her iki metot da O(1) karmaşıklıkta çalışır. Bu kontroller algoritmalarda kuyruğun doluluk durumunu güvenle sorgulamaya yarar.",
+    "sinav": "Tanım: Çift yığın boyut hesabı, iki yığındaki aktif elemanların toplamını ifade eder.\nFormül: Boyut = len(gelen) + len(giden), Zaman: O(1).\nÖrnek: gelen'de 2, giden'de 3 eleman varsa toplam kuyruk uzunluğu 5'tir.\nSık hata: Kuyruğun boşluğunu sadece gelen veya sadece giden yığınına bakarak belirlemek.",
+    "baslik": "Kuyruk Boşluk ve Boyut Kontrolleri"
+  },
+  {
+    "satirlar": [56, 62],
+    "aciklama": "`main` fonksiyonu temel operasyonları test etmek için başlatılır. Kuyruğa sırasıyla 1, 2 ve 3 sayıları eklenir. İlk `kuyruktan_cikar` çağrısı yapıldığında 1 değeri elde edilir ve `assert` ile teyit edilir. Bu adım ilk aktarım işleminin başarıyla tetiklendiğini gösterir.",
+    "sinav": "Tanım: Birim test adımı, ilk çıkarma işleminde elemanların doğru aktarıldığını doğrular.\nÖrnek: 1, 2, 3 eklendikten sonra ilk çıkan eleman 1 olmalıdır.\nSık hata: İlk çıkarmada ters aktarım yapılmadığı için en son eklenen 3 elemanının döndüğünü düşünmek.",
+    "baslik": "Ana Doğrulama ve İlk Çıkarma Testi"
+  },
+  {
+    "satirlar": [63, 67],
+    "aciklama": "Kuyruğa ara bir eleman olan 4 eklenir ve kalan elemanlar tek tek çıkarılır. Çıkarılan değerlerin 2, 3 ve 4 olduğu `assert` ile denetlenir. Ayrıca tüm elemanlar tükendiğinde `bos_mu` metodunun `True` verdiği kontrol edilir. Araya ekleme yapılsa bile FIFO sıralamasının bozulmadığı kanıtlanır.",
+    "sinav": "Tanım: Karışık ekleme-çıkarma testi, giden doluyken gelen yığınına ekleme yapılabilmesini sınar.\nÖrnek: Giden'de [3, 2] varken gelen'e 4 eklenirse, önce 2 ve 3, sonra 4 çıkar.\nSık hata: Giden yığını doluyken yeni gelen elemanın giden yığınının tepesine eklendiğini sanmak.",
+    "baslik": "Ara Ekleme ve FIFO Sırası Doğrulaması"
+  },
+  {
+    "satirlar": [69, 75],
+    "aciklama": "Kuyruk tamamen boş durumdayken eleman çıkarma işlemi uygulanır. Fırlatılması gereken `IndexError` istisnası `try/except` yapısı ile yakalanır. Hatalı durumun oluştuğu `assert` yardımıyla doğrulanır ve başarı mesajı yazdırılır. Sınır koşullarda güvenli hata yönetimi ispatlanır.",
+    "sinav": "Tanım: İstisna yönetimi testi, geçersiz işlemlerin kontrollü şekilde durdurulduğunu kanıtlar.\nÖrnek: Boş kuyruktan çıkarma yapıldığında IndexError oluşur.\nSık hata: Boş kuyruktan veri çekerken None dönmesine izin verip çağrıcı kodda hata üretmek.",
+    "baslik": "Boş Kuyruk Hatası Sınama Testi"
+  },
+  {
+    "satirlar": [77, 82],
+    "aciklama": "En kötü tekil çıkarma maliyetini (worst-case O(n)) ölçmek için 500 elemanlı bir senaryo kurulur. Yeni bir kuyruğa n_kotu kadar eleman peş peşe eklenir. Tüm elemanlar `gelen` yığınında birikir ve `giden` yığını boş kalır. Bu durum tek seferlik büyük bir aktarım fırtınasına hazırlık aşamasıdır.",
+    "sinav": "Tanım: En kötü durum (worst case) senaryosu, tek bir operasyonun alabileceği azami işlem sayısını inceler.\nFormül: En kötü durum çıkarma maliyeti: n aktarım + 1 pop = O(n).\nÖrnek: n=500 eleman gelen yığınındayken tek bir çıkarma çağrısı 501 işlem yapar.\nSık hata: Amortize O(1) olan her yapının en kötü durumda da O(1) süreceğini varsaymak.",
+    "baslik": "En Kötü Durum Deneyi Hazırlığı"
+  },
+  {
+    "satirlar": [83, 87],
+    "aciklama": "Tek bir `kuyruktan_cikar` işlemi çağrılır ve yapılan işlem farkı hesaplanır. 500 elemanın aktarımı ve 1 çıkarma işlemiyle toplam maliyetin 501 olduğu `assert` edilir. Bu deney tek bir operasyonun O(n) adım alabileceğini net şekilde kanıtlar. Ölçüm sonuçları konsola bilgi olarak yazdırılır.",
+    "sinav": "Tanım: Tekil operasyon maliyeti, sistemin gecikme (latency) tepkisini anlamak için ölçülür.\nÖrnek: 500 elemanlık aktarımda tek operasyon maliyeti 501 olarak ölçülür.\nSık hata: En kötü durum maliyetini ortalama maliyetle karıştırarak genel yapıyı verimsiz addetmek.",
+    "baslik": "En Kötü Tekil Çıkarma Ölçümü"
+  },
+  {
+    "satirlar": [89, 95],
+    "aciklama": "Gerçek hayat kullanımını modellemek üzere n=1000 elemanlık karışık bir döngü kurulur. Döngü süresince elemanlar sırayla eklenirken tek sayılarda birer eleman çıkarılır. Çıkarılan elemanlar bir listede toplanır. Bu döngü iki yığın arasındaki dinamik akışı test eder.",
+    "sinav": "Tanım: Karışık yük testi, gerçekçi operasyon akışlarında yapının kararlılığını ölçer.\nFormül: Toplam ekleme sayısı: n, ara çıkarma sayısı: n/2.\nÖrnek: n=1000 için 1000 ekleme ve eş zamanlı çıkarmalar yürütülür.\nSık hata: Karışık testlerde FIFO sırasının bozulacağını varsaymak.",
+    "baslik": "Karışık Ekle Çıkar Dizisi ve Deney"
+  },
+  {
+    "satirlar": [96, 102],
+    "aciklama": "Kalan tüm elemanlar boşaltılarak tam FIFO sırasının sağlandığı `assert` ile denetlenir. En önemlisi, toplam aktarılan eleman sayısının `self.aktarim <= n` olduğu doğrulanır. Her eleman en çok bir kez aktarıldığı için toplam aktarım n değerini asla aşamaz. Bu teorem amortize O(1) maliyetin temel dayanağıdır.",
+    "sinav": "Tanım: Amortize analiz toplam maliyet teoremi, n operasyonluk dizideki toplam maliyetin n ile sınırlandığını söyler.\nFormül: Toplam Aktarım <= n, Eleman Başına Ortalama Aktarım <= 1.0 = O(1).\nÖrnek: n=1000 eleman için toplam aktarım tam 1000 olur.\nSık hata: Elemanların birden fazla kez aktarılabileceğini düşünerek amortize maliyetin büyüdüğünü iddia etmek.",
+    "baslik": "Toplam Aktarım Sınırı ve FIFO Denetimi"
+  },
+  {
+    "satirlar": [104, 107],
+    "aciklama": "Toplu boşaltma ve karışık akış senaryolarının toplam aktarım sayıları tablo halinde sunulur. Her iki senaryoda da eleman başına düşen aktarım oranının 1.00 olduğu gösterilir. Bu oran büyük veri setlerinde eleman başına maliyetin sabit kaldığını kanıtlar. Öğrenciler için amortize O(1) kavramını somutlaştırır.",
+    "sinav": "Tanım: Amortize maliyet tablosu, farklı yük profillerinde birim maliyetin 1.00'e yakınsadığını gösterir.\nÖrnek: Hem toplu hem karışık senaryoda aktarım/eleman oranı 1.00'dir.\nSık hata: Tekil O(n) gecikmenin amortize O(1) garantisini bozduğunu iddia etmek.",
+    "baslik": "Amortize Analiz Karşılaştırma Tablosu"
+  },
+  {
+    "satirlar": [110, 111],
+    "aciklama": "Script doğrudan terminalden çalıştırıldığında doğrulama testlerini başlatır. Python kodunun modüler yapısını koruyarak import durumunda testlerin koşulmasını engeller. Temiz kod standartlarına uygun giriş noktası yönetimi sağlar. Sistemin bütünlüğü tamamlanır.",
+    "sinav": "Tanım: Modül giriş kontrolü (`__name__ == '__main__'`), yürütülebilir script standardını sağlar.\nÖrnek: `python kuyruk_iki_yigin.py` komutuyla testler çalıştırılır.\nSık hata: Kod bloklarını fonksiyon dışına çıplak yazarak modülerliği kaybetmek.",
+    "baslik": "İki Yığın Kuyruk Çalıştırıcı Girişi"
+  }
+]

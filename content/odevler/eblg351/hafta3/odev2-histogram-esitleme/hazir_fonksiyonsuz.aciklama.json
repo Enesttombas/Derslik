@@ -1,0 +1,74 @@
+[
+  {
+    "satirlar": [
+      1,
+      6
+    ],
+    "baslik": "Kütüphaneleri ekle ve klasör yolunu belirle",
+    "aciklama": "Betik dosya sistemi işlemleri için Path, görüntü giriş-çıkışı için cv2 ve dizi manipülasyonu için numpy modüllerini içe aktarır. Klasör değişkeni betiğin bulunduğu dizini merkez alarak girdilere ve çıktılara güvenli erişim sağlar. Bu yapı harici fonksiyon çağırmadan algoritmik histogram eşitleme kurmamıza zemin hazırlar.",
+    "sinav": "Tanım: `Path(__file__).parent` ile çalışma ortamından bağımsız yerel dosya yolu referansı üretilir.\nSık hata: Kütüphanelerin eksik tanımlanması sebebiyle `NameError` ile karşılaşmak."
+  },
+  {
+    "satirlar": [
+      8,
+      9
+    ],
+    "baslik": "Resimleri gri seviye olarak yükle",
+    "aciklama": "Döngü dağ ve sis resimlerini sırayla okuyarak gri tonlamalı piksel matrislerini belleğe alır. cv2.IMREAD_GRAYSCALE bayrağı görüntüyü doğrudan 8-bit yoğunluk haritasına dönüştürür. Her piksel 0 ile 255 arasında bir tamsayı parlaklık seviyesine sahiptir.",
+    "sinav": "Tanım: Gri seviye görüntüde piksel sayısı `H x W` matris boyutu ile belirlenir.\nSık hata: Görüntü matrisini tek boyuta açmadan iki boyutlu döngülerle yavaş işlem yapmak."
+  },
+  {
+    "satirlar": [
+      11,
+      14
+    ],
+    "baslik": "256 elemanlı frekans histogramını oluştur",
+    "aciklama": "hist listesi 256 adet sıfır ile başlatılır ve görüntünün tüm pikselleri tek boyuta düzleştirilerek taranır. Her pikselin değeri doğrudan hist listesindeki ilgili indeksin sayacını bir artırır. Böylece her gri tonun resimde kaç kez tekrar ettiği kesin olarak sayılmış olur.",
+    "sinav": "Tanım: Histogram, her bir yoğunluk seviyesindeki piksel sayısını gösteren ayrık frekans dağılımıdır.\nFormül: `hist[r_k] = n_k`, burada `n_k` değeri `r_k` parlaklığına sahip piksel adedidir.\nSık hata: Histogram dizisini 256 yerine 255 boyutlu açıp son seviyede dizi taşması hatası almak."
+  },
+  {
+    "satirlar": [
+      16,
+      21
+    ],
+    "baslik": "Kümülatif dağılım fonksiyonunu (CDF) hesapla",
+    "aciklama": "cdf dizisi histogram değerlerinin soldan sağa doğru ardışık toplanmasıyla elde edilen kümülatif toplamı saklar. Döngü her gri seviyesine kadar olan toplam piksel sayısını hesaplayarak monoton artan bir eğri meydana getirir. Kümülatif dağılım, piksel değerlerinin olasılık yoğunluk fonksiyonunun integrali niteliğindedir.",
+    "sinav": "Formül: `CDF[k] = sum(hist[i])` for `i = 0` to `k`.\nÖrnek: `CDF[255]` görüntünün toplam piksel sayısı olan `N` değerine eşit olmak zorundadır.\nSık hata: Kümülatif toplamda ara değişkeni sıfırlamayı unutup kümülatif artışı bozmak."
+  },
+  {
+    "satirlar": [
+      23,
+      25
+    ],
+    "baslik": "Minimum CDF ve piksel sayısını belirle",
+    "aciklama": "Görüntüdeki toplam piksel sayısı gri.size ile alınır ve cdf içindeki sıfırdan büyük ilk değer cdf_min olarak seçilir. cdf_min değeri görüntüde fiilen mevcut olan en karanlık pikselin kümülatif frekansını temsil eder. Bu değer eşitleme formülünde ofset çıkarılarak en karanlık pikselin tam 0 değerine eşlenmesini sağlar.",
+    "sinav": "Tanım: `cdf_min`, görüntüde var olan en düşük parlaklık seviyesinin kümülatif frekansıdır.\nFormül: `cdf_min = min({cdf[k] | cdf[k] > 0})`.\nSık hata: `cdf_min` olarak sıfır değerini seçip eşitleme ofsetini kaybetmek."
+  },
+  {
+    "satirlar": [
+      26,
+      29
+    ],
+    "baslik": "Eşitleme dönüşüm tablosunu (LUT) oluştur",
+    "aciklama": "256 elemanlı uint8 türündeki tablo dizisi her girdi seviyesinin yeni eşitlenmiş karşılığını önceden hesaplar. Standart histogram eşitleme formülü kümülatif dağılımı 0-255 aralığına doğrusal oranlar ve yuvarlar. Bir arama tablosu (LUT) hazırlamak, her piksel için formülü tekrar tekrar hesaplama maliyetini ortadan kaldırır.",
+    "sinav": "Formül: `T[k] = round(((cdf[k] - cdf_min) / (N - cdf_min)) * 255)`\nÖrnek: `cdf[k] == cdf_min` için `T[k] = 0`; `cdf[k] == N` için `T[k] = 255` olur.\nSık hata: Yuvarlama yapmadan doğrudan tamsayıya kesip alt değerlere doğru sistematik parlaklık kaybı yaratmak."
+  },
+  {
+    "satirlar": [
+      30,
+      31
+    ],
+    "baslik": "Arama tablosu ile tüm pikselleri dönüştür",
+    "aciklama": "tablo[gri] ifadesi NumPy'nin gelişmiş indeksleme yeteneğini kullanarak tüm görüntü matrisini tek hamlede dönüştürür. Matristeki her piksel değeri tablonun ilgili indeksine bakar ve karşılık gelen eşitlenmiş parlaklık değerini alır. Bu vektörel eşleme saf Python döngülerine kıyasla yüzlerce kat daha hızlı çalışır.",
+    "sinav": "Tanım: Look-Up Table (LUT) eşlemesi `O(1)` zamanda piksel dönüşümü sağlayan bellek tabanlı dönüşüm tekniğidir.\nSık hata: Piksel piksel Python for döngüsü ile tablodan değer okuyup gereksiz CPU yükü oluşturmak."
+  },
+  {
+    "satirlar": [
+      33,
+      34
+    ],
+    "baslik": "Eşitlenmiş görüntüyü kaydet ve sapmayı yazdır",
+    "aciklama": "Elde edilen sonuç görseli cv2.imwrite ile cikti klasörüne aktarılır ve standart sapma değişimi ekrana basılır. Fonksiyonsuz hesaplanan standart sapma artışı cv2.equalizeHist çıktısıyla birebir aynı matematiksel sonucu verir. Sis görüntüsünde standart sapma 37.28'den 74.33'e fırlayarak kontrastın mükemmel biçimde genişletildiğini teyit eder.",
+    "sinav": "Tanım: Başarılı histogram eşitleme sonrası histogram düzleşir, dinamik aralık dolar ve standart sapma belirgin artar.\nÖrnek: `std 37.28 -> 74.33`.\nSık hata: Çıktı matrisinin veri türünü `uint8` yapmayı unutup kaydetme aşamasında bozuk görüntü üretmek."
+  }
+]

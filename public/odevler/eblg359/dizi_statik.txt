@@ -1,0 +1,8 @@
+Başlangıç dizisi: [10, 15, 20]
+0. indeks silindi: 10
+Kalan elemanlar: [15, 20]
+
+--- Sona Ekleme vs Başa Ekleme İşlem Sayısı Karşılaştırması ---
+N        Sona Ekle (O(1))     Başa Ekle (O(n))     Teorik Oran 
+100      100                  5050                 50.5        
+1000     1000                 500500               500.5       

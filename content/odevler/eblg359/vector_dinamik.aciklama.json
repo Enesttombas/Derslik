@@ -1,0 +1,122 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "Modül Başlığı ve Kullanım Belgesi",
+    "aciklama": "Bu modül dinamik dizi veri yapısının temel prensiplerini ve geometrik kapasite artış stratejisini açıklar. İki katına çıkarma yöntemi ile tek tek artırma yöntemi arasındaki farklar maliyet sayacı ile ölçülür. Kodun doğrudan konsoldan nasıl çalıştırılacağı docstring içinde belirtilmiştir.",
+    "sinav": "Tanım: Dinamik dizi, doldukça kapasitesini otomatik olarak genişleten esnek boyutlu dizi yapısıdır.\nFormül: Yeni Kapasite = Eski Kapasite * 2\nÖrnek: 1, 2, 4, 8, 16 şeklinde katlanarak büyüyen kapasite dizisi.\nSık hata: Dinamik diziyi sabit boyutlu statik diziyle karıştırıp taşma hatası vereceğini varsaymak."
+  },
+  {
+    "satirlar": [10, 12],
+    "baslik": "Dinamik Dizi Sınıf Başlangıcı",
+    "aciklama": "`DinamikDizi` sınıfının kurucu metodu nesnenin ilk durumunu hazırlar. Başlangıçta kapasite 1 ve eleman sayısı 0 olarak belirlenir. Bu küçük başlangıç alanı gereksiz bellek kullanımını önler ve dinamik büyüme adımlarını baştan itibaren gözlemlemeyi sağlar.",
+    "sinav": "Tanım: Dinamik dizinin başlangıç parametrelerini ve ilk bellek tahsisini belirleyen sınıftır.\nÖrnek: Başlangıçta kapasite 1 alınarak hemen ilk eklemede genişleme mekanizması işletilir.\nSık hata: Başlangıç kapasitesini sıfır seçip çarpma ile büyütmede sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [13, 16],
+    "baslik": "İç Veri ve Sayaç Nitelikleri",
+    "aciklama": "`self.veri` elemanları tutan iç listeyi, `self.kopya` yeniden boyutlandırmalarda taşınan toplam eleman sayısını gösterir. `self.islem` sayacı ise okuma ve yazma adımlarını takip eder. Bu sayaçlar amortize analiz ispatı için somut metrikler sunar.",
+    "sinav": "Tanım: Bellek genişletmelerinde gerçekleşen veri taşıma ve okuma/yazma işlem adımı sayaçlarıdır.\nÖrnek: 1024 eleman için toplam kopya sayısının 1023 çıkması.\nSık hata: Kopyalama sayacını her eleman eklemede normal yazma sayacı ile karıştırmak."
+  },
+  {
+    "satirlar": [18, 21],
+    "baslik": "Yeniden Boyutlandırma Alan Tahsisi",
+    "aciklama": "`_yeniden_boyutlandir` metodu yeni kapasite boyutunda boş bir liste tahsis eder. Mevcut tüm elemanlar eski listeden yeni listeye aktarılır. Bu taşıma döngüsü O(n) sürede çalışır ve taşınan her eleman için sayaçlar artırılır.",
+    "sinav": "Tanım: Mevcut dizi dolduğunda daha geniş bir bellek bloğu açıp eski elemanları buraya taşıma işlemidir.\nFormül: Taşıma maliyeti T(n) = O(n)\nÖrnek: 4 eleman varken 8 kapasiteli yeni blok açıp 4 elemanı kopyalamak.\nSık hata: Eski listeyi kopyalamadan yeni boş liste atayıp önceki verileri kaybetmek."
+  },
+  {
+    "satirlar": [22, 25],
+    "baslik": "Yeni Bellek Bloğunu Bağlama",
+    "aciklama": "Kopyalama bittikten sonra `self.veri` göstericisi yeni ayrılan geniş listeye yönlendirilir. `self.kapasite` değeri yeni kapasiteye eşitlenir. Böylece eski liste çöp toplayıcı tarafından serbest bırakılır ve dizi genişlemiş olur.",
+    "sinav": "Tanım: Veri yapısının dahili referansını ve kapasite değerini güncel bellek bloğuna eşleme adımıdır.\nÖrnek: self.kapasite değerinin 4'ten 8'e güncellenmesi.\nSık hata: Kapasite değişkenini güncellemeyi unutup diziyi sürekli yeniden boyutlandırmaya sokmak."
+  },
+  {
+    "satirlar": [27, 29],
+    "baslik": "Dolu Diziyi Genişletme Kontrolü",
+    "aciklama": "`sona_ekle` metodu çağrıldığında mevcut boyut kapasiteye eşitse yer kalmamış demektir. Bu durumda kapasite 2 katına çıkarılarak `_yeniden_boyutlandir` tetiklenir. Geometrik büyüme sayesinde genişletme işlemleri zamanla seyrekleşir.",
+    "sinav": "Tanım: Ekleme öncesinde doluluk kontrolü yaparak gerektiğinde kapasiteyi ikiye katlayan adımdır.\nFormül: Amortize maliyet T(n) = O(1)\nÖrnek: Boy 8 ve kapasite 8 iken yeni kapasite 16 olarak ayarlanır.\nSık hata: Boyut kontrolünü ekleme yaptıktan sonra yapıp sınır aşımına uğramak."
+  },
+  {
+    "satirlar": [30, 32],
+    "baslik": "Elemanı Sona Yazma ve Boyut Artırma",
+    "aciklama": "Genişletme gerekmiyorsa veya tamamlandıktan sonra yeni `x` elemanı `self.boy` indeksine doğrudan yazılır. Ardından eleman sayısı bir artırılır ve işlem sayacı güncellenir. Normal adımlarda bu ekleme O(1) maliyetlidir.",
+    "sinav": "Tanım: Uygun boş hücreye yeni elemanı yazıp geçerli eleman sayacını artıran temel işlemdir.\nFormül: Tekil ekleme maliyeti T(n) = O(1)\nÖrnek: 3. indekse eleman yazılıp boy 4 yapılır.\nSık hata: Eleman sayısını artırmayı unutup bir sonraki eklemede aynı hücrenin üzerine yazmak."
+  },
+  {
+    "satirlar": [34, 37],
+    "baslik": "Sondan Çıkarma Boşluk Kontrolü",
+    "aciklama": "`son_cikar` metodu dizide eleman olup olmadığını kontrol eder. Eğer eleman sayısı 0 ise işlem yapılamaz ve `IndexError` fırlatılır. Liste boş değilse boyut bir azaltılarak son hücre hedef alınır.",
+    "sinav": "Tanım: Dizinin sonundan eleman almadan önce boşluk durumunu denetleyen güvenlik adımıdır.\nÖrnek: Boş dinamik dizide son_cikar() çağrısının IndexError fırlatması.\nSık hata: Boş diziden çıkarma yaparken negatif indekse erişip liste sonunu bozmak."
+  },
+  {
+    "satirlar": [38, 41],
+    "baslik": "Son Elemanı Alma ve Bellek Temizleme",
+    "aciklama": "Hedeflenen son eleman geçici bir değişkene alınır ve hücre `None` yapılarak referans temizlenir. `self.islem` sayacı bir artırılır ve çıkarılan değer döndürülür. Bu çıkarma işlemi kaydırma gerektirmediği için daima O(1) sürer.",
+    "sinav": "Tanım: En sondaki veriyi alıp referansını sıfırlayan sabit zamanlı çıkarma işlemidir.\nFormül: T(n) = O(1)\nÖrnek: [10, 20] listesinden 20 çıkarıldığında geriye [10] kalması.\nSık hata: Çıkarılan hücreyi None yapmayarak nesnenin bellekte asılı kalmasına yol açmak."
+  },
+  {
+    "satirlar": [43, 47],
+    "baslik": "İndeksle Eleman Okuma ve Doğrulama",
+    "aciklama": "`getir` metodu verilen `i` indeksinin `0 <= i < self.boy` aralığında olduğunu doğrular. Geçersiz indekslerde `IndexError` üretilir. Adrese doğrudan erişildiği için işlem karmaşıklığı O(1) seviyesindedir.",
+    "sinav": "Tanım: Dinamik dizideki herhangi bir elemana indeksiyle sabit zamanda erişim sağlayan metottur.\nFormül: T(n) = O(1)\nÖrnek: dizi.getir(0) çağrısının ilk elemanı döndürmesi.\nSık hata: Kapasite dahilinde olan ancak henüz doldurulmamış boş indekslere erişime izin vermek."
+  },
+  {
+    "satirlar": [49, 50],
+    "baslik": "Eleman Sayısı Dunder Metodu",
+    "aciklama": "`__len__` özel metodu Python'ın yerleşik `len()` fonksiyonunun doğrudan çalışmasını sağlar. Dahili `self.boy` niteliğini döndürerek O(1) zamanda eleman adedini verir. Bu sayede sınıf Python koleksiyon standartlarıyla tam uyumlu hale gelir.",
+    "sinav": "Tanım: Nesnenin eleman sayısını yerleşik fonksiyonlara sunan Python protokol metodudur.\nFormül: T(n) = O(1)\nÖrnek: len(dizi) ifadesinin dizi.boy değerini üretmesi.\nSık hata: Eleman sayısını bulmak için her seferinde listeyi baştan sona saymaya kalkışmak."
+  },
+  {
+    "satirlar": [53, 56],
+    "baslik": "Ana Fonksiyon Test Değişkenleri",
+    "aciklama": "`main` fonksiyonunda 1024 elemanlık test için yeni bir `DinamikDizi` nesnesi oluşturulur. Kapasite değişimlerini kaydetmek için boş bir liste açılır ve hedef eleman sayısı `n = 1024` olarak tanımlanır.",
+    "sinav": "Tanım: Dinamik dizi büyüme karakteristiğini test etmek üzere kurulan sürücü ortamıdır.\nÖrnek: N=1024 boyutu geometrik büyümenin 10 adımını izlemek için seçilmiştir.\nSık hata: Test boyutunu çok küçük seçip kapasite ikiye katlanmalarını yeterince gözlemleyememek."
+  },
+  {
+    "satirlar": [58, 62],
+    "baslik": "Diziye Eleman Ekleme ve Kapasite Takibi",
+    "aciklama": "0'dan 1023'e kadar olan sayılar sırayla diziye eklenir. Her ekleme öncesinde ve sonrasında kapasite kontrol edilir; kapasite değiştiğinde bu an kayıt altına alınır. Böylece geometrik büyümenin adımları somut verilerle belgelenir.",
+    "sinav": "Tanım: Ekleme döngüsü sırasında dizinin kapasite değişim noktalarını kaydeden izleme bloğudur.\nÖrnek: 1->2, 2->4, 4->8 geçişlerinin adım adım kaydedilmesi.\nSık hata: Kapasite değişimini her döngüde değil sadece genişleme anında kaydetmeyi atlamak."
+  },
+  {
+    "satirlar": [64, 66],
+    "baslik": "Kapasite ve Kopyalama Özeti Çıktısı",
+    "aciklama": "Eklenen toplam eleman sayısı ekrana yazdırılır. İlk 5 kapasite değişimi ve son kapasite durumu ile toplam kopyalama sayısı kullanıcıya gösterilir. Bu bilgiler iki katına çıkarma stratejisinin verimliliğini doğrular.",
+    "sinav": "Tanım: Dinamik dizi genişleme sürecinin genel çıktılarını ve kopyalama toplamını özetleyen adımdır.\nÖrnek: N=1024 için son kapasitenin 1024 ve toplam kopyalamanın 1023 çıkması.\nSık hata: Kopyalama sayısını eleman sayısından bağımsız rastgele bir sayı sanmak."
+  },
+  {
+    "satirlar": [68, 70],
+    "baslik": "Amortize Karmaşıklık İddia Denetimleri",
+    "aciklama": "`assert` kontrolleri dizinin tam 1024 eleman içerdiğini doğrular. `dizi.kopya < 2 * n` koşulu kontrol edilerek toplam kopyalamanın 2048'den az olduğu kanıtlanır. Bu durum ekleme işleminin amortize O(1) olduğunu matematiksel olarak kesinleştirir.",
+    "sinav": "Tanım: Dinamik dizinin amortize maliyetinin O(1) olduğunu gösteren matematiksel üst sınır denetimidir.\nFormül: Toplam kopya < 2 * N (1023 < 2048)\nÖrnek: 1024 eleman için toplam kopya 1023 adettir.\nSık hata: Amortize O(1) maliyetin her tekil adımda O(1) anlamına geldiğini düşünmek."
+  },
+  {
+    "satirlar": [72, 74],
+    "baslik": "Eleman Çıkarma Doğruluk Testi",
+    "aciklama": "Son eklenen eleman `son_cikar` metodu ile alınır ve değeri doğrulanır. Eleman çıkarıldıktan sonra dizinin yeni boyutu denetlenir. Böylece çıkarma işlevinin doğru çalıştığı ve boyutu bir eksilttiği teyit edilir.",
+    "sinav": "Tanım: Son elemanın başarıyla geri dönüp dizi boyutunun azaldığını onaylayan testtir.\nÖrnek: 1023 elemanı çıkarılınca listenin 1023 elemanlı kalması.\nSık hata: Çıkarılan elemanın doğru değer olup olmadığını kontrol etmeden testi geçmek."
+  },
+  {
+    "satirlar": [76, 81],
+    "baslik": "Boş Diziden Çıkarma Hata Testi",
+    "aciklama": "Yeni ve boş bir dinamik dizi oluşturularak `son_cikar` çağrılır. `try-except` bloğu `IndexError` hatasını başarıyla yakalar. Hata oluşmaması durumunda `assert False` tetiklenerek testin başarısız olması sağlanır.",
+    "sinav": "Tanım: Veri yapısının sınır dışı işlemlerde uygun istisnayı fırlattığını garanti eden testtir.\nÖrnek: Boş dizide son_cikar çağrısının IndexError vermesi.\nSık hata: Boş koleksiyonlarda hata fırlatmak yerine None dönüp hatayı sessizce gizlemek."
+  },
+  {
+    "satirlar": [83, 85],
+    "baslik": "Strateji Karşılaştırma Tablosu Başlığı",
+    "aciklama": "Geometrik iki katı büyüme ile saf birer artırma stratejilerini kıyaslayan tablonun başlığı yazdırılır. N=1024 için saf yöntemin toplam kopyalama sayısı n*(n-1)/2 formülüyle hesaplanır. Tablo formatı sütun genişlikleriyle düzenlenir.",
+    "sinav": "Tanım: Farklı kapasite artırma yaklaşımlarının performans farklarını kıyaslayan tablo başlığıdır.\nFormül: Saf yöntem kopya sayısı = N * (N - 1) / 2\nÖrnek: N=1024 için saf yöntem 523776 kopyalama yapar.\nSık hata: Saf yöntemin maliyetini doğrusal O(n) sanmak."
+  },
+  {
+    "satirlar": [86, 92],
+    "baslik": "Kapasite Stratejileri Karşılaştırma Döngüsü",
+    "aciklama": "N=64, 256 ve 1024 boyutlarında iki yöntem test edilir. Geometrik yöntemde kopyalama sayısı O(n) düzeyinde kalırken saf yöntemde karesel O(n^2) seviyesine fırlar. Hesaplanan kazanç oranı tablodan açıkça izlenir.",
+    "sinav": "Tanım: Geometrik büyüme O(1) amortize maliyeti ile saf birer büyüme O(n^2) maliyetini ölçekleyen döngüdür.\nFormül: Kazanç = (N * (N - 1) / 2) / Toplam_Kopya\nÖrnek: N=1024 için kazanç tam 512.0 kat olarak hesaplanır.\nSık hata: Küçük veri boyutlarında farkın önemsiz olduğunu düşünüp karesel maliyeti küçümsemek."
+  },
+  {
+    "satirlar": [95, 96],
+    "baslik": "Program Başlatıcı Çalışma Koşulu",
+    "aciklama": "Dosya doğrudan konsoldan çağrıldığında `main` fonksiyonunun yürütülmesini sağlar. Modüler kullanımda test kodlarının otomatik çalışmasını engeller. Bu standart yapı Python yazılım geliştirme pratiklerine uygundur.",
+    "sinav": "Tanım: Dosyanın bağımsız çalıştırılıp çalıştırılmadığını ayırt eden standart denetimdir.\nÖrnek: python vector_dinamik.py ile çalıştırma.\nSık hata: Modül olarak içe aktarıldığında ana test kodlarının çalışmasını engelleyememek."
+  }
+]

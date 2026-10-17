@@ -1,0 +1,146 @@
+[
+  {
+    "satirlar": [
+      1,
+      4
+    ],
+    "baslik": "Ödev 4.6 amacı ve 7x7 analitik LoG tanımı",
+    "aciklama": "Docstring 7x7 analitik Laplacian of Gaussian (LoG - Marr-Hildreth) kenar tespiti ödevini tanıtır. Sürekli LoG formülü 7x7 ayrık çekirdeğe örneklenir ve toplamı tam sıfır olacak şekilde dengelenir.",
+    "sinav": "Tanım: LoG (Laplacian of Gaussian / Marr-Hildreth), Gauss yumuşatma ile Laplacian türevini tek bir analitik çekirdekte birleştirir.\nFormül: `LoG(x, y) = -(1 / (pi * sigma^4)) * (1 - (x^2+y^2)/(2*sigma^2)) * exp(-(x^2+y^2)/(2*sigma^2))`.\nSık hata: Çekirdek elemanlarının toplamının sıfır olması gerektiğini unutmak (sıfır olmazsa düz zeminlerde sıfırdan farklı tepki verir)."
+  },
+  {
+    "satirlar": [
+      5,
+      8
+    ],
+    "baslik": "Görselleştirme, sıfır geçişi ve raporlar",
+    "aciklama": "Docstring işaretli, mutlak ve 8-komşuluklu sıfır geçişi ikili haritalarının üretildiğini, 1x4 panelin kaydedildiğini ve diğer yöntemlerle karşılaştıran raporların derlendiğini açıklar.",
+    "sinav": "Tanım: LoG filtresi 'Meksika Şapkası' (Mexican Hat) profiline sahiptir; merkezde pozitif çukur, etrafta negatif halka bulunur.\nSık hata: Sıfır geçişi eşiği koymadan zayıf gürültü geçişlerini kenar sanmak."
+  },
+  {
+    "satirlar": [
+      10,
+      14
+    ],
+    "baslik": "Kütüphaneleri yükle",
+    "aciklama": "Pathlib dosya yollarını, sys import yollarını, cv2 filtreleme işlevlerini ve numpy matris matematiğini sağlar.",
+    "sinav": "Tanım: Gerekli standart Python kütüphaneleridir.\nSık hata: Eksik import nedeniyle NameError almak."
+  },
+  {
+    "satirlar": [
+      15,
+      20
+    ],
+    "baslik": "Çalışma dizinlerini sys.path'e bağla",
+    "aciklama": "Betiğin üst dizinleri hafta4 ve repo kökü sys.path listesine eklenerek ortak modüllerin yüklenmesi sağlanır.",
+    "sinav": "Tanım: `sys.path` listesine yerel yollar eklenerek modül çözümlemesi güvenceye alınır.\nSık hata: Üst dizini eklemeyip hafta4 paketini bulamamak."
+  },
+  {
+    "satirlar": [
+      22,
+      25
+    ],
+    "baslik": "Kenar yardımcılarını yükle (işaretli, log_filtresi, mutlak)",
+    "aciklama": "hafta4.kenarlar modülünden isaretli_goruntu_uint8, log_filtresi ve mutlak_uint8 fonksiyonları içe aktarılır.",
+    "sinav": "Tanım: `log_filtresi` 7x7 analitik LoG çekirdeği ile 2B konvolüsyon yapar.\nSık hata: Çekirdek boyutunu sigma değeriyle uyumsuz seçip kesme hatası yapmak."
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "baslik": "Panel, sıfır geçiş ve rapor modüllerini aktar",
+    "aciklama": "panel_olustur, sifir_gecis ve hafta4.rapor_uret modülünden rapor_46_uret fonksiyonları yüklenir.",
+    "sinav": "Tanım: `sifir_gecis` LoG çıktısındaki işaret değişimlerini kenar çizgisine dönüştürür.\nSık hata: Sıfır geçiş algoritmasını 4-komşulukla sınırlayıp diyagonal kenarları koparmak."
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "baslik": "Çıktı klasörlerini oluştur",
+    "aciklama": "calistir fonksiyonu yerel ve merkezi çıktı klasörlerini hazırlar ve eksik dizinleri oluşturur.",
+    "sinav": "Tanım: Çıktı dizinlerinin önceden oluşturulması güvenli dosya kaydı sağlar.\nSık hata: Dizin oluşturmayı atlamak."
+  },
+  {
+    "satirlar": [
+      39,
+      41
+    ],
+    "baslik": "Girdi dosyasının varlığını denetle",
+    "aciklama": "girdi_yol ile kamera.png dosyasının varlığı denetlenir. Dosya diskte mevcut değilse açık bir FileNotFoundError fırlatılarak program güvenli biçimde durdurulur.",
+    "sinav": "Tanım: `exists()` kontrolü dosya yolu hatalarını erkenden yakalar.\nSık hata: Dosya yokken doğrudan okuma yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      43,
+      45
+    ],
+    "baslik": "Kamera görüntüsünü gri seviyede oku",
+    "aciklama": "cv2.imread kamera.png dosyasını IMREAD_GRAYSCALE modunda 8-bit tek kanallı matris olarak okur. Okuma başarısız olursa None kontrolüyle ValueError üretilir.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` tek kanallı piksel yoğunluk matrisi verir.\nSık hata: `None` dönen matrisi kontrol etmeden işlem yapmak."
+  },
+  {
+    "satirlar": [
+      47,
+      52
+    ],
+    "baslik": "7x7 LoG filtresi ve sıfır geçişi hesapla",
+    "aciklama": "log_filtresi(gri) fonksiyonu 7x7 analitik LoG filtresini uygular. isaretli_goruntu_uint8 ile işaretli türev, mutlak_uint8 ile mutlak genlik ve sifir_gecis(..., esik_orani=0.05) ile ikili kenar haritası üretilir. LoG kenarları kapalı döngüler ve ince sürekli çizgiler olarak bulur.",
+    "sinav": "Tanım: Marr-Hildreth algoritması LoG çıktısındaki sıfır geçişlerini tespit ederek biyolojik görme sistemine benzer kenar haritası üretir.\nÖrnek: `esik_orani=0.05` yerel gradyan eğimi zayıf olan sahte sıfır geçişlerini eler.\nSık hata: LoG'un 'spagetti etkisi' (kapalı döngüler oluşturma eğilimi) nedeniyle kenarların birleşmesini engelleyememek."
+  },
+  {
+    "satirlar": [
+      53,
+      58
+    ],
+    "baslik": "1x4 panel görsel listesi",
+    "aciklama": "Girdi, LoG işaretli, LoG mutlak ve LoG sıfır geçiş ikili haritası 1x4 panel listesine eklenir.",
+    "sinav": "Tanım: 1x4 panel LoG analizinin tüm aşamalarını yan yana sunar.\nSık hata: Panel listesine eksik görsel vermek."
+  },
+  {
+    "satirlar": [
+      59,
+      64
+    ],
+    "baslik": "Panel başlıkları ve panel oluşturma",
+    "aciklama": "Her görsel için açıklayıcı başlıklar verilir ve panel_olustur fonksiyonu ile (1, 4) ızgara paneli oluşturulur.",
+    "sinav": "Tanım: `panel_olustur` görselleri başlık bantlarıyla birleştirir.\nSık hata: Panel ızgara şeklini hatalı vermek."
+  },
+  {
+    "satirlar": [
+      65,
+      69
+    ],
+    "baslik": "Yerel cikti klasörüne kaydet",
+    "aciklama": "kamera_log_isaretli.png, kamera_log_mutlak.png, kamera_log_ikili.png ve panel_log.png dosyaları yerel cikti dizinine kaydedilir.",
+    "sinav": "Tanım: `cv2.imwrite` ile PNG kaydı piksel doğruluğunu garanti eder.\nSık hata: Çıktı dosya adlarını karıştırmak."
+  },
+  {
+    "satirlar": [
+      70,
+      74
+    ],
+    "baslik": "Genel çıktı klasörünü güncelle",
+    "aciklama": "Tüm LoG çıktıları merkezi hafta4/cikti klasörüne de kopyalanarak genel raporlama araçlarının kullanımına açılır.",
+    "sinav": "Tanım: Merkezi klasör haftalık tüm çıktıları toplar.\nSık hata: Genel klasörü güncellemeyi atlamak."
+  },
+  {
+    "satirlar": [
+      75,
+      78
+    ],
+    "baslik": "Karşılaştırma raporlarını üret",
+    "aciklama": "rapor_46_uret(hedef_klasor=dosya_yolu.parent) çağrısı karsilastirma.md ve karsilastirma.pdf belgelerini üretir ve tamamlanma mesajı basılır.",
+    "sinav": "Tanım: `rapor_46_uret` LoG filtresini birinci mertebe gradyanlarla kıyaslayan teknik rapor derler.\nSık hata: Rapor üretimini atlamak."
+  },
+  {
+    "satirlar": [
+      81,
+      82
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart modül kontrol bloğudur.\nSık hata: Kodu bu bloğun dışına yazmak."
+  }
+]

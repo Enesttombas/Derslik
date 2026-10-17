@@ -1,0 +1,160 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-h4-laplacian-kod-oku",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    113,
+    114
+   ],
+   "etiketler": [
+    "laplacian",
+    "ikinci-turev",
+    "cekirdek"
+   ],
+   "soru": "`[[0, 1, 0], [1, -4, 1], [0, 1, 0]]` çekirdeğiyle `filter2D` uygulanıyor. Bu çekirdek görüntüde ne ölçer?",
+   "secenekler": [
+    "Dört komşunun toplamı ile merkez pikselin 4 katı arasındaki farkı: ikinci türevi.",
+    "Yatay yönde birinci türevi.",
+    "Pikselleri komşu ortalamasıyla yumuşatır.",
+    "Görüntünün parlaklığını sabit miktarda artırır."
+   ],
+   "dogru": 0,
+   "aciklama": "Çekirdek yukarı, aşağı, sol, sağ komşuların toplamından merkezin 4 katını çıkarır. Bu, yön bağımsız ikinci türevdir; yoğunluk hızla değişen yerlerde büyük, düz bölgelerde sıfır tepki verir. Çekirdek elemanlarının toplamı 0 olduğu için düz alan sıfıra gider.",
+   "sinav": "Laplacian 4-komşuluk çekirdeği: [[0,1,0],[1,-4,1],[0,1,0]]. Sık hata: Laplacian'ı birinci türev operatörü sanmak."
+  },
+  {
+   "id": "351-h4-sobel-prewitt-ne-olur",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-3",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    84,
+    89
+   ],
+   "etiketler": [
+    "sobel",
+    "prewitt",
+    "gradyan"
+   ],
+   "soru": "9x9 görüntüde sol yarı 0, sağ yarı 100 (dikey basamak kenar), Gauss yumuşatma yok. Prewitt X ile kenardaki gx = 300. Aynı görüntüye Sobel X uygulanırsa gx kaç olur?",
+   "degisiklik": {
+    "eski": "Prewitt çekirdeği: her satırın ağırlığı 1",
+    "yeni": "Sobel çekirdeği: orta satırın ağırlığı 2"
+   },
+   "secenekler": [
+    "400",
+    "300",
+    "200",
+    "100"
+   ],
+   "dogru": 0,
+   "aciklama": "Basamak farkı 100'dür. Prewitt üç satırı eşit ağırlıkla toplar: 3 x 100 = 300. Sobel orta satıra 2 verir: (1 + 2 + 1) x 100 = 400. Sobel'in merkez ağırlığı yerel bir yumuşatma etkisi katar ve gürültüye karşı daha dayanıklıdır.",
+   "sinav": "Sobel X: [[-1,0,1],[-2,0,2],[-1,0,1]]; Prewitt X: [[-1,0,1],[-1,0,1],[-1,0,1]].",
+   "kanit": "Kod çalıştırıldı (yumusat=False): prewitt gx[4,4] = 300.0, sobel gx[4,4] = 400.0, gy = 0.0"
+  },
+  {
+   "id": "351-h4-laplacian-duz-cikti",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    110,
+    114
+   ],
+   "etiketler": [
+    "laplacian",
+    "duz-bolge",
+    "sifir-tepki"
+   ],
+   "soru": "Her pikseli 77 olan 9x9 düz bir görüntüye `laplacian(gri, yumusat=False)` uygulanırsa çıktının en büyük mutlak değeri ne olur?",
+   "secenekler": [
+    "0.0",
+    "77.0",
+    "308.0",
+    "4.0"
+   ],
+   "dogru": 0,
+   "aciklama": "Her piksel için komşu toplamı 4 x 77 = 308, merkez terimi -4 x 77 = -308; toplam sıfırdır. Sınır piksellerinde BORDER_REFLECT_101 yansıtması aynı değeri verdiği için orada da sıfır çıkar. Laplacian yalnız değişimde tepki verir.",
+   "kanit": "np.abs(laplacian(np.full((9,9),77,np.uint8), yumusat=False)).max() -> 0.0; basamak kenarında (0|100) değerler +100 ve -100"
+  },
+  {
+   "id": "351-h4-log-hata-bul",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    139,
+    145
+   ],
+   "etiketler": [
+    "log",
+    "cekirdek",
+    "ortalama"
+   ],
+   "soru": "LoG çekirdeği düz bölgelerde sıfır tepki vermeli. Aşağıdaki blokta bunu bozan satıra dokun.",
+   "kod": "k = ((r2 - 2.0 * sigma2) / sigma4) * np.exp(-r2 / (2.0 * sigma2))\nk = k + k.mean()\nmutlak_toplam = np.sum(np.abs(k))\nif mutlak_toplam > 0:\n    k = k / mutlak_toplam",
+   "hataSatir": 2,
+   "aciklama": "Orijinal kodda `k = k - k.mean()` var: ortalama çıkarılınca çekirdek elemanlarının toplamı 0 olur ve sabit (düz) girdi sıfır yanıt verir. Eklemek ortalamayı iki katına çıkarır, toplam sıfırdan uzaklaşır ve düz bölgelerde sahte tepki oluşur.",
+   "sinav": "LoG çekirdeği: elemanlar toplamı 0, merkez negatif. Gerçek çekirdekte toplam ölçüldü: 0.0, merkez = -0.2261."
+  },
+  {
+   "id": "351-h4-canny-nms-sinav",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-7",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    169,
+    188
+   ],
+   "etiketler": [
+    "canny",
+    "nms",
+    "histerezis"
+   ],
+   "soru": "Doğru mu yanlış mı: Canny'deki non-maximum suppression adımı kenarları kalınlaştırır.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Non-maximum suppression gradyan yönünde yerel maksimum olmayan pikselleri bastırır ve kenarı 1 piksele inceltir. Ardından histerezis eşikleme (bu kodda alt=50, üst=100) güçlü kenara bağlı zayıf kenarları tutar."
+  },
+  {
+   "id": "351-h4-log-gauss-acikla",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    150,
+    166
+   ],
+   "etiketler": [
+    "log",
+    "gauss",
+    "yumusatma"
+   ],
+   "soru": "`log_filtresi` neden ayrıca Gauss yumuşatma uygulamıyor?",
+   "aciklama": "LoG çekirdeği Gauss yumuşatma ile Laplacian türevini tek konvolüsyonda birleştirir. Çekirdek zaten Gauss içerdiği için bir de dışarıdan Gauss uygulamak görüntüyü gereksiz yere bulanıklaştırır. Karşılaştırma: `laplacian` fonksiyonu Gauss içermediği için ayrıca `gauss_yumusat` çağırır.",
+   "sinav": "LoG = Laplacian of Gaussian. Anahtar fikir: yumuşatma + ikinci türev tek çekirdekte; kenar merkezi sıfır geçişidir.",
+   "secenekler": [
+    "Gauss yumuşatma LoG'da pahalı olduğu için atlanmıştır",
+    "LoG çekirdeği Gauss'u zaten içerir; ikinci bir Gauss görüntüyü gereksiz bulanıklaştırır",
+    "LoG ikinci türev almadığı için yumuşatma gerekmez",
+    "Gauss yumuşatma yalnız renkli görüntülerde gerekir"
+   ],
+   "dogru": 1
+  }
+ ]
+}

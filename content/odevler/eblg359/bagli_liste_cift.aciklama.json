@@ -1,0 +1,164 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "Modül Başlığı ve Kullanım Belgesi",
+    "aciklama": "Bu modül çift bağlı liste veri yapısını ve nöbetçi düğüm mimarisini tanıtır. İki yönlü işaretçi bağları sayesinde bir düğüm referansı verildiğinde O(1) silme işleminin nasıl yapıldığı gösterilir. Modülün komut satırından nasıl çalıştırılacağı docstring içinde yer alır.",
+    "sinav": "Tanım: Nöbetçi düğümlü çift bağlı liste implementasyonunu ve karmaşıklık analizini açıklayan modül başlığıdır.\nÖrnek: Dosya başında üç tırnak ile yazılan tanıtıcı docstring bloğu.\nSık hata: Docstring bloğunu kodların arasına ekleyip sözdizimi yapısını bozmak."
+  },
+  {
+    "satirlar": [10, 14],
+    "baslik": "İki Yönlü Düğüm Tanımı",
+    "aciklama": "`Dugum` sınıfı hem önceki hem sonraki düğüme işaret eden iki referans barındırır. `self.onceki` sola doğru, `self.sonraki` ise sağa doğru bağlantıyı kurar. `self.deger` ise düğümde saklanan veriyi temsil eder.",
+    "sinav": "Tanım: Veriyi ve iki yönlü bellek bağlantı adreslerini bir arada tutan çift yönlü düğüm yapısıdır.\nÖrnek: Dugum(20) çağrısı hem onceki hem sonraki göstericisi None olan düğüm üretir.\nSık hata: Çift bağlı listede onceki referansını güncellemeyi unutup tek yönlü bağ bırakmak."
+  },
+  {
+    "satirlar": [17, 20],
+    "baslik": "Nöbetçi Düğümlerin Tanımlanması",
+    "aciklama": "`CiftBagliListe` sınıfı iki adet yapay nöbetçi düğüm `bas_nobetci` ve `son_nobetci` ile başlatılır. Bu nöbetçiler hiçbir zaman gerçek veri taşımaz. Nöbetçi kullanımı liste başı veya sonu için özel if-else kontrolleri yazma ihtiyacını tamamen ortadan kaldırır.",
+    "sinav": "Tanım: Boşluk ve uç durum kontrollerini basitleştirmek için sınırları belirleyen kukla (sentinel) düğümlerdir.\nÖrnek: BAS_NOBETCI ve SON_NOBETCI düğümlerinin oluşturulması.\nSık hata: Nöbetçi düğümleri gerçek veri düğümü sanıp eleman sayısına dahil etmek."
+  },
+  {
+    "satirlar": [21, 24],
+    "baslik": "Nöbetçi Bağlantıları ve Sayaçlar",
+    "aciklama": "`bas_nobetci.sonraki` doğrudan `son_nobetci` düğümüne, `son_nobetci.onceki` ise `bas_nobetci` düğümüne bağlanır. `self.boy` başlangıçta 0, `self.adim` sayacı ise 0 yapılır. Bu kapalı devre yapı boş listenin temel omurgasını oluşturur.",
+    "sinav": "Tanım: Nöbetçi düğümlerin birbirine karşılıklı bağlanması ve başlangıç sayaçlarının kurulması adımıdır.\nÖrnek: Boş listede bas_nobetci.sonraki == son_nobetci eşitliğinin sağlanması.\nSık hata: Nöbetçiler arasındaki çift yönlü bağı karşılıklı kurmayı unutup kopukluk yaratmak."
+  },
+  {
+    "satirlar": [26, 29],
+    "baslik": "Araya Ekleme Konum Doğrulaması",
+    "aciklama": "`araya_ekle` metodu belirli bir düğümün hemen sonrasına ekleme yapar. Parametre olarak gelen `dugum` None ise veya `son_nobetci` ise `ValueError` fırlatılır. `sonraki_dugum` geçici değişkene alınarak işlem güvenliği sağlanır.",
+    "sinav": "Tanım: Verilen referans düğümün geçerliliğini ve ardına ekleme yapılabilirliğini teyit eden güvenlik kontrolüdür.\nÖrnek: son_nobetci sonrasına eleman eklemeye çalışıldığında ValueError fırlatılması.\nSık hata: Son nöbetçinin sonrasına ekleme yapılmasına izin verip liste sınırlarını aşmak."
+  },
+  {
+    "satirlar": [30, 35],
+    "baslik": "Çift Yönlü Düğüm Bağlama",
+    "aciklama": "Yeni düğüm `onceki=dugum` ve `sonraki=sonraki_dugum` ile oluşturulur. `dugum.sonraki` ve `sonraki_dugum.onceki` yeni düğüme yönlendirilir. Eleman sayısı ve adım sayacı artırılır; işlem O(1) sabit zamanda sonuçlanır.",
+    "sinav": "Tanım: Dört adet işaretçiyi karşılıklı güncelleyerek yeni düğümü araya yerleştirme işlemidir.\nFormül: T(n) = O(1)\nÖrnek: Dugum A ve B arasına X yerleştirildiğinde A <-> X <-> B bağlarının kurulması.\nSık hata: Dört işaretçi bağından birini eksik güncelleyip zincirin çift yönlü bütünlüğünü bozmak."
+  },
+  {
+    "satirlar": [37, 38],
+    "baslik": "Başa Eleman Ekleme Metodu",
+    "aciklama": "`basa_ekle` metodu yeni değeri `bas_nobetci` düğümünün hemen sonrasına ekler. Tüm bağlama mantığını `araya_ekle` yönettiği için kod tekrarı önlenir. Bu ekleme işlemi kaydırma gerektirmediğinden O(1) karmaşıklıktadır.",
+    "sinav": "Tanım: Listenin ilk veri hücresi olarak baş nöbetçinin hemen sağına yeni eleman yerleştirme metodudur.\nFormül: T(n) = O(1)\nÖrnek: Boş listeye 10 eklenince bas_nobetci <-> 10 <-> son_nobetci olur.\nSık hata: Baş nöbetçinin kendisini yerinden oynatıp referansını kaybetmek."
+  },
+  {
+    "satirlar": [40, 41],
+    "baslik": "Sona Eleman Ekleme Metodu",
+    "aciklama": "`sona_ekle` metodu yeni değeri `son_nobetci.onceki` düğümünün hemen ardına bağlar. Son nöbetçi sayesinde son elemana O(1) zamanda doğrudan erişilir. Bu sayede sona ekleme her zaman sabit O(1) sürede gerçekleşir.",
+    "sinav": "Tanım: Son nöbetçinin solundaki düğümün ardına yeni eleman ekleyerek kuyruğu genişletme işlemidir.\nFormül: T(n) = O(1)\nÖrnek: 10 olan listeye sona 20 eklenince 10 <-> 20 <-> son_nobetci olur.\nSık hata: Son elemana erişmek için baştan sona döngü kurup gereksiz O(n) maliyet üretmek."
+  },
+  {
+    "satirlar": [43, 45],
+    "baslik": "Düğüm Silme Nöbetçi Emniyeti",
+    "aciklama": "`dugumu_sil` metodu çıkarılmak istenen düğümün geçerliliğini denetler. Düğüm None ise veya `bas_nobetci` ya da `son_nobetci` ise `ValueError` fırlatılır. Bu sayede nöbetçilerin yanlışlıkla silinmesi engellenir.",
+    "sinav": "Tanım: Listenin yapısal iskeletini oluşturan nöbetçi düğümlerin silinmesini önleyen emniyet adımıdır.\nÖrnek: bas_nobetci silinmek istendiğinde ValueError üretilmesi.\nSık hata: Nöbetçi düğümlerin silinmesine izin verip listenin başsız veya sonsuz kalmasına yol açmak."
+  },
+  {
+    "satirlar": [46, 50],
+    "baslik": "Doğrudan Referansla O(1) Silme",
+    "aciklama": "`dugum.onceki.sonraki` sağdaki düğüme, `dugum.sonraki.onceki` ise soldaki düğüme bağlanır. Aradaki düğüm tek adımda zincirden koparılır ve `self.boy` azaltılır. Tek bağlı listenin aksine baştan arama gerekmediğinden bu silme işlemi kesin olarak O(1) sürede biter.",
+    "sinav": "Tanım: Çift bağlı listede elde referansı olan bir düğümün önceki ve sonraki bağlarını eşleyerek sabit zamanda silinmesidir.\nFormül: T(n) = O(1)\nÖrnek: Ortanca düğüm referansı verildiğinde 1 adımda silinmesi.\nSık hata: Silinen düğümün önceki referansını kullanmayıp baştan sona düğüm aramaya kalkışmak."
+  },
+  {
+    "satirlar": [52, 55],
+    "baslik": "Çift Bağlı Listede Arama Başlangıcı",
+    "aciklama": "`ara` metodu aramaya `bas_nobetci.sonraki` düğümünden başlar. `while simdiki is not self.son_nobetci:` koşulu ile nöbetçiye kadar ilerlenir. Her düğüm geçişinde `self.adim` sayacı bir artırılır.",
+    "sinav": "Tanım: Çift bağlı listede belirli bir anahtarı bulmak için nöbetçiler arasında yapılan doğrusal taramadır.\nFormül: En kötü durum T(n) = O(n)\nÖrnek: 100 elemanlı listede olmayan değeri ararken 100 adım atılması.\nSık hata: Döngü bitişini None ile kontrol edip son nöbetçinin içine girmeye çalışmak."
+  },
+  {
+    "satirlar": [56, 59],
+    "baslik": "Arama Eşleşmesi ve Düğüm Dönüşü",
+    "aciklama": "Düğümün `deger` alanı aranan `x` değerine eşit olduğunda düğüm nesnesi doğrudan geriye döndürülür. Son nöbetçiye kadar eşleşme bulunamazsa `None` döndürülür. Dönen düğüm referansı O(1) silme işlemleri için girdi olarak kullanılabilir.",
+    "sinav": "Tanım: Aranan verinin düğüm referansını döndüren veya bulunamadığında None bildiren tamamlama adımıdır.\nÖrnek: Aranan 20 değeri bulunursa Dugum nesnesinin döndürülmesi.\nSık hata: Düğüm referansı yerine sadece değeri dönüp O(1) silme avantajını kaybetmek."
+  },
+  {
+    "satirlar": [61, 64],
+    "baslik": "Sondan Başa Tarama Başlangıcı",
+    "aciklama": "`sondan_basa_listele` metodu kuyruktan başa doğru geriye doğru gezinmeyi sağlar. Arama `son_nobetci.onceki` düğümünden başlatılır ve boş bir sonuç listesi açılır. Bu gezinme çift yönlü işaretçilerin sağladığı özgün bir avantajdır.",
+    "sinav": "Tanım: Çift bağlı listenin geri işaretçilerini kullanarak kuyruktan başa doğru yapılan doğrusal gezinmedir.\nÖrnek: son_nobetci.onceki düğümünden bas_nobetci yönüne doğru ilerlemek.\nSık hata: Geriye doğru giderken onceki yerine sonraki işaretçisini kullanıp sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [65, 68],
+    "baslik": "Ters Sırada Eleman Toplama",
+    "aciklama": "Döngü süresince her düğümün değeri listeye eklenir ve `simdiki = simdiki.onceki` ile geriye gidilir. `self.adim` sayacı artırılır ve sonuç listesi döndürülür. Tüm elemanlar ziyaret edildiğinden karmaşıklık O(n) olur.",
+    "sinav": "Tanım: Geriye doğru gezinerek elemanları ters sırada toplayıp döndüren döngü gövdesidir.\nFormül: T(n) = O(n)\nÖrnek: [10, 20, 30] listesinden [30, 20, 10] listesi elde edilmesi.\nSık hata: Baş nöbetçinin kendi değerini de sonuç listesine yanlışlıkla dahil etmek."
+  },
+  {
+    "satirlar": [70, 73],
+    "baslik": "Baştan Sona Listeleme Başlangıcı",
+    "aciklama": "`listeye_cevir` metodu baştan sona ileri yönlü gezinerek elemanları Python listesine döker. İlk gerçek düğüm `bas_nobetci.sonraki` ile döngü başlatılır. Bu dönüştürücü fonksiyon test doğrulamalarını kolaylaştırır.",
+    "sinav": "Tanım: Nöbetçiler arasındaki tüm gerçek verileri standart dizi yapısına aktaran ileri yönlü dönüştürücüdür.\nÖrnek: bas_nobetci.sonraki üzerinden başlayan döngü.\nSık hata: Baş nöbetçinin etiketini ilk eleman olarak listeye eklemek."
+  },
+  {
+    "satirlar": [74, 77],
+    "baslik": "Elemanları Diziye Aktarma ve Sonuç",
+    "aciklama": "Her adımda `deger` listeye eklenir ve `simdiki.sonraki` ile bir sonraki düğüme geçilir. Son nöbetçiye ulaşıldığında döngü biter ve liste döndürülür. İşlem karmaşıklığı eleman sayısı kadar O(n) zaman alır.",
+    "sinav": "Tanım: Düğüm verilerini toplayıp ileriye doğru ilerleyen ve toplanan listeyi teslim eden adımdır.\nFormül: T(n) = O(n)\nÖrnek: Zincirdeki tüm n elemanın sırayla diziye yazılması.\nSık hata: İlerletme adımını unutarak ilk düğümde sonsuz döngüde takılmak."
+  },
+  {
+    "satirlar": [80, 86],
+    "baslik": "Ana Fonksiyon Test Verisi Oluşturma",
+    "aciklama": "`main` fonksiyonu bir `CiftBagliListe` açarak başa ve sona eklemeler yapar. `liste.ara(20)` çağrısı ile ortadaki düğümün referansı elde edilir. `araya_ekle` ile bu düğümün hemen arkasına 25 değeri yerleştirilir.",
+    "sinav": "Tanım: Çift bağlı listenin ekleme ve arama işlevlerini sınayan sürücü senaryo başlangıcıdır.\nÖrnek: 10, 20, 30 listesine 25 araya eklenince [10, 20, 25, 30] oluşması.\nSık hata: Araya eklemeden önce aranan düğümün bulunup bulunmadığını kontrol etmemek."
+  },
+  {
+    "satirlar": [88, 89],
+    "baslik": "İki Yönlü Liste Çıktıları",
+    "aciklama": "Listenin hem baştan sona hem de sondan başa sıralı hali konsola yazdırılır. Bu çift yönlü çıktı iki yönlü işaretçilerin kusursuz çalıştığını görsel olarak doğrular. Böylece simetri denetlenmiş olur.",
+    "sinav": "Tanım: Çift bağlı listenin her iki yöndeki sıralı durumunu ekranda sergileyen görselleştirme adımıdır.\nÖrnek: Bastan sona [10, 20, 25, 30] ve sondan basa [30, 25, 20, 10] çıktısı.\nSık hata: İki yönlü listenin ters listelemesinde sıralamanın bozuk çıkmasına dikkat etmemek."
+  },
+  {
+    "satirlar": [91, 93],
+    "baslik": "Boyut ve Sıralama İddia Denetimleri",
+    "aciklama": "`assert` komutları listenin boyutunun tam 4 olduğunu ve eleman dizilimini denetler. Hem ileri hem geri yöndeki listelerin doğruluğu kesinleştirilir. Bu iddialar liste yapısının kararlılığını onaylar.",
+    "sinav": "Tanım: Listenin eleman sayısını ve her iki yöndeki sıralamasını doğrulayan assert kontrolleridir.\nÖrnek: assert liste.boy == 4 ve ters liste kontrolleri.\nSık hata: Sadece ileri yönü test edip geri işaretçilerdeki olası kopuklukları gözden kaçırmak."
+  },
+  {
+    "satirlar": [95, 99],
+    "baslik": "Düğüm Referansıyla O(1) Silme Testi",
+    "aciklama": "Elde referansı bulunan `ortanca_dugum` `dugumu_sil` metoduna verilir. Düğümün silindiği ve listenin `[10, 25, 30]` kaldığı doğrulanır. Bu test eldeki referansla silmenin arama yapmaksızın O(1) zamanda bittiğini gösterir.",
+    "sinav": "Tanım: Referansı bilinen bir düğümün çift bağlı listede tek adımda silinebildiğini kanıtlayan test adımıdır.\nFormül: T(n) = O(1)\nÖrnek: 20 değerine sahip düğümün arama yapılmadan silinmesi.\nSık hata: Silinen elemanın değerini kontrol etmeden sadece boyut kontrolüyle yetinmek."
+  },
+  {
+    "satirlar": [101, 105],
+    "baslik": "Baş Nöbetçi Silme Hata Testi",
+    "aciklama": "`bas_nobetci` düğümü doğrudan silinmeye çalışılarak emniyet mekanizması sınanır. `try-except` bloğu beklenen `ValueError` istisnasını yakalar. Nöbetçilerin silinmesi engellenerek veri yapısı korunur.",
+    "sinav": "Tanım: Nöbetçi düğümlerin silinemezlik kuralını test eden sınır güvenlik denetimidir.\nÖrnek: liste.dugumu_sil(liste.bas_nobetci) çağrısının ValueError üretmesi.\nSık hata: Nöbetçi silme korumasını yazmayıp listenin sınır bütünlüğünü kaybetmek."
+  },
+  {
+    "satirlar": [107, 111],
+    "baslik": "Geçersiz Düğüm Silme Hata Testi",
+    "aciklama": "`dugumu_sil` metoduna `None` parametresi verilerek geçersiz giriş davranışı test edilir. Sistem doğru biçimde `ValueError` üretir ve yakalanır. Bu kontrol beklenmeyen argümanlara karşı dayanıklılık sağlar.",
+    "sinav": "Tanım: None gibi tanımsız düğüm parametrelerinde sistemin hata fırlatmasını denetleyen testtir.\nÖrnek: liste.dugumu_sil(None) çağrısının ValueError vermesi.\nSık hata: None referansının özniteliklerine erişmeye çalışıp AttributeError fırlatılmasına neden olmak."
+  },
+  {
+    "satirlar": [113, 114],
+    "baslik": "Silme Maliyeti Karşılaştırma Başlığı",
+    "aciklama": "Düğüm referansı varken çift bağlı liste O(1) ile tek bağlı liste O(n) silme maliyetini kıyaslayan tablonun başlığı yazdırılır. N, çift bağlı adımı, tek bağlı adımı ve aradaki fark sütunları formatlanır.",
+    "sinav": "Tanım: Çift ve tek bağlı listelerin silme maliyet farklarını ortaya koyan karşılaştırma tablosu başlığıdır.\nÖrnek: N, Cift Bagli O(1), Tek Bagli O(n), Fark sütunları.\nSık hata: Karşılaştırma sütunlarını hizalamadan karmaşık ve okunaksız çıktı üretmek."
+  },
+  {
+    "satirlar": [115, 121],
+    "baslik": "Büyük Liste Oluşturma ve Hedef Seçimi",
+    "aciklama": "N=100 ve N=1000 boyutlarında listeler açılır ve N adet eleman sona eklenir. Döngü sırasında listenin tam ortasındaki `n // 2` indeksli düğümün referansı `hedef_dugum` değişkeninde tutulur. Bu referans silme testinde kullanılır.",
+    "sinav": "Tanım: Büyüyen N değerlerinde ortanca düğüm referansını saklayarak silme testi hazırlığı yapan döngüdür.\nÖrnek: N=1000 için 500. düğümün referansının yakalanması.\nSık hata: Ekleme sırasında düğüm referansını kaydetmeyip tekrar O(n) arama yapmak zorunda kalmak."
+  },
+  {
+    "satirlar": [123, 125],
+    "baslik": "Çift Bağlı Listede O(1) Silme Ölçümü",
+    "aciklama": "`c_liste.dugumu_sil(hedef_dugum)` çağrılarak işlem adım sayısı ölçülür. Çift bağlı liste önceki ve sonraki bağlarını bildiği için silme adımı tam 1 çıkar. Bu ölçüm O(1) karmaşıklığın deneysel kanıtıdır.",
+    "sinav": "Tanım: Düğüm referansı varken çift bağlı listede silmenin tek bir adım sürdüğünü belgeleyen ölçümdür.\nFormül: T(n) = 1 = O(1)\nÖrnek: N=1000 elemanlı listede ortanca düğümün tam 1 adımda silinmesi.\nSık hata: Ölçüm öncesinde adım sayacını doğru sıfırlamamak."
+  },
+  {
+    "satirlar": [127, 129],
+    "baslik": "Tek Bağlı Liste Kıyaslaması ve Çıktı",
+    "aciklama": "Tek bağlı listede düğüm referansı olsa dahi önceki düğümü bulmak için n/2 adım tarama gerekir. Bu teorik fark hesaplanarak elde edilen devasa kazanç satır satır konsola yazdırılır. N=1000 için kazanç 500 kat olur.",
+    "sinav": "Tanım: Tek bağlı listede önceki düğümü arama zorunluluğunun getirdiği O(n) maliyeti kıyaslayan analiz adımıdır.\nFormül: Tek bağlı adım = N / 2, Çift bağlı adım = 1\nÖrnek: N=1000 için 500 adım vs 1 adım (500 kat fark).\nSık hata: Tek bağlı listede düğüm referansı varken de O(1) silme yapılabileceğini sanmak."
+  },
+  {
+    "satirlar": [132, 133],
+    "baslik": "Program Başlatıcı Çalışma Koşulu",
+    "aciklama": "Dosya doğrudan çalıştırıldığında `main` fonksiyonunu devreye sokar. Modül içe aktarıldığında testlerin otomatik olarak çalışmasını engeller. Bu standart yapı Python kod geliştirme ilkelerine uygundur.",
+    "sinav": "Tanım: Python modülünün bağımsız çalıştırılıp çalıştırılmadığını tespit eden standart giriş kontrolüdür.\nÖrnek: python bagli_liste_cift.py komutu verildiğinde main() çalıştırılır.\nSık hata: Ana koşulu yazmayıp dosyanın kütüphane gibi içe aktarılmasını engellemek."
+  }
+]

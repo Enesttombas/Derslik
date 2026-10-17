@@ -1,0 +1,398 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-n9-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 9,
+   "etiketler": [
+    "amortize",
+    "dinamik-dizi"
+   ],
+   "kod": "size = num = toplam = 0\nfor _ in range(17):\n    if num == size:\n        toplam += num          # kopyalama\n        size = max(1, 2 * size)\n    toplam += 1                # ekleme\n    num += 1\nprint(toplam)",
+   "soru": "17 ekleme sonunda toplam gerçek maliyet?",
+   "secenekler": [
+    "48",
+    "17",
+    "34",
+    "51"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 17 ekleme → 48 (kopyalamalar 1+2+4+8+16 = 31, ekleme 17). Üst sınır 3n = 51.",
+   "aciklama": "Kapasite 1, 2, 4, 8, 16, 32'ye geçerken 1+2+4+8+16 = 31 eleman kopyalanır; 17 ekleme 17 maliyet. Toplam 48 < 3n = 51: işlem başına amortize ≤ 3 = O(1)."
+  },
+  {
+   "id": "359-n9-2",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 9,
+   "etiketler": [
+    "potansiyel",
+    "amortize"
+   ],
+   "kod": "Φ(D) = 2·num − size        # num: eleman, size: kapasite\nĉᵢ = cᵢ + Φ(Dᵢ) − Φ(Dᵢ₋₁)",
+   "soru": "Kapasite artışı olmayan bir eklemede amortize maliyet ĉᵢ?",
+   "secenekler": [
+    "3",
+    "1",
+    "2",
+    "num"
+   ],
+   "dogru": 0,
+   "aciklama": "Gerçek maliyet cᵢ = 1. Potansiyel değişimi: 2(num+1) − size − (2·num − size) = 2. ĉᵢ = 1 + 2 = 3. Kapasite artışı olan eklemede cᵢ = num + 1 ve ΔΦ = 2 − num; yine ĉᵢ = 3. Φ ≥ Φ₀ = 0 olduğu için toplam amortize maliyet gerçek toplamın üst sınırıdır."
+  },
+  {
+   "id": "359-n9-3",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 9,
+   "etiketler": [
+    "amortize",
+    "sabit-artis"
+   ],
+   "kod": "if num == size:\n    size = 2 * size   # katlama",
+   "soru": "Kapasiteyi katlamak yerine her seferinde 100 artırırsak (size += 100) 10 000 ekleme?",
+   "degisiklik": {
+    "eski": "size = 2 * size",
+    "yeni": "size = size + 100"
+   },
+   "secenekler": [
+    "Toplam ≈ 505 000: işlem başına ≈ 50, n ile büyür (O(n) amortize)",
+    "Aynı: işlem başına ≤ 3",
+    "Toplam 10 000",
+    "Toplam ≈ 30 000"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 1000 ekleme → 5500, 10 000 ekleme → 505 000 (≈ n²/2k). Kaynak: Hafta 9 notları, Sık Yapılan Hatalar.",
+   "aciklama": "Sabit artışta kopyalamalar aritmetik seri oluşturur: toplam ≈ n²/(2k). Amortize maliyet n ile büyür. Çarpımsal büyüme (×2) şarttır; böylece kopyalamalar geometrik seri verir."
+  },
+  {
+   "id": "359-n9-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 9,
+   "etiketler": [
+    "amortize",
+    "ortalama-durum"
+   ],
+   "soru": "Amortize analiz, ortalama durum analizi gibi girdilerin rastgele dağıldığını varsayar.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Amortize analizde olasılık varsayımı yoktur: girdi dizisini en kötü niyetli biri seçse bile n işlemlik dizinin toplam maliyeti sınırlıdır. Ortalama durum ise bir dağılıma bağlıdır.",
+   "kod": "amortize: en kötü n işlemlik dizi / n\nortalama durum: E[t(x)] (dağılım şart)"
+  },
+  {
+   "id": "359-n9-5",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 9,
+   "etiketler": [
+    "ikili-sayac",
+    "amortize"
+   ],
+   "kod": "c = 0; flips = 0\nfor _ in range(16):\n    i = 0\n    while (c >> i) & 1:\n        i += 1\n    flips += i + 1           # i bit 1→0, bir bit 0→1\n    c += 1\nprint(flips)",
+   "soru": "16 artırma sonunda toplam bit çevirme?",
+   "secenekler": [
+    "31",
+    "16",
+    "64",
+    "40"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 16 artırma → 31, 1000 artırma → 1994 (< 2n).",
+   "aciklama": "i. bit her 2^i artırmada bir değişir: toplam Σ n/2^i < 2n. 16 artırmada 31 < 32. Tek bir artırma k bit çevirebilir (en kötü Θ(k)), ama işlem başına amortize O(1)."
+  },
+  {
+   "id": "359-n10-1",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 10,
+   "etiketler": [
+    "bfs",
+    "komsuluk-listesi"
+   ],
+   "kod": "kuyruk = deque([s])\nwhile kuyruk:\n    u = kuyruk.popleft()\n    for v in adj[u]:\n        if renk[v] == BEYAZ: renk[v] = GRI; kuyruk.append(v)",
+   "soru": "Komşuluk listesiyle BFS'in zamanı?",
+   "secenekler": [
+    "Θ(V + E)",
+    "Θ(E)",
+    "Θ(V²)",
+    "Θ(V·E)"
+   ],
+   "dogru": 0,
+   "aciklama": "Her düğüm kuyruğa en çok bir kez girer-çıkar (V), her düğümün komşuluk listesi bir kez taranır (toplam E). Kenarsız çizgede bile V düğüm başlatılır; bu yüzden Θ(E) değil Θ(V + E)."
+  },
+  {
+   "id": "359-n10-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 10,
+   "etiketler": [
+    "dfs",
+    "topolojik-siralama"
+   ],
+   "kod": "G = {'A':['B','C'], 'B':['D'], 'C':['D'], 'D':['E'], 'E':[], 'F':['C','E']}\nseen, bitis = set(), []\ndef dfs(u):\n    seen.add(u)\n    for v in G[u]:\n        if v not in seen: dfs(v)\n    bitis.append(u)\nfor u in sorted(G):\n    if u not in seen: dfs(u)\nprint(bitis[::-1])",
+   "soru": "Bitiş zamanının azalan sırası ne yazdırır?",
+   "secenekler": [
+    "['F','A','C','B','D','E']",
+    "['A','B','D','E','C','F']",
+    "['E','D','B','C','A','F']",
+    "['A','F','B','C','D','E']"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: ['F', 'A', 'C', 'B', 'D', 'E']. Zaman damgaları: A[1,10], B[2,7], C[8,9], D[3,6], E[4,5], F[11,12].",
+   "aciklama": "DFS A'dan başlar: B→D→E bitince, sonra C; en son F. Bitiş sırası E, D, B, C, A, F; tersi topolojik sıralamadır. Tüm kenarlar soldan sağa gider, geri kenar yok → DAG."
+  },
+  {
+   "id": "359-n10-3",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 10,
+   "etiketler": [
+    "dfs",
+    "dongu-tespiti"
+   ],
+   "kod": "def dfs(u):\n    renk[u] = GRI\n    for v in adj[u]:\n        if renk[v] == BEYAZ: dfs(v)\n        elif renk[v] == SIYAH: dongu = True   # geri kenar mi?\n    renk[u] = SIYAH",
+   "hataSatir": 5,
+   "soru": "Hatalı satıra dokun: yönlü çizgede döngü neden kaçırılır?",
+   "aciklama": "Geri kenar, hedefin GRİ (keşfedilmiş, bitmemiş, yığında bekleyen ata) olduğu kenardır. SİYAH hedef ileri ya da çapraz kenardır ve döngü kanıtı değildir. Doğrusu `elif renk[v] == GRI`."
+  },
+  {
+   "id": "359-n10-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 10,
+   "etiketler": [
+    "bfs",
+    "agirlikli"
+   ],
+   "soru": "BFS, kenar ağırlıkları farklı olan çizgelerde de en kısa yolu bulur.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. BFS her kenarı 1 birim sayar ve en az kenarlı yolu bulur. 3 kenarlı ama toplam ağırlığı 3 olan yol varken, tek kenarlı ağırlığı 10 olan yolu en kısa ilan edebilir. Ağırlıklı çizgede Dijkstra/Bellman-Ford gerekir.",
+   "kod": "BFS: her kenar = 1 adım\nağırlıklı kenar: w(e) ∈ {2, 5, 8, 10}"
+  },
+  {
+   "id": "359-n10-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 10,
+   "etiketler": [
+    "gosterim",
+    "matris-liste"
+   ],
+   "kod": "# V = 10_000, E = 30_000\nA = [[0] * V for _ in range(V)]        # komşuluk matrisi\nadj = [[] for _ in range(V)]            # komşuluk listesi",
+   "soru": "Bu seyrek çizge için hangi gösterim bellek açısından uygun?",
+   "secenekler": [
+    "Liste: Θ(V + E) ≈ 40 000 hücre; matris Θ(V²) = 100 milyon",
+    "Matris: Θ(V + E)",
+    "İkisi aynı",
+    "Matris: kenar sorgusu da yavaş olduğu için"
+   ],
+   "dogru": 0,
+   "aciklama": "E ≪ V² seyrek çizgedir. Matris V² hücre tutar ama kenar sorgusu Θ(1); liste Θ(V + E) bellek ve tüm komşuları Θ(deg) gezer. Yoğun çizgede (E ≈ V²) matris de makuldür."
+  },
+  {
+   "id": "359-n11-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 11,
+   "etiketler": [
+    "dijkstra",
+    "en-kisa-yol"
+   ],
+   "kod": "W = {'A':{'B':4,'C':2}, 'B':{'A':4,'C':1,'D':5}, 'C':{'A':2,'B':1,'D':8,'E':10},\n     'D':{'B':5,'C':8,'E':2}, 'E':{'C':10,'D':2}}\nprint(dijkstra(W, 'A'))   # d[A..E]",
+   "soru": "A'dan en kısa mesafeler (A, B, C, D, E)?",
+   "secenekler": [
+    "0, 3, 2, 8, 10",
+    "0, 4, 2, 10, 12",
+    "0, 3, 2, 7, 9",
+    "0, 4, 2, 9, 10"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu (heapq Dijkstra): {'A': 0, 'B': 3, 'C': 2, 'D': 8, 'E': 10}.",
+   "aciklama": "C (2) çekilince B 4'ten 3'e, sonra D 10'dan 8'e (B üzerinden 3+5), E 12'den 10'a (D üzerinden 8+2) düşer. Gevşetme d[u] + w < d[v] ise günceller. Doğrudan A-B kenarı (4) en kısa değildir."
+  },
+  {
+   "id": "359-n11-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 11,
+   "etiketler": [
+    "kruskal",
+    "mst"
+   ],
+   "kod": "kenarlar = [(1,'B','C'), (2,'A','C'), (2,'D','E'), (4,'A','B'), (5,'B','D'), (8,'C','D'), (10,'C','E')]\nprint(kruskal(kenarlar))   # toplam MST ağırlığı",
+   "soru": "Kruskal sonunda MST ağırlığı?",
+   "secenekler": [
+    "10",
+    "12",
+    "9",
+    "14"
+   ],
+   "dogru": 0,
+   "kanit": "Seçilenler (B,C)=1, (A,C)=2, (D,E)=2, (B,D)=5; (A,B) döngü olduğu için reddedilir. Toplam 10. Kaynak: Hafta 11 notları, Çözümlü Örnek.",
+   "aciklama": "Kenarlar ağırlıkla sıralanır, DSU ile döngü oluşturmayanlar eklenir. 5 düğümde |V|−1 = 4 kenar seçilince durur. (A,B)=4 reddedilir çünkü A, B zaten aynı bileşendedir."
+  },
+  {
+   "id": "359-n11-3",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 11,
+   "etiketler": [
+    "dijkstra",
+    "negatif-kenar"
+   ],
+   "kod": "graf = {'s': {'A': 3, 'B': 5}, 'A': {}, 'B': {}}   # d[A] = 3",
+   "soru": "B→A kenarını −4 ağırlıkla eklersek (B'den A'ya) Dijkstra'nın verdiği d[A] ve gerçek en kısa mesafe?",
+   "degisiklik": {
+    "eski": "B→A yok",
+    "yeni": "B→A ağırlığı −4"
+   },
+   "secenekler": [
+    "Dijkstra 3 verir, gerçek 1: A erken sabitlendi",
+    "Dijkstra 1 verir",
+    "İkisi de 3",
+    "İkisi de 1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu (A sabitlenince atlanan Dijkstra): {'s': 0, 'A': 3, 'B': 5}; s→B→A = 5 − 4 = 1. Kaynak: Hafta 11 notları, Dijkstra ve Negatif Kenar.",
+   "aciklama": "Dijkstra A'yı 3 ile çekip kesinleştirir, sonra B'den gelen daha ucuz yolu (1) kaçırır. Kesinleşmiş düğüm geri alınmadığı için negatif kenarda çöker. Çözüm: Bellman-Ford O(V·E), negatif döngü yoksa Johnson."
+  },
+  {
+   "id": "359-n11-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 11,
+   "etiketler": [
+    "negatif-kenar",
+    "sabit-ekleme"
+   ],
+   "soru": "Tüm kenar ağırlıklarına aynı sabit k eklemek negatifliği giderir ve en kısa yolları değiştirmez.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Yol uzunluğu kenar sayısıyla orantılı kayar: 5 kenarlı yol +5k, 2 kenarlı yol +2k artar; en kısa yolun kimliği değişebilir.",
+   "kod": "w'(e) = w(e) + k   # tüm kenarlara\n5 kenarlı yol: +5k, 2 kenarlı yol: +2k"
+  },
+  {
+   "id": "359-n11-5",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 11,
+   "etiketler": [
+    "mst",
+    "kesim-ozelligi"
+   ],
+   "soru": "Tüm kenar ağırlıkları birbirinden farklıysa Minimum Kapsayan Ağaç benzersizdir.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Kesim özelliği gereği her kesimi geçen tek bir en hafif kenar vardır ve o kenar her MST'de yer alır; alternatif ağaç türetilemez.",
+   "kod": "tüm w(e) birbirinden farklı\nMST kaç tane?"
+  },
+  {
+   "id": "359-n12-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 12,
+   "etiketler": [
+    "etkinlik-secimi",
+    "acgozlu"
+   ],
+   "kod": "etkinlikler = [(1,4), (3,5), (0,6), (5,7), (3,9), (5,9)]\nsecilen, son = [], 0\nfor s, f in sorted(etkinlikler, key=lambda e: e[1]):\n    if s >= son:\n        secilen.append((s, f)); son = f\nprint(secilen)",
+   "soru": "Seçilen etkinlikler?",
+   "secenekler": [
+    "[(1, 4), (5, 7)]",
+    "[(0, 6)]",
+    "[(1, 4), (5, 7), (5, 9)]",
+    "[(3, 5), (5, 7)]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [(1, 4), (5, 7)].",
+   "aciklama": "Bitişe göre sıralı: (1,4) seçilir (son=4); (3,5),(0,6) çakışır; (5,7) başlar 5 ≥ 4 → seçilir (son=7); (3,9),(5,9) çakışır. Doğru açgözlü kriter bitiş zamanı en erken olandır."
+  },
+  {
+   "id": "359-n12-2",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 12,
+   "etiketler": [
+    "etkinlik-secimi",
+    "yanlis-kriter"
+   ],
+   "kod": "sorted(etkinlikler, key=lambda e: e[1])   # bitişe göre",
+   "soru": "Etkinlikler A=[0,5], B=[4,6], C=[5,10] iken sıralama anahtarını süreye (f − s) çevirirsek kaç etkinlik seçilir? En iyi kaç?",
+   "degisiklik": {
+    "eski": "key = bitiş zamanı",
+    "yeni": "key = süre (f − s)"
+   },
+   "secenekler": [
+    "Süreye göre 1 (B), optimal 2 (A, C)",
+    "İkisi de 2",
+    "İkisi de 1",
+    "Süreye göre 3"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 12 notları, Sık Yapılan Hatalar. B en kısa (2) ama hem A'yla hem C'yle çakışır; bitişe göre A ve C seçilir.",
+   "aciklama": "En kısa süreli etkinlik diğer ikisini de bloklayabilir. Bitiş zamanı kriteri takas argümanıyla kanıtlanır; süre ve başlangıç zamanı kriterleri karşıt örnekle çöker."
+  },
+  {
+   "id": "359-n12-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 12,
+   "etiketler": [
+    "sirt-cantasi",
+    "acgozlu"
+   ],
+   "kod": "esyalar = [(60, 10), (100, 20), (120, 30)]   # (değer, ağırlık), W = 50\nsira = sorted(esyalar, key=lambda e: -e[0] / e[1])\nkalan, deger = 50, 0\nfor v, w in sira:\n    if w <= kalan: kalan -= w; deger += v\nprint(deger)",
+   "soru": "Değer/ağırlık oranıyla 0/1 çanta açgözlüsü ne kadar değer verir? En iyi çözüm?",
+   "secenekler": [
+    "160; optimal 220 (2. ve 3. eşya)",
+    "220; optimal 220",
+    "180; optimal 180",
+    "160; optimal 160"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: oran 6, 5, 4 → eşya 1 ve 2 alınır (30 ağırlık, 160), eşya 3 sığmaz (20 kalan). 100 + 120 = 220 (ağırlık 50).",
+   "aciklama": "Eşyalar bölünemediği için oran sıralaması optimali garanti etmez; açgözlü seçim özelliği çöker. Kesirli çantada oran sıralaması optimaldir. 0/1 için dinamik programlama gerekir."
+  },
+  {
+   "id": "359-n12-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 12,
+   "etiketler": [
+    "para-ustu",
+    "acgozlu"
+   ],
+   "kod": "def acgozlu(paralar, tutar):\n    adet = 0\n    for p in sorted(paralar, reverse=True):\n        adet += tutar // p; tutar %= p\n    return adet\nprint(acgozlu([1, 6, 10], 12))",
+   "soru": "Kaç madeni para yazdırılır, optimal kaç?",
+   "secenekler": [
+    "3 (10+1+1); optimal 2 (6+6)",
+    "2 (6+6); optimal 2",
+    "3; optimal 3",
+    "12; optimal 2"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: açgözlü 3, DP ile optimal 2.",
+   "aciklama": "{1, 6, 10} kanonik olmayan bir para sistemidir: en büyük parayı almak 12'yi 3 madeniye böler, oysa 6+6 yeter. Standart sistemlerde açgözlü doğrudur; genel para üstünde DP gerekir."
+  },
+  {
+   "id": "359-n12-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 12,
+   "etiketler": [
+    "takas-argumani",
+    "ispat"
+   ],
+   "kod": "O' = (O \\ {o₁}) ∪ {a₁}",
+   "soru": "Etkinlik seçiminde değiş tokuş argümanı neden a₁ ile o₁'i değiştirmemizi sağlar?",
+   "aciklama": "Açgözlü a₁ tüm etkinlikler arasında en erken bitendir: f(a₁) ≤ f(o₁). Optimal çözümdeki diğer etkinlikler f(o₁)'den sonra başlar, dolayısıyla f(a₁)'den de sonra başlar; a₁ onlarla çakışmaz. O' hâlâ geçerlidir ve aynı boyuttadır. Tümevarımla optimal çözüm adım adım açgözlüye dönüştürülür.",
+   "secenekler": [
+    "f(a₁) ≥ f(o₁) olduğu için",
+    "a₁ en geç biten etkinliktir",
+    "a₁ en erken biter: f(a₁) ≤ f(o₁); diğer etkinlikler a₁ ile çakışmaz, değişim çözümü bozmaz",
+    "Değiş tokuş boyutu küçültür"
+   ],
+   "dogru": 2
+  }
+ ]
+}

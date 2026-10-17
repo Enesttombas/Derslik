@@ -1,0 +1,182 @@
+[
+  {
+    "satirlar": [
+      1,
+      4
+    ],
+    "baslik": "Ödev 4.4 amacı ve karşılaştırma kapsamı",
+    "aciklama": "Docstring Prewitt ve Sobel gradyan operatörlerinin karşılaştırmalı analizini açıklar. Kamera görüntüsü üzerinde her iki operatörün gradyan büyüklükleri ve %20 eşikli ikili kenar haritaları hesaplanır.",
+    "sinav": "Tanım: Prewitt eşit ağırlıklı `[-1, 0, 1]`, Sobel ise merkez ağırlıklı `[-1, 0, 1; -2, 0, 2; -1, 0, 1]` yaklaşımıyla kenar arar.\nSık hata: Prewitt ve Sobel'in tamamen aynı sonucu verdiğini varsaymak."
+  },
+  {
+    "satirlar": [
+      5,
+      7
+    ],
+    "baslik": "Karşılaştırma panosu ve 1 sayfalık rapor",
+    "aciklama": "Docstring 1x5 karşılaştırma panosu üretildiğini ve kendi klasöründe karsilastirma.md ile tam 1 sayfalık karsilastirma.pdf belgesinin otomatik oluşturulduğunu belirtir.",
+    "sinav": "Tanım: Raporlama kenar operatörlerinin nitel ve nicel farklarını belgeleyen bilimsel dokümantasyondur.\nSık hata: PDF raporunun sayfa sınırını aşarak format kısıtını ihlal etmesi."
+  },
+  {
+    "satirlar": [
+      9,
+      14
+    ],
+    "baslik": "Kütüphaneleri yükle (PyMuPDF dahil)",
+    "aciklama": "Pathlib, sys, cv2, numpy ve PDF sayfa denetimi için pymupdf (fitz) kütüphaneleri içe aktarılır. PyMuPDF üretilen PDF raporunun tam 1 sayfa olduğunu doğrulamak için kullanılır.",
+    "sinav": "Tanım: `pymupdf` (fitz) PDF belgelerini okuma, sayfa sayısını denetleme ve işleme kütüphanesidir.\nSık hata: PyMuPDF kurulu değilken PDF doğrulamasını çalıştırmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      15,
+      20
+    ],
+    "baslik": "Çalışma dizinlerini sys.path'e bağla",
+    "aciklama": "hafta4 ve repo kök dizinleri sys.path listesine eklenerek yerel hafta4 paketinin içe aktarılması sağlanır.",
+    "sinav": "Tanım: `sys.path.insert(0, d)` modül arama yolunu genişletir.\nSık hata: Üst dizini eklemeyip yerel modülleri bulamamak."
+  },
+  {
+    "satirlar": [
+      22,
+      25
+    ],
+    "baslik": "Kenar yardımcılarını içe aktar",
+    "aciklama": "hafta4.kenarlar modülünden gradyan_ikili, mutlak_uint8 ve panel_olustur fonksiyonları içe aktarılır.",
+    "sinav": "Tanım: `gradyan_ikili` normalize tepe değere göre ikili harita çıkarır.\nSık hata: Eşikleme fonksiyonunu yanlış eşik oranıyla çağırmak."
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "baslik": "Prewitt, Sobel ve rapor üreticiyi aktar",
+    "aciklama": "prewitt, sobel fonksiyonları ve hafta4.rapor_uret modülünden rapor_44_uret fonksiyonu içe aktarılır.",
+    "sinav": "Tanım: `rapor_44_uret` şablon verilerini derleyerek Markdown ve 1 sayfalık PDF raporu üretir.\nSık hata: Rapor üreticiyi import etmeyi unutup PDF oluşturamamak."
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "baslik": "Çıktı dizinlerini hazırla",
+    "aciklama": "calistir fonksiyonu yerel ve genel cikti klasörlerini kontrol eder ve eksikse oluşturur.",
+    "sinav": "Tanım: Klasör oluşturma `mkdir(parents=True, exist_ok=True)` ile yapılır.\nSık hata: Klasör izinlerini kontrol etmemek."
+  },
+  {
+    "satirlar": [
+      39,
+      41
+    ],
+    "baslik": "Kamera girdi dosyasını denetle",
+    "aciklama": "girdi_yol değişkeni hafta4/girdi/kamera.png yolunu işaret eder ve exists() ile varlığı kontrol edilir. Dosya bulunamazsa FileNotFoundError fırlatılarak eksik girdi erken yakalanır.",
+    "sinav": "Tanım: Girdi dosyası kontrolü programın kararlılığını artırır.\nSık hata: Dosya varlığını denetlemeden işleme başlamak."
+  },
+  {
+    "satirlar": [
+      43,
+      45
+    ],
+    "baslik": "Kamera görselini gri tonda oku",
+    "aciklama": "cv2.imread kamera.png dosyasını IMREAD_GRAYSCALE modunda tek kanallı 8-bit matris olarak yükler. Matris None dönerse ValueError fırlatılarak okuma başarısızlığı yakalanır.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` bayrağı 8-bit tek kanallı yoğunluk matrisi üretir.\nSık hata: None matris kontrolü yapmadan filtre uygulamaya çalışmak."
+  },
+  {
+    "satirlar": [
+      47,
+      51
+    ],
+    "baslik": "Prewitt gradyanı ve ikili haritasını hesapla",
+    "aciklama": "prewitt(gri, yumusat=True) fonksiyonu Prewitt gradyan büyüklüğünü p_mag döner. mutlak_uint8 ile görselleştirilir ve %20 eşikle p_ikili ikili kenar haritası üretilir.",
+    "sinav": "Tanım: Prewitt gradyan büyüklüğü `hypot(gx, gy)` ile hesaplanır.\nÖrnek: Eşik %20 alındığında tepe gradyanın beşte birinden güçlü kenarlar seçilir.\nSık hata: Prewitt'te yumuşatmayı kapatıp gürültülü kenarlar elde etmek."
+  },
+  {
+    "satirlar": [
+      52,
+      55
+    ],
+    "baslik": "Sobel gradyanı ve ikili haritasını hesapla",
+    "aciklama": "sobel(gri, yumusat=True) fonksiyonu Sobel gradyan büyüklüğünü s_mag döner. mutlak_uint8 ile s_mag_vis ve %20 eşikle s_ikili haritası oluşturulur. Sobel katsayıları kenar sürekliliğini biraz daha iyi korur.",
+    "sinav": "Tanım: Sobel merkez pikseli 2 ile çarptığı için köşegen kenarlarda ve eğik çizgilerde Prewitt'e göre daha pürüzsüz sonuç verir.\nSık hata: Her iki yöntemde farklı eşik oranları kullanıp karşılaştırmanın adilliğini bozmak."
+  },
+  {
+    "satirlar": [
+      56,
+      58
+    ],
+    "baslik": "1x5 karşılaştırma paneli görsel listesi",
+    "aciklama": "Girdi kamera, Prewitt Büyüklük, Prewitt İkili, Sobel Büyüklük ve Sobel İkili görselleri panel_olustur fonksiyonuna verilmek üzere bir liste halinde toplanır.",
+    "sinav": "Tanım: 1x5 panel iki yöntemin büyüklük ve ikili haritalarını doğrudan yan yana kıyaslama imkanı verir.\nSık hata: Görsellerin sırasını başlıklarla uyumsuz dizmek."
+  },
+  {
+    "satirlar": [
+      59,
+      62
+    ],
+    "baslik": "Panel ilk üç görsel başlığı",
+    "aciklama": "Panelin ilk üç görseli için '1. Girdi (Kamera)', '2. Prewitt Buyukluk' ve '3. Prewitt Ikili (%20)' başlıkları tanımlanır. Bu başlıklar panoda görselin üstüne yazılır.",
+    "sinav": "Tanım: Başlık metinleri görsel sırasıyla birebir eşleşmelidir.\nSık hata: Prewitt ile Sobel başlıklarının sırasını karıştırmak."
+  },
+  {
+    "satirlar": [
+      63,
+      67
+    ],
+    "baslik": "1x5 paneli oluştur",
+    "aciklama": "panel_olustur fonksiyonu (1, 5) ızgara düzeninde paneli oluşturur. Her sütunun tepesinde açıklayıcı metin şeridi yer alır.",
+    "sinav": "Tanım: `panel_olustur` fonksiyonu görselleri eşit genişlikte hizalar ve başlık ekler.\nSık hata: Panel boyutunu hatalı verip görselleri kesmek."
+  },
+  {
+    "satirlar": [
+      69,
+      73
+    ],
+    "baslik": "Yerel cikti klasörüne kaydet",
+    "aciklama": "kamera_prewitt_hypot.png, kamera_prewitt_ikili.png ve karsilastirma_prewitt_sobel.png dosyaları yerel cikti dizinine kaydedilir.",
+    "sinav": "Tanım: `cv2.imwrite` ile PNG kaydı kayıpsız piksel tutarlılığı sağlar.\nSık hata: Çıktı dosya adlarını karıştırmak."
+  },
+  {
+    "satirlar": [
+      74,
+      77
+    ],
+    "baslik": "Genel çıktı klasörünü güncelle",
+    "aciklama": "Aynı çıktı dosyaları merkezi hafta4/cikti klasörüne de kaydedilerek tüm haftanın çıktı koleksiyonuna eklenir.",
+    "sinav": "Tanım: Merkezi klasör tüm çıktıları tek bir dizinde birleştirir.\nSık hata: Genel çıktı klasörüne yazmayı unutmak."
+  },
+  {
+    "satirlar": [
+      78,
+      80
+    ],
+    "baslik": "1 sayfalık raporu üret",
+    "aciklama": "rapor_44_uret(hedef_klasor=dosya_yolu.parent) fonksiyonu karsilastirma.md ve karsilastirma.pdf belgelerini üretir. Rapor teorik farkları, çekirdek matrislerini ve gözlemleri içerir.",
+    "sinav": "Tanım: `rapor_44_uret` WeasyPrint / ReportLab motoru ile PDF formatında teknik rapor derler.\nSık hata: Rapor üretimi sırasında hedef klasör yolunu yanlış vermek."
+  },
+  {
+    "satirlar": [
+      81,
+      86
+    ],
+    "baslik": "PDF sayfa sayısını doğrula",
+    "aciklama": "pymupdf ile karsilastirma.pdf açılır ve sayfa sayısı sayfa_sayisi değişkenine alınır. Sayfa sayısı tam 1 değilse ValueError fırlatılarak ödev kısıtına uyum denetlenir.",
+    "sinav": "Tanım: `len(doc)` PyMuPDF ile PDF dokümanındaki sayfa adedini kesin olarak döndürür.\nÖrnek: `sayfa_sayisi == 1` koşulu raporun tam 1 sayfa olmasını şart koşar.\nSık hata: Sayfa taşmasını fark etmeyip 2 sayfalık PDF teslim etmek."
+  },
+  {
+    "satirlar": [
+      88,
+      89
+    ],
+    "baslik": "Tamamlanma mesajını yazdır",
+    "aciklama": "Ödev 4.4'ün başarıyla tamamlandığı konsola basılır; tüm görsel paneller ve tek sayfalık PDF karşılaştırma raporu eksiksiz arşivlenir.",
+    "sinav": "Tanım: Konsol bildirimleri otomasyon betiklerinin durum takibini sağlar.\nSık hata: Hata durumunda bildirim basıp başarılı gibi davranmak."
+  },
+  {
+    "satirlar": [
+      91,
+      92
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart modül yürütme kontrolüdür.\nSık hata: Bu denetimi koymayıp import anında rapor üretimini tetiklemek."
+  }
+]

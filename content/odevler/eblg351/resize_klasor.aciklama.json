@@ -1,0 +1,83 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring ödevin amacını, klasördeki resimleri 1024×768 boyutuna dönüştürmeyi ve programın nasıl çağrılacağını açıklar. Komutta önce girdi, sonra çıktı klasörü yazılır; bu sıra argparse içindeki konumsal argümanlarla eşleşir. Kullanım bilgisini kaynak kodun başında tutmak, çalıştırma biçimini dosyayı inceleyerek bulmayı sağlar.",
+    "sinav": "Tanım: Konumsal argümanlar CLI çağrısında sıraya göre eşlenir.\nÖrnek: `python resize_klasor.py girdi cikti` ile 1. girdi, 2. çıktıdır.\nSık hata: Girdi ve çıktı dizinlerinin sırasını karıştırmak.",
+    "baslik": "Ödev amacı ve kullanım docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      10
+    ],
+    "aciklama": "argparse komut satırı seçeneklerini okumak, time geçen süreyi ölçmek, Path dosya yollarını yönetmek ve cv2 görüntü işlemlerini yapmak için içe aktarılır. Modüller görevlerine göre ayrıldığı için her adın hangi araçtan geldiği anlaşılır. Kullanılacak işlevlerin bu ad alanlarına bağlanması, dosya ve görüntü işlemlerinin kod içinde açıkça çağrılmasını sağlar.",
+    "sinav": "Tanım: `import` modülü geçerli ad alanına bağlar; `Path` dosya sistemi yollarını yönetir.\nSık hata: Modülü içe aktarmadan `cv2` veya `Path` üyelerini çağırmaya çalışmak.",
+    "baslik": "Gerekli kütüphaneleri içe aktar"
+  },
+  {
+    "satirlar": [
+      12,
+      14
+    ],
+    "aciklama": "HEDEF_GENISLIK ve HEDEF_YUKSEKLIK her çıktı için kullanılacak boyutu, RESIM_UZANTILARI ise girdi klasöründe aday sayılacak dosya türlerini belirler. Bu değerleri sabitlerde toplamak, aynı ayarların bütün dosyalara uygulanmasını ve gerektiğinde tek yerden değiştirilmesini sağlar. Uzantı eşleştirmesi dosya içeriğinin gerçekten görüntü olduğunu kanıtlamaz; okuma sonucu ayrıca denetlenir.",
+    "sinav": "Tanım: OpenCV matrisinde sıra `(H, W, C)`, `cv2.resize` boyutunda ise `(W, H)` biçimindedir.\nÖrnek: 1024×768 hedef için `(1024, 768)` verilir.\nSık hata: `cv2.resize` boyutuna `(W, H)` yerine `(H, W)` geçmek.",
+    "baslik": "Boyut ve uzantı sabitlerini tanımla"
+  },
+  {
+    "satirlar": [
+      17,
+      19
+    ],
+    "aciklama": "olcekle işlevi bir görüntüyü cv2.resize ile sabit 1024×768 boyutuna getirip yeni görüntü dizisini döndürür. cv2.resize hedefi genişlik-yükseklik sırasıyla aldığı için sabitlerin dizilişi önemlidir; shape alanlarının sırası bunun tersidir. INTER_AREA örnekleme sırasında piksellerin alan bilgisini kullanır ve özellikle küçültme işleminde uygun bir enterpolasyon seçeneğidir.",
+    "sinav": "Tanım: `cv2.INTER_AREA` piksel alan ilişkisini kullanan ve küçültmede tercih edilen enterpolasyondur.\nFormül: `dsize=(W, H)`\nSık hata: En-boy oranını gözetmeden sabit boyuta zorlayıp resmi esnetmek.",
+    "baslik": "Resmi INTER_AREA ile ölçekle"
+  },
+  {
+    "satirlar": [
+      22,
+      26
+    ],
+    "aciklama": "main programın giriş noktasıdır ve argparse ile girdi ve çıktı klasörlerini zorunlu konumsal argümanlar olarak tanımlar. type=Path, komut satırından gelen metni yol nesnesine dönüştürerek dosya sistemi işlemlerini kolaylaştırır. parse_args verilen değerleri args alanlarına yerleştirir; argümanları tek yerde tanımlamak komut kullanımını ve program akışını belirgin kılar.",
+    "sinav": "Tanım: `argparse.ArgumentParser` konumsal argümanları sırayla ayrıştırır; `type=Path` metni nesneye çevirir.\nSık hata: Zorunlu argüman girilmediğinde `parse_args()` çağrısının hata vereceğini hesaba katmamak.",
+    "baslik": "Komut satırı argümanlarını ayrıştır"
+  },
+  {
+    "satirlar": [
+      28,
+      31
+    ],
+    "aciklama": "mkdir çıktı klasörünü ve eksik üst klasörlerini oluşturur; exist_ok=True hedef zaten varsa hata oluşmasını önler. iterdir yalnız girdi klasörünün doğrudan çocuklarını tarar, uzantı filtresi görüntü adaylarını seçer ve sorted bunları kararlı sıraya koyar. Liste boşsa SystemExit anlaşılır bir hata mesajıyla işlemi bitirir; alt klasörler taranmaz.",
+    "sinav": "Tanım: `iterdir()` klasörün altındaki yolları listeler; `mkdir(exist_ok=True)` klasör varsa hata vermez.\nSık hata: Dosya uzantı kontrolünün içeriğin geçerli bir resim olduğunu garanti ettiğini sanmak.",
+    "baslik": "Çıktı klasörünü aç ve listele"
+  },
+  {
+    "satirlar": [
+      33,
+      38
+    ],
+    "aciklama": "perf_counter döngüden önce geçen süre ölçümünü başlatır; for dosyaları sırayla işler ve cv2.imread her dosyayı varsayılan renkli BGR görüntü olarak belleğe alır. Okuma başarısızsa None denetimi dosya adını bildirir ve continue ile sıradaki dosyaya geçer. Böylece bozuk girdi cv2.resize çağrısına ulaşmaz ve tek bir okunamayan dosya kalan işlemleri durdurmaz.",
+    "sinav": "Tanım: `cv2.imread` görüntüyü BGR sırasıyla okur; dosya bozuksa istisna fırlatmaz, `None` döndürür.\nSık hata: `None` kontrolü yapmadan resmi `cv2.resize` işlevine sokup programı çöktürmek.",
+    "baslik": "Resimleri oku ve None denetle"
+  },
+  {
+    "satirlar": [
+      39,
+      42
+    ],
+    "aciklama": "olcekle okunan görüntüyü hedef boyuta dönüştürür, ardından cv2.imwrite aynı dosya adıyla çıktı klasörüne kaydeder. Yazdırılan shape değerlerinden genişlik ve yükseklik [1] ve [0] indisleriyle alınarak önceki ve sonraki boyut gösterilir. Son rapor aday dosya sayısını ve perf_counter farkını verir; okunamayan dosyalar da bu sayıya dahildir ve yazma sonucu ayrıca denetlenmez.",
+    "sinav": "Tanım: NumPy matrisinde `shape[0]` yükseklik, `shape[1]` genişliktir.\nÖrnek: `shape=(768, 1024, 3)` için `shape[1]=1024`, `shape[0]=768` olur.\nSık hata: `shape[0]` ile `shape[1]` sırasını karıştırmak.",
+    "baslik": "Ölçeklenen resmi çıktıya kaydet"
+  },
+  {
+    "satirlar": [
+      45,
+      46
+    ],
+    "aciklama": "Bu koşul dosyanın doğrudan çalıştırılıp çalıştırılmadığını denetler; başka bir modülden içe aktarıldığında main kendiliğinden çağrılmaz. __name__ değeri doğrudan çalıştırmada __main__ olur ve main program akışını başlatır. Bu kalıp işlevlerin başka dosyalardan yeniden kullanılmasına izin verirken komut satırı davranışını korur.",
+    "sinav": "Tanım: `__name__ == '__main__'` bloğu, dosya doğrudan çalıştırıldığında tetiklenir; içe aktarıldığında `main()` çağrılmaz.\nSık hata: Bu denetimi yazmayıp dosya `import` edildiğinde kodun kendiliğinden çalışması.",
+    "baslik": "Doğrudan çalıştırma giriş noktası"
+  }
+]

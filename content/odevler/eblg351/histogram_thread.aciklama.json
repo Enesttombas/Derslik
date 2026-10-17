@@ -1,0 +1,119 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring dört parçanın histogramlarını thread ile hesaplayıp birleştirme hedefini ve komut kullanımını tanımlar. Girdi ve çıktı verilmediğinde betik klasöründeki dama.jpg ve cikti yolu kullanılır. Histogram, görüntünün her yoğunluk değerinden kaç piksel içerdiğini sayan frekans dağılımıdır.",
+    "sinav": "Tanım: Gri histogramdaki tüm kutu sayımlarının toplamı resmin piksel sayısına eşittir.\nFormül: `sum(H) = M * N` (256 kutu)\nSık hata: Kadranlara bölme sırasında piksellerin mükerrer sayılacağını veya atlanacağını varsaymak.",
+    "baslik": "Histogram thread ödevi docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      8
+    ],
+    "aciklama": "argparse isteğe bağlı yolları okur, ThreadPoolExecutor parça görevlerini eşzamanlı yürütür ve Path yolları taşır. Bu modüller arayüz, paralellik ve dosya konumu sorumluluklarını ayrı ayrı karşılar. Standart kütüphane araçları bu akış için yeterli olduğundan özel altyapı gerekmez.",
+    "sinav": "Tanım: `ThreadPoolExecutor`, görevleri iş parçacığı havuzuna dağıtarak eşzamanlı çalıştırma sağlar.\nSık hata: Thread kullanımının hesaplama doğruluğunu kendiliğinden sağlayacağını sanıp çıktı eşitliğini kontrol etmemek.",
+    "baslik": "Eşzamanlı havuz ve yol araçları"
+  },
+  {
+    "satirlar": [
+      10,
+      13
+    ],
+    "aciklama": "cv2 görüntüyü okuyup histogram grafiğini dosyaya yazmak, np ise piksel sayılarını diziler hâlinde saymak için kullanılır. KLASOR betiğin bulunduğu klasörü Path ile belirler ve varsayılan dosyaları oraya bağlar. Bu yol seçimi komutun hangi klasörden başlatıldığına bağlılığı azaltır.",
+    "sinav": "Tanım: `cv2` görüntü okuma ve çizim işlemlerini, `numpy` matris işlemlerini yürütür.\nÖrnek: `Path(__file__).resolve().parent` betik klasörünü verir.\nSık hata: Betik dizini yerine komutun çağrıldığı mevcut çalışma dizinine güvenmek.",
+    "baslik": "OpenCV ve NumPy bağımlılıklarını bağla"
+  },
+  {
+    "satirlar": [
+      16,
+      17
+    ],
+    "aciklama": "tum_histogram gri.ravel() ile piksel matrisini tek boyutlu dizi gibi ele alıp np.bincount ile her yoğunluğun frekansını sayar. minlength=256 tüm 8-bit gri değerleri için sabit uzunlukta histogram sağlar; görülmeyen seviyelerin kutusu sıfır kalır. Histogram kutusu i, değeri i olan piksel sayısını temsil eder.",
+    "sinav": "Tanım: `np.bincount(gri.ravel(), minlength=256)` piksel frekanslarını sayar; 256 kutuluk dizi üretir.\nFormül: `sum(h) = M * N`\nSık hata: `minlength=256` vermeyip resimde olmayan üst değerler yüzünden kısa dizi elde etmek.",
+    "baslik": "Tek boyutlu tam histogramı hesapla"
+  },
+  {
+    "satirlar": [
+      20,
+      23
+    ],
+    "aciklama": "_bol h ve w boyutlarından orta koordinatları bulup görüntüyü dört kesişimsiz NumPy dilimine ayırır. Her alt görüntü özgün yoğunlukları koruduğundan histogramları ayrı ayrı sayılabilir. Tek ölçü tekse alt veya sağ parça bir piksel daha fazla içerebilir.",
+    "sinav": "Tanım: Matris dilimleme resmi örtüşmeyen 4 kadrana ayırır.\nFormül: `my = h // 2`, `mx = w // 2` ile `[:my, :mx]`, `[:my, mx:]`, `[my:, :mx]`, `[my:, mx:]`\nSık hata: Dilim sınırlarının hariç olduğunu unutup pikselleri çakıştırmak.",
+    "baslik": "Görüntüyü dört kadrana böl"
+  },
+  {
+    "satirlar": [
+      26,
+      31
+    ],
+    "aciklama": "parca_histogramlari önce dört parçayı çıkarır, sonra paralel bayrağına göre aynı tum_histogram hesabını seçer. ThreadPoolExecutor(max_workers=4) bir parça başına görev yollar; map sonuçları giriş sırasını korur. Paralellik yalnız hesapların çalışma düzenini değiştirir, beklenen histogram değerlerini değiştirmemelidir.",
+    "sinav": "Tanım: `havuz.map`, görevleri iş parçacığı havuzuna dağıtır ve giriş sırasını koruyarak döner.\nÖrnek: `max_workers=4` ile 4 kadran paralel işlenir.\nSık hata: Küçük görüntülerde iş parçacığı yönetim yükünün sıralı koddan daha yavaş kalabileceğini unutmak.",
+    "baslik": "Kadran histogramlarını thread ile çıkar"
+  },
+  {
+    "satirlar": [
+      34,
+      35
+    ],
+    "aciklama": "histogramlari_birlestir histogram listesini eksen 0 boyunca np.sum ile toplar. Her girişte aynı 256 yoğunluk kutusu bulunduğu için her konumdaki sayımlar toplanarak tam görüntünün histogramı elde edilir. Kadranlar tüm pikselleri bir kez kapsıyorsa toplam frekans da tam görüntü boyutuna eşit olur.",
+    "sinav": "Tanım: Kadran histogramları kutu bazında toplanarak birleşik histogram oluşturulur.\nFormül: `toplam_hist = np.sum(sonuclar, axis=0)`: `H[i] = sum(H_k[i])`\nSık hata: `axis=0` belirtmeyip tüm histogramı skaler sayıya toplamak.",
+    "baslik": "Dört kadran histogramını topla"
+  },
+  {
+    "satirlar": [
+      38,
+      43
+    ],
+    "aciklama": "histogram_grafigi 400 satır ve 512 sütunluk sıfır değerli uint8 gri tuval oluşturur. Histogramı float32'ye çevirip cv2.normalize ile tepe değerini çizim alanına ölçekler; döngü 256 yoğunluk için ikişer sütun aralıkla dikey çizgi çizer. Bu normalizasyon biçimi mutlak piksel sayısından çok dağılımın göreli şeklini gösterir.",
+    "sinav": "Tanım: Histogram çiziminde tepe değeri tuval boyuna oranlanır.\nFormül: `olcek = (yukseklik - 30) / tepe`, `h_piksel = int(hist[i] * olcek)`\nSık hata: En yüksek frekans 0 olduğunda sıfıra bölme denetimini atlamak.",
+    "baslik": "Histogram çizim tuvalini hazırla"
+  },
+  {
+    "satirlar": [
+      44,
+      47
+    ],
+    "aciklama": "cv2.putText başlığı ve 0 ile 255 uç yoğunluk etiketlerini gri tuvale yazar, ardından grafik dizisi döndürülür. Tuval tek kanallı uint8 olduğundan skaler 255 beyazı, 180 ise daha koyu griyi temsil eder. Etiketler yatay konumla piksel yoğunluğu arasındaki ilişkiyi okumayı sağlar.",
+    "sinav": "Tanım: Gri `uint8` tuvalde `0` siyah, `255` beyazdır; çizim işlevleri piksel koordinatı alır.\nÖrnek: Çizgi tabandan yukarıya doğru `h_piksel` kadar çizilir.\nSık hata: OpenCV'de `(0,0)` noktasının sol üst köşe olduğunu unutup y eksenini ters hesaplamak.",
+    "baslik": "Grafik eksen etiketlerini çiz"
+  },
+  {
+    "satirlar": [
+      50,
+      55
+    ],
+    "aciklama": "main argparse ile isteğe bağlı giriş ve çıktı yollarını tanımlar, sonra imread resmi IMREAD_GRAYSCALE olarak okur. Tek kanallı 8-bit yoğunluklar np.bincount için doğrudan 0–255 indekslerine dönüşür. Okuma başarısızsa None denetimi hatalı görüntünün histogram fonksiyonlarına ulaşmasını önler.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` resmi tek kanallı yükler; `bincount` için 0–255 aralığında tamsayı dizisi sağlar.\nÖrnek: Dosya bulunamazsa `imread` `None` döner.\nSık hata: `None` kontrolü yapmadan fonksiyonlara `gri` matrisini gönderip çökmek.",
+    "baslik": "Argümanları ayrıştır ve resmi oku"
+  },
+  {
+    "satirlar": [
+      56,
+      59
+    ],
+    "aciklama": "Başarılı okumadan sonra dört parça histogramı birleştirilir ve np.array_equal ile tam resim histogramına karşı kontrol edilir. assert eşitlik bozulursa hesaplama hatasını görünür kılar; bu, aynı yöntemin tek seferde uygulanmasıyla bağımsız bir doğrulama sağlar. Eşitlik piksel değerlerinin doğru bölünüp toplandığına kanıttır.",
+    "sinav": "Tanım: `assert` koşul yanlışsa hata fırlatarak matematiksel eşitliği doğrular.\nFormül: `assert np.array_equal(ana, toplam_hist)` (her `i` için `ana[i] == toplam_hist[i]`)\nSık hata: Paralel bölmede piksel kaybı denetimini atlamak.",
+    "baslik": "Parça toplamını ana histogramla doğrula"
+  },
+  {
+    "satirlar": [
+      60,
+      63
+    ],
+    "aciklama": "mkdir çıktı klasörünü hazırlar; histogram_grafigi ana histogramdan çizim üretip cv2.imwrite ile histogram.png dosyasına yazar. Yazma başarısızlığı bool dönüşünden yakalanır. print toplam histogram frekansını ve doğrulama sonucunu bildirir; frekans toplamı beklenen piksel sayısını verir.",
+    "sinav": "Tanım: Histogram frekanslarının toplamı resmin piksel sayısına eşittir.\nFormül: `ana.sum() == toplam_hist.sum() == H * W`\nSık hata: `cv2.imwrite` başarısız olunca istisna fırlatmayıp `False` döndürdüğünü gözden kaçırmak.",
+    "baslik": "Grafiği kaydet ve sonucu bildir"
+  },
+  {
+    "satirlar": [
+      66,
+      67
+    ],
+    "aciklama": "__name__ ile __main__ metinlerinin eşitliği denetimi main fonksiyonunu yalnız dosya komut satırından başlatıldığında çalıştırır. Modül olarak içe aktarmak dosya okumayı veya histogram.png yazmayı tetiklemez. Böylece hesaplama fonksiyonları başka modüllerde yan etkisiz biçimde kullanılabilir.",
+    "sinav": "Tanım: `__name__ == '__main__'` bloğu dosya doğrudan çalıştırıldığında `main()` akışını yürütür; içe aktarmada çalıştırmaz.\nSık hata: Bu denetim olmadan modül `import` edildiğinde dosya kaydetme ve yazdırma adımlarının kendiliğinden çalışması.",
+    "baslik": "Doğrudan çalıştırma kontrolü"
+  }
+]

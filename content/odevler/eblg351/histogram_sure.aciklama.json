@@ -1,0 +1,110 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring tek parça histogramıyla dört parçaya ayrılmış histogramın sürelerini karşılaştırma amacını ve kullanım biçimini belirtir. Varsayılan görsel dama.jpg, çıktı klasörü cikti, tekrar sayısı ise 20'dir. Tekrar ölçümü tek bir çalıştırmadaki zamanlama gürültüsünü azaltmaya yardımcı olur.",
+    "sinav": "Tanım: 8-bit gri görüntü histogramı 256 kutu (`bin`) içerir; her kutu o gri seviyesinin frekansıdır.\nÖrnek: Varsayılan `--tekrar 20` ile ortalama süre ölçülür.\nSık hata: Paralel ve tek thread hesaplarının farklı sonuçlar üretebileceğini sanmak.",
+    "baslik": "Histogram süre karşılaştırma docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      8
+    ],
+    "aciklama": "argparse komut satırı girdilerini, Path dosya yollarını ve perf_counter yüksek çözünürlüklü geçen süre ölçümünü sağlar. Bu dosya histogram fonksiyonlarını ayrı bir modülden alır; cv2 ve np ise görüntüyü okuma ve sonuçları karşılaştırma işinde kullanılır. Araçları kullanım yerinde içe aktarmak bağımlılıkları görünür tutar.",
+    "sinav": "Tanım: `time.perf_counter()` yüksek çözünürlüklü aralık sayacıdır; iki an arasındaki hassas süreyi ölçer.\nSık hata: Süre ölçümünde sistem saat değişikliklerinden etkilenebilen duvar saati (`time.time()`) kullanmak.",
+    "baslik": "Argüman ve zamanlama modüllerini aktar"
+  },
+  {
+    "satirlar": [
+      10,
+      13
+    ],
+    "aciklama": "cv2 giriş görüntüsünü okumak, np iki histogramı eleman bazında karşılaştırmak için içe aktarılır. Histogram hesaplama ve parçalara bölme yardımcıları alttaki modülden gelir. Ayrı modülde tutulan ortak hesapların yeniden kullanılması aynı algoritmayı kopyalama ihtiyacını kaldırır.",
+    "sinav": "Tanım: `np.array_equal` iki dizinin tüm elemanlarının ve boyutlarının eşitliğini doğrular.\nÖrnek: 256 kutuluk iki histogram `np.array_equal(tek, dort)` ile kıyaslanır.\nSık hata: Dizi eşitliğinde `==` işlecinin tekil bir bool döndüreceğini sanmak.",
+    "baslik": "Görüntü ve dizi kütüphanelerini bağla"
+  },
+  {
+    "satirlar": [
+      14,
+      16
+    ],
+    "aciklama": "try bloğu paket içinden çalıştırıldığında göreli import ile aynı paketteki histogram_thread modülünü bulmayı dener. Bağlam paket dışı doğrudan çalıştırmaysa except ImportError düz import yoluna geçer. Her iki dal da aynı üç fonksiyonu getirerek iki başlatma biçimini destekler.",
+    "sinav": "Tanım: Göreli aktarım (`from .modul`) paket bağlamında çalışır; doğrudan çalıştırmada düz `import` gerekir.\nSık hata: Betiği doğrudan komut satırından çalıştırırken göreli import kullanıp `ImportError` hatası almak.",
+    "baslik": "Yardımcı modülü göreli ve düz aktar"
+  },
+  {
+    "satirlar": [
+      18,
+      18
+    ],
+    "aciklama": "Path(__file__).resolve().parent KLASOR değişkenine betiğin bulunduğu dizini verir. Girdi ve çıktı varsayılanlarını bu tabana bağlamak, başka dizinden çalıştırırken dama.jpg arama yerini sabit tutar. resolve yolu çözümler, parent ise dosya adını çıkarıp klasörü bırakır.",
+    "sinav": "Tanım: `Path(__file__).resolve().parent` betiğin bulunduğu klasörün mutlak yolunu verir.\nÖrnek: `KLASOR / 'dama.jpg'` betik dizinindeki resmi hedefler.\nSık hata: Geçerli çalışma dizinine güvenip betik başka klasörden çağrıldığında dosya kaybı yaşamak.",
+    "baslik": "Betik dizinini taban yol belirle"
+  },
+  {
+    "satirlar": [
+      21,
+      22
+    ],
+    "aciklama": "histogram_4_thread parca_histogramlari çağrısında paralel=True seçerek bölünmüş hesabı çalıştırır. histogramlari_birlestir her bölgenin aynı parlaklık seviyesine ait sayılarını toplar. Bu sarmalayıcı ölçüm fonksiyonuna tek bir hesaplanabilir iş vererek iki yöntemi aynı arayüzle karşılaştırır.",
+    "sinav": "Tanım: Sarmalayıcı fonksiyon (`wrapper`), farklı çıktı biçimlerini standartlaştırarak arayüz uyumu sağlar.\nFormül: `H[i] = sum(H_k[i])`\nÖrnek: Fonksiyonun döndürdüğü `(histogram, parcalar)` ikilisinden `[0]` ile birleşik histogram alınır.",
+    "baslik": "Dört thread sarmalayıcısını kur"
+  },
+  {
+    "satirlar": [
+      25,
+      29
+    ],
+    "aciklama": "_sure_olc perf_counter başlangıcını alıp hesapla(gri) fonksiyonunu tekrar sayısı kadar çalıştırır. Toplam geçen süreyi tekrar sayısına bölerek ortalama çağrı süresini, son çağrının sonucuyla birlikte döndürür. İki hesaplamaya aynı sarmalayıcı uygulanabildiğinden karşılaştırma tutarlı kalır.",
+    "sinav": "Tanım: Tekrarlı ölçüm anlık işletim sistemi dalgalanmalarını filtreler.\nFormül: `ortalama_sure = (bitis - baslangic) / tekrar`\nSık hata: Tek seferlik ölçüm alıp anlık CPU yükü değişimlerini genel performans saymak.",
+    "baslik": "Tekrarlı ortalama süre ölç"
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "aciklama": "main girdi ve çıktı Path argümanlarını isteğe bağlı tanımlar, --tekrar değerini int yapıp 20 varsayılanını verir. argparse eksik konumsal değerlerde varsayılan yolu kullanır. Parametreleri açık tutmak aynı deneyin dosya ve tekrar sayısı değiştirilerek yinelenmesini sağlar.",
+    "sinav": "Tanım: `add_argument` argümanları tip ve varsayılan değerle tanımlar; `nargs='?'` konumsal girdiyi isteğe bağlı yapar.\nÖrnek: `--tekrar` argümanı `type=int` ile tamsayıya çevrilir.\nSık hata: `type` belirtmeyip sayısal girdiyi `str` olarak almak.",
+    "baslik": "Argümanları ve tekrar sayısını tanımla"
+  },
+  {
+    "satirlar": [
+      38,
+      42
+    ],
+    "aciklama": "Tekrar sayısı 1'in altındaysa ölçüm başlamadan açıklayıcı hata ile çıkılır. Görüntü IMREAD_GRAYSCALE olarak okunur ve None sonucu kontrol edilir. Girdi doğrulaması hem sıfıra bölmeyi hem de geçersiz piksel dizisiyle hesap çalıştırmayı önler.",
+    "sinav": "Tanım: Girdi doğrulama, hatalı parametrelerde programın çökmek yerine kontrollü sonlanmasını sağlar.\nÖrnek: `args.tekrar < 1` ise sıfıra bölmeyi engellemek için `SystemExit` verilir.\nSık hata: `imread` sonucunun `None` dönebileceğini göz ardı etmek.",
+    "baslik": "Tekrar sayısı ve resmi doğrula"
+  },
+  {
+    "satirlar": [
+      43,
+      46
+    ],
+    "aciklama": "_sure_olc önce tek çağrılı tum_histogram, sonra histogram_4_thread yolunu aynı tekrar sayısıyla ölçer. np.array_equal sonuç dizilerinin kutu kutu aynı olduğunu denetler ve assert farkı başarısızlık yapar. Eşitlik kontrolünden sonra terminale rapor başlığı yazılır.",
+    "sinav": "Tanım: `assert np.array_equal(h_tek, h_dort)` iki yöntemin tüm kutularının eşitliğini test eder.\nÖrnek: Tüm `i` gri seviyeleri için `h_tek[i] == h_dort[i]` olmalıdır.\nSık hata: Paralel algoritmada çıktı eşitliğini doğrulamamak.",
+    "baslik": "Tek ve çoklu thread sürelerini ölç"
+  },
+  {
+    "satirlar": [
+      47,
+      49
+    ],
+    "aciklama": "Üç satır tek ve dört thread ortalama sürelerini ve dort−tek farkını saniye cinsinden gösterir. Fark negatifse bu çalıştırmada paralel yolun süresi daha kısadır; pozitifse daha uzundur. Tek ölçüm donanım, yük ve önbellek etkilerini temsil etmeye yetmeyebileceğinden sonuç genellenmemelidir.",
+    "sinav": "Formül: `fark = t_dort - t_tek`\nÖrnek: Fark `-0.002` sn ise çoklu thread 2 ms daha hızlıdır.\nSık hata: Küçük görüntülerde thread havuzu kurma maliyetinin süreyi uzatabileceğini ve kazancı sileceğini unutmak.",
+    "baslik": "Süreleri ve farkı raporla"
+  },
+  {
+    "satirlar": [
+      52,
+      53
+    ],
+    "aciklama": "__name__ ile __main__ metinlerinin eşitliği main iş akışını yalnız betik doğrudan başlatıldığında yürütür. Modül import edildiğinde ölçüm başlamaz ve terminal çıktısı oluşmaz. Bu ayrım histogram yardımcılarının başka Python kodundan güvenle yeniden kullanılmasını sağlar.",
+    "sinav": "Tanım: `__name__ == '__main__'` yapısı dosya bağımsız çalıştırıldığında ana akışı tetikler; `import` edildiğinde çalıştırmaz.\nSık hata: Bu denetimi yazmayıp fonksiyon içe aktarılırken süre testlerinin istemsizce koşturulmasına yol açmak.",
+    "baslik": "Doğrudan çalıştırma kontrolü"
+  }
+]

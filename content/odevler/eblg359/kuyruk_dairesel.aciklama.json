@@ -1,0 +1,128 @@
+[
+  {
+    "satirlar": [1, 7],
+    "aciklama": "Bu modül sabit boyutlu bir dizi üzerinde modulo aritmetiği kullanarak çalışan dairesel kuyruk yapısını tanıtır. Geleneksel kuyruklardaki dizi kaydırma maliyetini ortadan kaldırır. Modulo işlemi sayesinde kuyruk sonuna ulaşıldığında başa dönülür. Bu yöntemle tüm ekleme ve çıkarma işlemleri O(1) sabit zamanda gerçekleştirilir.",
+    "sinav": "Tanım: Dairesel kuyruk (circular queue), dizi sonuna ulaşıldığında başa dönen sabit kapasiteli FIFO veri yapısıdır.\nÖrnek: İşletim sistemlerinde süreç zamanlama kuyrukları ve ses/video arabellekleri.\nSık hata: Dairesel kuyruğu dinamik liste ile karıştırıp kapasite aşımında otomatik büyüdüğünü varsaymak.",
+    "baslik": "Modül Tanıtımı ve Dairesel Kuyruk Dokümanı"
+  },
+  {
+    "satirlar": [10, 15],
+    "aciklama": "`DaireselKuyruk` sınıfı FIFO yapısını dairesel bellek düzeniyle modeller. `__init__` metodunda verilen `kapasite` parametresi denetlenir ve pozitif tamsayı olması zorunlu tutulur. Geçersiz kapasite durumunda `ValueError` fırlatılarak yapısal bozulmalar önlenir. Başlatma adımı O(1) mantıksal sürede çalışır.",
+    "sinav": "Tanım: Yapıcı metot, veri yapısının çalışması için gereken temel parametreleri doğrular ve başlatır.\nÖrnek: Kapasite 0 veya negatif verilirse ValueError fırlatılır.\nSık hata: Kapasite kontrolü yapmayarak 0 boyutlu veya tanımsız bellek alanları oluşturmak.",
+    "baslik": "Dairesel Kuyruk Sınıfı ve Kapasite Denetimi"
+  },
+  {
+    "satirlar": [16, 20],
+    "aciklama": "Kuyruk için `kapasite` uzunluğunda sabit bir Python listesi `self.dizi` ayrılır. İlk elemanın yerini gösteren `self.bas` indeksi ve toplam eleman adedini tutan `self.boy` sıfırlanır. Ayrıca eleman operasyonlarını izlemek için `self.islem` sayacı oluşturulur. Sabit dizi yaklaşımı sayesinde bellek boyutu O(kapasite) düzeyindedir.",
+    "sinav": "Tanım: Kuyruk durum değişkenleri (`bas`, `boy`), dairesel tamponun mantıksal sınırlarını yönetir.\nFormül: Alan karmaşıklığı: O(kapasite).\nÖrnek: Kapasite 4 ise `self.dizi = [None, None, None, None]` olarak ilklendirilir.\nSık hata: Eleman sayısını `boy` değişkeni yerine her seferinde döngüyle saymaya çalışmak.",
+    "baslik": "Dizi Tanımlama ve Durum Değişkenleri"
+  },
+  {
+    "satirlar": [22, 25],
+    "aciklama": "`kuyruga_ekle` metodu yeni bir elemanı dairesel kuyruğun sonuna ekler. Öncelikle kuyruğun tamamen dolu olup olmadığı `dolu_mu` ile denetlenir. Eğer kapasite dolmuşsa `IndexError` fırlatılarak taşma engellenir. Bu kontrol veri ezilmesini önleyerek bellek güvenliğini sağlar.",
+    "sinav": "Tanım: Ekleme operasyonu (enqueue), yeni veriyi mantıksal kuyruk kuyruğuna (rear) yerleştirir.\nÖrnek: 4 elemanlı dolu kuyruğa 5. eleman eklenmeye çalışıldığında hata oluşur.\nSık hata: Kuyruk doluyken ekleme yapıp eski elemanların üzerine yazılmasına göz yummak.",
+    "baslik": "Kuyruğa Ekleme ve Doluluk Kontrolü"
+  },
+  {
+    "satirlar": [26, 29],
+    "aciklama": "Ekleme konumu `(self.bas + self.boy) % self.kapasite` formülüyle hesaplanır. Modulo operatörü sayesinde kuyruk dizi sonuna geldiğinde otomatik olarak boşalan baş indekslere sarar. Eleman atandıktan sonra `self.boy` ve `self.islem` sayaçları artırılır. Bu işlem hiçbir kaydırma yapılmadığı için O(1) zaman alır.",
+    "sinav": "Tanım: Dairesel indis hesabı, modulo aritmetiği ile dizinin başı ve sonunu birbirine bağlar.\nFormül: Ekleme İndisi = (bas + boy) % kapasite, Zaman: O(1).\nÖrnek: bas=2, boy=1, kapasite=4 ise ekleme indisi (2 + 1) % 4 = 3 olur.\nSık hata: Ekleme indeksini hesaplarken modulo almayı unutup dizi sınırları dışına (IndexError) çıkmak.",
+    "baslik": "Modulo ile Ekleme ve Sayaç Artırımı"
+  },
+  {
+    "satirlar": [31, 35],
+    "aciklama": "`kuyruktan_cikar` metodu FIFO kuralına göre sıradaki ilk elemanı alır. Kuyrukta eleman yoksa `bos_mu` denetimi yapılarak `IndexError` oluşturulur. Çıkarılacak eleman `self.bas` indeksinden okunur. Hatalı bellek okumaları bu kontrol mekanizmasıyla engellenir.",
+    "sinav": "Tanım: Çıkarma operasyonu (dequeue), kuyruğun başındaki en eski elemanı siler ve döndürür.\nÖrnek: Boş kuyruktan eleman çıkarma çağrısı doğrudan IndexError fırlatır.\nSık hata: Boş kuyruktan eleman çıkarmaya çalışırken None döndürüp çağıran algoritmayı yanıltmak.",
+    "baslik": "Kuyruktan Çıkarma ve Boşluk Denetimi"
+  },
+  {
+    "satirlar": [36, 40],
+    "aciklama": "Okunan elemanın bulunduğu göz `None` yapılarak referans temizlenir. `self.bas` indeksi `(self.bas + 1) % self.kapasite` formülüyle dairesel olarak bir ileri kaydırılır. `self.boy` bir azaltılır ve `self.islem` sayacı güncellenir. Tüm bu adımlar O(1) zamanda tamamlanarak değer döndürülür.",
+    "sinav": "Tanım: Baş indeksinin modulo ile ilerletilmesi, eleman kaydırmaya gerek kalmadan kuyruk başını günceller.\nFormül: Yeni bas = (bas + 1) % kapasite, Karmaşıklık: O(1).\nÖrnek: bas=3 ve kapasite=4 iken bir çıkarma yapıldığında yeni bas = (3 + 1) % 4 = 0 olur.\nSık hata: Çıkarma sonrası baş indeksini modulo almadan artırarak dizi dışına taşmak.",
+    "baslik": "Baş İndeksinin İlerletilmesi ve Dönüş"
+  },
+  {
+    "satirlar": [42, 47],
+    "aciklama": "`on` metodu kuyruğun en önündeki elemanı çıkarmadan okumaya yarar. Yapı boşsa `IndexError` ile güvenlik sağlanır. `self.bas` konumundaki değer döndürülürken kuyruğun boyutu ve indeksi değişmez. İşlem sayacı bir artırılır ve erişim O(1) maliyetle gerçekleşir.",
+    "sinav": "Tanım: Ön eleman inceleme (front/peek), sıradaki elemanı kuyruktan düşürmeden gözlemler.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: Sıradaki eleman 'A' ise `on()` çağrısı 'A' döner, kuyruk yapısı değişmez.\nSık hata: `on()` metodunu çağırırken elemanı kuyruktan çıkaran mantığı çalıştırmak.",
+    "baslik": "Kuyruk Başı Elemanını İnceleme"
+  },
+  {
+    "satirlar": [49, 51],
+    "aciklama": "`bos_mu` metodu kuyrukta eleman bulunup bulunmadığını bool türünde döndürür. `self.boy == 0` karşılaştırması doğrudan mevcut eleman sayısını inceler. Herhangi bir döngü gerektirmez ve O(1) zamanda yanıt verir. Algoritmik akışlarda döngü koşulu olarak sıkça kullanılır.",
+    "sinav": "Tanım: Boşluk denetimi, kuyruğun tüketilebilir eleman içerip içermediğini sorgular.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: boy=0 ise True, boy > 0 ise False döner.\nSık hata: Boşluk denetimini dizinin tüm elemanlarını tek tek dolaşarak yapmaya kalkışmak.",
+    "baslik": "Kuyruk Boşluk Durumu Denetimi"
+  },
+  {
+    "satirlar": [53, 58],
+    "aciklama": "`dolu_mu` metodu eleman sayısının kapasiteye ulaşıp ulaşmadığını sorgular. `__len__` metodu ise Python `len()` fonksiyonu çağrıldığında `self.boy` değerini döndürür. Her iki fonksiyon da O(1) karmaşıklıkta çalışır. Bu yardımcı metotlar kuyruğun iç durumunu dış dünyaya güvenle açar.",
+    "sinav": "Tanım: Doluluk ve boyut sorgusu, kuyruğun kapasite limitlerini kontrol altında tutar.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: boy=4 ve kapasite=4 ise `dolu_mu()` True döner.\nSık hata: Sabit dizinin toplam uzunluğu ile kuyruktaki aktif eleman sayısını karıştırmak.",
+    "baslik": "Doluluk Denetimi ve Uzunluk Metodu"
+  },
+  {
+    "satirlar": [61, 67],
+    "aciklama": "`main` fonksiyonunda kapasitesi 4 olan bir `DaireselKuyruk` oluşturulur. 'A', 'B' ve 'C' elemanları sırayla eklenir ve ardından ilk iki eleman çıkarılır. Çıkarılan elemanların FIFO sırasına göre 'A' ve 'B' olduğu `assert` ile kanıtlanır. Bu adım baş indeksini 2 konumuna taşır.",
+    "sinav": "Tanım: Fonksiyonel doğrulama, kuyruğun temel FIFO prensibine uygun çalıştığını test eder.\nÖrnek: 'A', 'B', 'C' eklendikten sonra iki kez çıkarma yapılırsa sırasıyla 'A' ve 'B' alınır.\nSık hata: İlk çıkarma yapıldığında dizinin başındaki elemanların kaydırıldığını varsaymak.",
+    "baslik": "Ana Doğrulama ve İlk Ekle Çıkar Adımları"
+  },
+  {
+    "satirlar": [69, 73],
+    "aciklama": "Kuyruğa 'D', 'E' ve 'F' elemanları eklenerek dairesel başa sarma (wrap-around) tetiklenir. Dizinin sonuna ulaşıldıktan sonra yeni elemanlar 0 ve 1 indekslerine yerleşir. Kuyruk tamamen dolar ve `dolu_mu` metodunun `True` olduğu doğrulanır. Modulo mekanizmasının alanı nasıl verimli kullandığı gösterilir.",
+    "sinav": "Tanım: Basa sarma (wrap-around), dizinin sonuna gelen indeksin modulo ile sıfıra dönmesidir.\nFormül: İndisler: (2+1)%4=3, (2+2)%4=0, (2+3)%4=1.\nÖrnek: Elemanlar dizide sırasıyla 3, 0 ve 1 indislerine yazılır.\nSık hata: Dizi sonuna gelindiğinde boş yer olmasına rağmen dizi doldu sanmak.",
+    "baslik": "Başa Sarma İşleminin Gerçeklenmesi"
+  },
+  {
+    "satirlar": [74, 77],
+    "aciklama": "Başa sarma sonrası `self.dizi` içeriğinin beklenen sırada olduğu `assert` edilir. Dizideki fiziksel dizilim `['E', 'F', 'C', 'D']` şeklindedir ve baş indeksi 2'dir. Modulo mantığının fiziksel diziye yansıması konsola yazdırılır. Mantıksal sıra ile fiziksel indeks farkı somutlaştırılır.",
+    "sinav": "Tanım: Mantıksal kuyruk sırası ile fiziksel dizi sırası dairesel kuyruklarda farklılaşabilir.\nÖrnek: Fiziksel dizi ['E', 'F', 'C', 'D'] iken mantıksal kuyruk sırası 'C', 'D', 'E', 'F' şeklindedir.\nSık hata: Fiziksel dizi indeksinin her zaman 0'dan başladığını zannetmek.",
+    "baslik": "Dizi Durumu ve İndeks Doğrulaması"
+  },
+  {
+    "satirlar": [79, 85],
+    "aciklama": "Tamamen dolu olan kuyruğa yeni bir eleman ekleme denemesi yapılır. Beklendiği üzere `IndexError` fırlatıldığı `try/except` bloğu içinde yakalanır. Hatanın oluştuğu `assert` ile denetlenir ve ekrana bilgi verilir. Bu test sınır durumlarında kuyruğun korumasını teyit eder.",
+    "sinav": "Tanım: Taşma (overflow) koruması, kapasite sınırına ulaşmış kuyruğa müdahaleyi engeller.\nÖrnek: 4 elemanlı kuyruk doluyken 'TASMA' eklenmeye çalışıldığında hata oluşur.\nSık hata: Kapasite taşmalarını kontrolsüz bırakıp bellekteki verilerin bozulmasına yol açmak.",
+    "baslik": "Dolu Kuyruk Hata Sınaması"
+  },
+  {
+    "satirlar": [87, 91],
+    "aciklama": "Kuyruktaki tüm elemanlar dairesel düzende tek tek boşaltılır. Çıkarılan elemanların listesi `['C', 'D', 'E', 'F']` olarak elde edilir ve FIFO kuralının korunduğu `assert` ile doğrulanır. Fiziksel dizi dağınık olsa bile mantıksal sıranın bozulmadığı kanıtlanır. Sonuçlar başarıyla yazdırılır.",
+    "sinav": "Tanım: FIFO doğrulaması, kuyruğa giriş sırası ile çıkış sırasının birebir aynı olduğunu gösterir.\nÖrnek: 'C', 'D', 'E', 'F' sırasıyla kuyruktan çıkarak doğru akışı sağlar.\nSık hata: Basa sarma gerçekleştiğinde kuyruk sırasının bozulduğunu iddia etmek.",
+    "baslik": "Kuyruğu Boşaltma ve FIFO Sırası Doğrulaması"
+  },
+  {
+    "satirlar": [93, 99],
+    "aciklama": "Tamamen boşaltılmış dairesel kuyruktan eleman çıkarma işlemi denenir. Oluşması gereken `IndexError` istisnası `try/except` bloğuyla yakalanarak test edilir. Hata durumu `assert` ile denetlenir. Veri yapısının boşken güvenli şekilde hata verdiği ispatlanır.",
+    "sinav": "Tanım: Tüketme (underflow) koruması, boş bir yapıdan eleman çekilmesini önler.\nÖrnek: Boş kuyrukta `kuyruktan_cikar()` çağrıldığında `IndexError` alınır.\nSık hata: Boş kuyruktan veri çekerken None kontrolü yerine doğrudan erişip çökmek.",
+    "baslik": "Boş Kuyruk Çıkarma Hata Testi"
+  },
+  {
+    "satirlar": [101, 105],
+    "aciklama": "Dairesel kuyruk ile standart Python `list.pop(0)` arasındaki başarım farkını gösteren test başlatılır. Karşılaştırma başlıkları formatlı bir tablo düzeninde ekrana yazdırılır. n=100 ve n=1000 elemanlık iki farklı senaryo üzerinde ölçümler yürütülür. Algoritma analizi ampirik olarak sergilenir.",
+    "sinav": "Tanım: Karşılaştırmalı başarım analizi, iki farklı yaklaşımın çalışma maliyetlerini yan yana koyar.\nFormül: Dairesel kuyruk karmaşıklığı: O(1), list.pop(0) karmaşıklığı: O(n).\nÖrnek: n=100 ve n=1000 elemanlık deneyler yürütülür.\nSık hata: Python listesinin pop(0) metodunun sabit sürede çalıştığını sanmak.",
+    "baslik": "Ölçeklenme ve Maliyet Karşılaştırma Başlangıcı"
+  },
+  {
+    "satirlar": [106, 109],
+    "aciklama": "n kapasiteli dairesel kuyruğa n adet eleman eklenir ve ardından çıkarılır. Toplam yapılan işlem sayısının tam olarak `2 * n` olduğu `assert` ile kanıtlanır. Eleman başına işlem sayısı n büyüse de 2.00 sabitinde kalır. Bu durum işlemlerin kesin olarak O(1) olduğunu gösterir.",
+    "sinav": "Tanım: Dairesel kuyrukta her ekleme ve çıkarma sabit sayıda temel işlem gerektirir.\nFormül: Toplam İşlem = 2n, Eleman Başına İşlem = 2 = O(1).\nÖrnek: n=1000 için toplam işlem 2000'dir.\nSık hata: Dairesel kuyrukta boyut büyüdükçe ekleme maliyetinin arttığını düşünmek.",
+    "baslik": "Dairesel Kuyruk O(1) İşlem Sayımı"
+  },
+  {
+    "satirlar": [111, 116],
+    "aciklama": "Standart Python listesinde `pop(0)` çağrıldığında geriye kalan tüm elemanlar bir sola kaydırılır. Bu kaydırma sayısı adım adım sayılarak toplam kaydırma maliyeti hesaplanır. n eleman için toplam kaydırma `n * (n - 1) // 2` formülüyle O(n^2) seviyesine çıkar. Bu durum dairesel kuyruğun sağladığı büyük avantajın matematiksel kanıtıdır.",
+    "sinav": "Tanım: Dizi başında eleman silme işlemi, ardışık tüm elemanların sola ötelenmesini gerektirir.\nFormül: Toplam Kaydırma = n(n - 1) / 2 = O(n^2), Ortalama Kaydırma = O(n).\nÖrnek: n=1000 için tam olarak 499,500 kaydırma işlemi yapılır.\nSık hata: `list.pop(0)` çağrısının O(1) olduğunu varsayarak büyük veri kuyruklarında kullanmak.",
+    "baslik": "List Pop Kaydırma Maliyeti Analizi"
+  },
+  {
+    "satirlar": [118, 119],
+    "aciklama": "Her iki yöntemin ölçülen işlem ve kaydırma değerleri tablo satırında yazdırılır. n=100 ve n=1000 değerlerindeki büyük uçurum ekranda net şekilde görülür. Dairesel kuyruğun eleman başına 2.0 sabit maliyeti O(1) verimliliği kanıtlarken diğer yöntemin yavaşlığı belgelenir. Analiz sonuçları öğrenci için anlaşılır kılınır.",
+    "sinav": "Tanım: Deneysel karmaşıklık tablosu, teorik Big-O analizinin pratik sonuçlarını doğrular.\nÖrnek: n=1000 için dairesel kuyruk 2000 işlem yaparken, liste 499500 kaydırma yapar.\nSık hata: Teorik analizin pratik çalışma süreleriyle uyuşmadığını öne sürmek.",
+    "baslik": "Karşılaştırma Sonuçlarının Tablo Halinde Yazdırılması"
+  },
+  {
+    "satirlar": [122, 123],
+    "aciklama": "Dosya bağımsız olarak çalıştırıldığında doğrulama adımlarını ve maliyet analizini çalıştırır. `main` fonksiyonu sistemin tüm gereksinimlerini otomatik denetler. Modül yapısı kodun başka dosyalardan çağrılmasına da olanak tanır. Böylece temiz ve profesyonel bir yazılım mimarisi sağlanır.",
+    "sinav": "Tanım: Modül çalıştırıcı, script doğrudan yürütüldüğünde testlerin koşulmasını sağlar.\nÖrnek: `python kuyruk_dairesel.py` komutu çalıştırıldığında testler çalışır.\nSık hata: Modül içe aktarıldığında kontrolsüz çıktı basılmasına izin vermek.",
+    "baslik": "Dairesel Kuyruk Modül Çalıştırıcı"
+  }
+]

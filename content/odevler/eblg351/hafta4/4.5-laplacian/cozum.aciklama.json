@@ -1,0 +1,173 @@
+[
+  {
+    "satirlar": [
+      1,
+      4
+    ],
+    "baslik": "Ödev 4.5 amacı ve 3x3 Laplacian tanımı",
+    "aciklama": "Docstring 3x3 Laplacian kenar tespiti ödevini tanıtır. İkinci mertebe türev operatörü olan Laplacian, girdi kamera görüntüsüne Gauss'lu ve Gauss'suz olarak uygulanır.",
+    "sinav": "Tanım: Laplacian operatörü skaler ikinci mertebe türevdir: `nabla^2 f = d^2f/dx^2 + d^2f/dy^2`.\nFormül: Standart 3x3 çekirdek: `[[0, 1, 0], [1, -4, 1], [0, 1, 0]]` veya köşegenli `[[1, 1, 1], [1, -8, 1], [1, 1, 1]]`.\nSık hata: Laplacian'ın birinci değil ikinci mertebe türev olduğunu unutmak."
+  },
+  {
+    "satirlar": [
+      5,
+      8
+    ],
+    "baslik": "Sıfır geçişi ve rapor üretimi",
+    "aciklama": "Docstring 8-komşuluklu sıfır geçişi (zero-crossing) ile ikili kenar haritası üretildiğini, panellerin kaydedildiğini ve Prewitt/Sobel ile karşılaştıran raporların derlendiğini açıklar.",
+    "sinav": "Tanım: İkinci mertebe türevde kenarlar tepe noktası değil, işaret değiştirdiği 'sıfır geçiş' (zero-crossing) noktalarıdır.\nSık hata: Laplacian çıktısını doğrudan eşiklemeye çalışmak (sıfır geçiş aranmalıdır)."
+  },
+  {
+    "satirlar": [
+      10,
+      14
+    ],
+    "baslik": "Kütüphaneleri yükle",
+    "aciklama": "Pathlib dosya yollarını, sys arama yollarını, cv2 filtreleme fonksiyonlarını ve numpy matris matematiğini sağlar.",
+    "sinav": "Tanım: Standart kütüphaneler görüntü işleme altyapısını oluşturur.\nSık hata: Eksik import nedeniyle isim çözümleme hatası almak."
+  },
+  {
+    "satirlar": [
+      15,
+      20
+    ],
+    "baslik": "Çalışma dizinlerini sys.path'e bağla",
+    "aciklama": "Betiğin üst dizinleri hafta4 ve repo kökü sys.path listesine eklenerek ortak modüllere erişim sağlanır.",
+    "sinav": "Tanım: `sys.path.insert(0, d)` modül arama yolunu genişletir.\nSık hata: Paket yolunu eklemeyi unutup import hatası almak."
+  },
+  {
+    "satirlar": [
+      22,
+      25
+    ],
+    "baslik": "Kenar yardımcılarını yükle (işaretli, laplacian, mutlak)",
+    "aciklama": "hafta4.kenarlar modülünden isaretli_goruntu_uint8, laplacian ve mutlak_uint8 fonksiyonları içe aktarılır.",
+    "sinav": "Tanım: `laplacian(gri, yumusat)` fonksiyonu 3x3 Laplacian konvolüsyonunu float32 olarak döner.\nSık hata: İşaretli türevi mutlak değerle karıştırmak."
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "baslik": "Panel, sıfır geçiş ve rapor modüllerini aktar",
+    "aciklama": "panel_olustur, sifir_gecis ve hafta4.rapor_uret modülünden rapor_45_uret fonksiyonları yüklenir.",
+    "sinav": "Tanım: `sifir_gecis` 8-komşulukta işaret değişimini ve yerel gradyan eğimini kontrol eder.\nSık hata: Küçük gürültü geçişlerini önlemek için eğim eşiği kullanmamak."
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "baslik": "Çıktı klasörlerini oluştur",
+    "aciklama": "calistir fonksiyonu yerel cikti ve merkezi genel_cikti klasörlerini kontrol edip oluşturur.",
+    "sinav": "Tanım: Çıktı dizinlerinin güvenli oluşturulması dosya yazım hatalarını önler.\nSık hata: Klasör olmadan dosya kaydetmeye çalışmak."
+  },
+  {
+    "satirlar": [
+      39,
+      41
+    ],
+    "baslik": "Girdi dosyasının varlığını denetle",
+    "aciklama": "girdi_yol ile kamera.png dosyasının varlığı denetlenir. Dosya diskte mevcut değilse açık bir FileNotFoundError fırlatılarak program güvenli biçimde durdurulur.",
+    "sinav": "Tanım: `exists()` kontrolü dosya yolu hatalarını erkenden yakalar.\nSık hata: Dosya yokken doğrudan okuma yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      43,
+      45
+    ],
+    "baslik": "Kamera görüntüsünü gri seviyede oku",
+    "aciklama": "cv2.imread kamera.png dosyasını IMREAD_GRAYSCALE modunda 8-bit tek kanallı matris olarak okur. Okuma başarısız olursa None kontrolüyle ValueError üretilir.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` tek kanallı piksel yoğunluk matrisi verir.\nSık hata: `None` dönen matrisi kontrol etmeden işlem yapmak."
+  },
+  {
+    "satirlar": [
+      47,
+      51
+    ],
+    "baslik": "Gauss'suz Laplacian ve gürültü duyarlılığı",
+    "aciklama": "laplacian(gri, yumusat=False) çağrısı doğrudan ham görüntüye Laplacian uygular. lap_no_vis işaretli görüntüyü, lap_no_zc ise sıfır geçiş ikili haritasını üretir. Bu çıktı ikinci türevin gürültüyü nasıl aşırı büyüttüğünü ve sahte kenarlar ürettiğini açıkça sergiler.",
+    "sinav": "Tanım: Laplacian gürültüye karşı aşırı hassastır; Gauss yumuşatması olmadan tüm arka plan gürültüsü sahte sıfır geçişi üretir.\nÖrnek: Gökyüzü ve düz zemin alanlarında binlerce sahte kenar çizgisi belirir.\nSık hata: Gauss yumuşatması olmadan Laplacian'ın pratik kenar tespitinde kullanılabileceğini sanmak."
+  },
+  {
+    "satirlar": [
+      52,
+      57
+    ],
+    "baslik": "Gauss'lu Laplacian (LoG mantığı)",
+    "aciklama": "laplacian(gri, yumusat=True) önce 5x5 Gauss yumuşatma, ardından Laplacian uygular. İşaretli görsel lap_g_vis, mutlak değer lap_g_abs ve sıfır geçiş lap_g_zc hesaplanır. Yumuşatma sahte geçişleri temizleyerek gerçek nesne sınırlarını ortaya çıkarır.",
+    "sinav": "Tanım: Gauss + Laplacian kombinasyonu kenarların kapalı eğriler halinde ve tek piksel kalınlığında tespit edilmesini sağlar.\nSık hata: Eğim eşiği koymadan tüm sıfır geçişlerini kenar kabul etmek."
+  },
+  {
+    "satirlar": [
+      58,
+      60
+    ],
+    "baslik": "2x3 panel görsel listesi",
+    "aciklama": "Girdi, Gauss'suz işaretli, Gauss'suz sıfır geçiş, Gauss'lu işaretli, Gauss'lu mutlak ve Gauss'lu sıfır geçiş görselleri 2x3 ızgara düzeni için bir araya getirilir.",
+    "sinav": "Tanım: 2x3 panel Gauss filtresinin gürültü eleme gücünü yan yana ispatlar.\nSık hata: Panel listesindeki görsel sayısıyla ızgara boyutunu uyumsuz vermek."
+  },
+  {
+    "satirlar": [
+      61,
+      64
+    ],
+    "baslik": "Panel ilk satır başlıkları",
+    "aciklama": "Panelin ilk satırındaki üç görsel için '1. Girdi (Orijinal)', '2. Lap (Gauss-suz Isaretli)' ve '3. Lap (Gauss-suz Sifir Gecis)' başlıkları tanımlanır.",
+    "sinav": "Tanım: Başlıklar Gauss'suz Laplacian'ın gürültülü sıfır geçişlerini açıkça etiketler.\nSık hata: Başlık sıralamasını yanlış eşleştirmek."
+  },
+  {
+    "satirlar": [
+      65,
+      70
+    ],
+    "baslik": "Panel başlıkları ve panel oluşturma",
+    "aciklama": "Her görsel için açıklayıcı başlıklar verilir ve panel_olustur fonksiyonu ile (2, 3) düzeninde panel matrisi üretilir.",
+    "sinav": "Tanım: `panel_olustur` görsel karşılaştırma matrisi üretir.\nSık hata: Başlık sıralamasını görsellerle karıştırmak."
+  },
+  {
+    "satirlar": [
+      72,
+      75
+    ],
+    "baslik": "Yerel cikti: Gauss'suz ve Gauss'lu işaretli çıktılar",
+    "aciklama": "kamera_laplacian_nogauss_isaretli.png, kamera_laplacian_nogauss_ikili.png, kamera_laplacian_gauss_isaretli.png dosyaları yerel cikti dizinine kaydedilir.",
+    "sinav": "Tanım: `cv2.imwrite` ara ve nihai kenar haritalarını PNG olarak saklar.\nSık hata: Dosya isimlerinde gauss ve nogauss ayrımını karıştırmak."
+  },
+  {
+    "satirlar": [
+      76,
+      79
+    ],
+    "baslik": "Yerel cikti: Mutlak, ikili ve panel kaydı",
+    "aciklama": "kamera_laplacian_gauss_mutlak.png, kamera_laplacian_gauss_ikili.png ve panel_laplacian.png dosyaları yerel cikti dizinine yazılır.",
+    "sinav": "Tanım: İkili sıfır geçiş haritası nihai kenar sonucudur.\nSık hata: Paneli kaydetmeyi unutup görsel incelemeyi aksatmak."
+  },
+  {
+    "satirlar": [
+      80,
+      85
+    ],
+    "baslik": "Genel çıktı klasörünü güncelle",
+    "aciklama": "Tüm Laplacian çıktısı PNG dosyaları merkezi hafta4/cikti klasörüne de kaydedilerek ortak veri havuzuna aktarılır.",
+    "sinav": "Tanım: Merkezi çıktı güncellemesi rapor oluşturucu modüller için zorunludur.\nSık hata: Genel klasöre eksik dosya kopyalamak."
+  },
+  {
+    "satirlar": [
+      86,
+      89
+    ],
+    "baslik": "Karşılaştırma raporlarını üret",
+    "aciklama": "rapor_45_uret(hedef_klasor=dosya_yolu.parent) fonksiyonu karsilastirma.md ve karsilastirma.pdf belgelerini üretir ve tamamlanma mesajı basılır.",
+    "sinav": "Tanım: `rapor_45_uret` Laplacian ile Prewitt/Sobel gradyan yöntemlerini kuramsal olarak kıyaslar.\nSık hata: Rapor betiğini çalıştırmayı atlamak."
+  },
+  {
+    "satirlar": [
+      92,
+      93
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart modül çalıştırma bloğudur.\nSık hata: Kodu bu bloğun dışına yazmak."
+  }
+]

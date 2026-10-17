@@ -1,0 +1,101 @@
+[
+  {
+    "satirlar": [
+      1,
+      4
+    ],
+    "baslik": "Kütüphaneleri içe aktar",
+    "aciklama": "Betik dosya yolları için Path, görüntü giriş-çıkışı için cv2 ve sayısal matris işlemleri için numpy modüllerini yükler. Bu kütüphaneler harici filtreleme fonksiyonu kullanmadan saf 2B konvolüsyon ve PSNR hesaplamak için gerekli temel araçları sağlar. Bağımlılıkların baştan tanımlanması modülerliği artırır.",
+    "sinav": "Tanım: `import` ifadeleri gerekli kütüphaneleri ad alanına bağlar; `numpy` matris işlemlerini yürütür.\nSık hata: Gerekli sayısal kütüphaneleri yüklemeden matris aritmetiği yapmaya çalışmak."
+  },
+  {
+    "satirlar": [
+      6,
+      7
+    ],
+    "baslik": "Klasör ve girdi yollarını tanımla",
+    "aciklama": "klasor değişkeni betiğin bulunduğu konumu, girdi değişkeni ise test resimlerinin yer aldığı üst klasördeki girdi dizinini gösterir. Pathlib kullanımı işletim sisteminden bağımsız olarak dosya yollarının güvenli çözülmesini sağlar. Bu sayede komut satırından farklı dizinlerden çağrıldığında yol hatası oluşmaz.",
+    "sinav": "Tanım: `Path(__file__).parent` betiğin bulunduğu mutlak dizini verir; dosya yolu yönetimini kararlı kılar.\nSık hata: Göreli yolları çalışma dizinine göre verip farklı klasörden çağrıldığında dosya yolu hatası almak."
+  },
+  {
+    "satirlar": [
+      9,
+      13
+    ],
+    "baslik": "3x3 ortalama filtre çekirdeğini tanımla",
+    "aciklama": "cekirdek listesi 3x3 boyutunda ve her bir elemanı 1/9 olan homojen bir matris olarak tanımlanır. Elemanların toplamının 1 olması filtrenin görüntünün genel parlaklık seviyesini değiştirmemesini (enerji korunumunu) sağlar. Bu çekirdek yerel 3x3 alandaki piksellerin ağırlıksız aritmetik ortalamasını temsil eder.",
+    "sinav": "Tanım: Çekirdek elemanları toplamı 1 olmalıdır; aksi halde filtrelenmiş görüntü sistematik olarak kararır veya parlar.\nFormül: `sum(cekirdek[i][j]) = 9 * (1/9) = 1.0`.\nSık hata: Çekirdek katsayılarını 1 yapıp 9'a bölmeyi unutarak pikselleri 255'e doyurmak."
+  },
+  {
+    "satirlar": [
+      15,
+      17
+    ],
+    "baslik": "PSNR başarım metriği fonksiyonu",
+    "aciklama": "psnr fonksiyonu referans ve test görüntüleri arasındaki Ortalama Karesel Hatayı (MSE) hesaplar. Ardından 255'in karesinin MSE'ye oranının 10 tabanındaki logaritmasını alarak sonucu desibel cinsinden döndürür. Bu metrik filtreleme işleminin gürültüyü ne kadar temizlediğini sayısal olarak kıyaslar.",
+    "sinav": "Formül: `MSE = mean((a - b)^2)`, `PSNR = 10 * log10(255^2 / MSE)`.\nÖrnek: `MSE = 0` olduğunda PSNR sonsuz olur (birebir özdeş görüntüler).\nSık hata: Pikselleri `float64` yapmadan çıkarmak ve `uint8` taşmasıyla MSE'yi yanlış hesaplamak."
+  },
+  {
+    "satirlar": [
+      20,
+      22
+    ],
+    "baslik": "Konvolüsyon fonksiyonu ve boyutlar",
+    "aciklama": "konvolusyon fonksiyonu gri görüntü matrisini ve filtre çekirdeğini girdi olarak kabul eder. gri.shape ifadesi görüntünün yükseklik h ve genişlik w değerlerini çıkarır. Bu boyutlar sınır pikselleri ve tarama döngüleri için temel sınırları belirler.",
+    "sinav": "Tanım: 2B ayrık konvolüsyon uzamsal filtrelemenin temel matematiksel operatörüdür.\nSık hata: Görüntü satır ve sütun sırasını `(h, w)` ile `(x, y)` arasında karıştırmak."
+  },
+  {
+    "satirlar": [
+      23,
+      27
+    ],
+    "baslik": "Yansıtma ile kenar genişletme (border reflect)",
+    "aciklama": "Görüntü kenarlarındaki piksellerin 3x3 komşuluğu tam olmadığı için satırlar ve sütunlar kenardan içeri yansıtılarak 1 piksel genişletilir. OpenCV'nin cv2.blur fonksiyonundaki BORDER_REFLECT_101 (1 0 1 yansıması) kuralı satirlar ve sutunlar listeleriyle taklit edilir. Genişletilmiş matris Python listesine dönüştürülerek döngü erişimi hızlandırılır.",
+    "sinav": "Tanım: `BORDER_REFLECT_101`: Kenar pikseli tekrarlanmaz, bir içteki piksel kenara yansıtılır (`[1, 0, 1, 2, ...]`).\nSık hata: Kenarlara sıfır dolgusu yapıp görüntünün çerçevesinde yapay siyah kararma oluşturmak."
+  },
+  {
+    "satirlar": [
+      28,
+      31
+    ],
+    "baslik": "Çıktı matrisi ve satır döngüsü",
+    "aciklama": "sonuc matrisi orijinal görüntü boyutunda ve uint8 türünde sıfırlarla başlatılır. Dış döngü y koordinatı üzerinde ilerleyerek genişletilmiş matristen üst, orta ve alt satır dilimlerini alır. Satır dilimlerini önceden ayırmak iç döngüde indeksleme maliyetini düşürür.",
+    "sinav": "Tanım: Çıktı matrisi `np.zeros((h, w), dtype=np.uint8)` olarak önceden tahsis edilir.\nSık hata: Çıktıyı dinamik liste olarak büyütüp aşırı bellek ve işlemci tüketimine yol açmak."
+  },
+  {
+    "satirlar": [
+      32,
+      35
+    ],
+    "baslik": "Piksel komşuluklarını çekirdekle çarp (üst ve orta)",
+    "aciklama": "İç döngü x koordinatı üzerinde ilerler ve 3x3 penceredeki pikselleri çekirdek katsayılarıyla çarpar. ust satırdaki 3 piksel çekirdeğin ilk satırıyla, orta satırdaki 3 piksel çekirdeğin orta satırıyla ağırlıklandırılarak toplam değişkenine eklenir. Bu adım uzamsal ağırlıklı toplamın ilk iki satırını tamamlar.",
+    "sinav": "Formül: Konvolüsyon toplamı: `sum_{i,j} I[y+i, x+j] * K[i, j]`.\nSık hata: Çekirdek indekslerini ters yazıp asimetrik filtrelerde yön hatası yapmak."
+  },
+  {
+    "satirlar": [
+      36,
+      38
+    ],
+    "baslik": "Alt satırı ekle, yuvarla ve piksele yaz",
+    "aciklama": "alt satırdaki 3 piksel çekirdeğin son satırıyla çarpılarak toplama katılır. Elde edilen toplam değeri round fonksiyonu ile en yakın tam sayıya yuvarlanarak sonuc matrisinin ilgili pikseline atanır. Döngüler tamamlandığında her piksel 3x3 komşularının ortalamasını almış olur.",
+    "sinav": "Tanım: `round(toplam)` ondalıklı konvolüsyon sonucunu en yakın piksel tamsayısına dönüştürür.\nSık hata: Yuvarlama yerine kesme (`int`) uygulayıp parlaklıkta hafif kararmaya neden olmak."
+  },
+  {
+    "satirlar": [
+      41,
+      44
+    ],
+    "baslik": "Girdi görsellerini diskten oku",
+    "aciklama": "Ana döngü dağ ve sis test dosyalarını sırayla işlemek üzere temiz ve gürültülü versiyonları okur. cv2.imread fonksiyonu gri seviyede okuma yaparak tek kanallı NumPy dizileri oluşturur. Bu matrisler fonksiyonsuz konvolüsyonun girdi ve doğrulama verileridir.",
+    "sinav": "Tanım: `cv2.IMREAD_GRAYSCALE` ile tek kanallı 8-bit yoğunluk matrisi elde edilir.\nSık hata: Görüntü dosyasının yolunu yanlış verip `None` okumak."
+  },
+  {
+    "satirlar": [
+      45,
+      48
+    ],
+    "baslik": "Konvolüsyonu çalıştır, kaydet ve PSNR yazdır",
+    "aciklama": "konvolusyon fonksiyonu gürültülü görüntüye uygulanır ve üretilen sonuç cikti klasörüne kaydedilir. psnr fonksiyonu ile hesaplanan filtre öncesi ve sonrası sinyal-gürültü oranları konsola basılır. Elde edilen çıktılar OpenCV'nin hazır cv2.blur fonksiyonunun çıktısıyla piksel düzeyinde birebir örtüşür.",
+    "sinav": "Örnek: `dag: 22.37 dB -> 31.70 dB`, `sis: 22.56 dB -> 31.00 dB`.\nTanım: Saf konvolüsyon hazır fonksiyonla aynı matematiksel sonucu doğrular.\nSık hata: Sonuç matrisini uint8 türüne getirmeden yazıp format hatası almak."
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring 8-bit gri görüntüyü daha az parlaklık seviyesine indirme ödevini, komut biçimini ve varsayılan dosyaları açıklar. Girdi ve çıktı yazılmazsa betiğin klasöründeki dama.jpg okunur, sonuçlar cikti klasörüne gider. Kullanım metni, programı kodu açmadan çalıştırma yolunu gösterir.",
+    "sinav": "Tanım: 6-bit nicemleme, 8-bit pikselleri `2^6 = 64` gri seviyesine indirger.\nÖrnek: Alt 2 bit atıldığında `0, 1, 2, 3` değerleri `0` seviyesine eşlenir.\nSık hata: 6-bit nicemlemede 64 yerine 6 seviye olduğunu sanmak.",
+    "baslik": "Nicemleme ödevi amacı ve docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      10
+    ],
+    "aciklama": "argparse komut satırı seçeneklerini, Path dosya yollarını, cv2 görüntü okuma-yazmayı ve np dizi işlemlerini sağlar. Her bağımlılık dosyada kullanılan bir işi üstlenir; yeni yardımcı paket gerekmez. import satırları, bu adların fonksiyonlarda kullanılabilmesi için modül ad alanına bağlanmasını sağlar.",
+    "sinav": "Tanım: `import` ifadeleri gerekli kütüphaneleri ad alanına bağlar; `numpy` matris ve bit seviyesinde işlemleri yönetir.\nSık hata: Gerekli modülleri içe aktarmadan fonksiyonlarını çağırıp `NameError` hatası almak.",
+    "baslik": "Gerekli kütüphaneleri içe aktar"
+  },
+  {
+    "satirlar": [
+      12,
+      12
+    ],
+    "aciklama": "Path(__file__).resolve().parent betiğin bulunduğu dosya yolunu çözüp üst klasörünü KLASOR değişkenine bağlar. Varsayılan görseli bu klasöre göre aramak, komutun başka bir geçerli çalışma dizininden verilmesinde yolu kararlı tutar. Path kullanımı işletim sistemine özgü ayraçları elle birleştirme ihtiyacını azaltır.",
+    "sinav": "Tanım: `Path(__file__).resolve().parent` betiğin bulunduğu klasörün mutlak dizinini verir.\nÖrnek: `KLASOR / 'dama.jpg'` betiğin yanındaki dosyayı işaret eder.\nSık hata: Çalışma dizinine güvenip betik başka klasörden çağrılınca dosya yolunu kaybetmek.",
+    "baslik": "Betik dizinini taban yol belirle"
+  },
+  {
+    "satirlar": [
+      15,
+      17
+    ],
+    "aciklama": "nicemle_6bit gri piksel değerlerinin en düşük iki bitini gri >> 2 ile atar, sonra << 2 ile tekrar 8-bit aralığa taşır. Sağ kaydırma pozitif tamsayılarda floor(x/4) ile aynı sonucu verir; bu nedenle değerler dörder artan 64 kademeden birine iner. astype(np.uint8) çıktıyı görüntülerin kullandığı işaretsiz 8-bit piksel türüne dönüştürür.",
+    "sinav": "Formül: `q(x) = (x >> 2) << 2 = floor(x / 4) * 4`\nÖrnek: `x = 7` için `(7 >> 2) << 2 = 4` olur; en büyük nicemleme hatası `3`'tür.\nSık hata: Sola kaydırmayı unutup görüntüyü `[0, 63]` aralığında karartmak.",
+    "baslik": "Alt 2 biti sıfırla ve nicemle"
+  },
+  {
+    "satirlar": [
+      20,
+      23
+    ],
+    "aciklama": "fark_gorseli cv2.absdiff ile özgün ve nicemlenmiş görüntü arasındaki piksel bazlı mutlak farkı çıkarır. En büyük fark sıfırsa ölçekleme anlamsız olduğundan ham fark korunur; değilse float32 dönüşümü ve 255/en_buyuk çarpanı farkı tam aralığa yayar. Bu kontrast germe küçük nicemleme hatalarını görünür yapar ama farkların gerçek parlaklığı değildir.",
+    "sinav": "Tanım: `cv2.absdiff` mutlak farkı `|x - q(x)|` hesaplar; kontrast için `[0, 255]` aralığına gerilir.\nFormül: `(fark / en_buyuk) * 255`\nSık hata: Normalizasyon sonucunu gerçek piksel hatası büyüklüğü sanmak.",
+    "baslik": "Mutlak fark görüntüsünü oluştur"
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "aciklama": "main argparse ile girdi ve çıktı yollarını isteğe bağlı alır, type=Path sayesinde bunları doğrudan yol işlemlerinde kullanır. Varsayılan değerler KLASOR altındaki dama.jpg ve cikti yoludur. Argüman tanımlarını bir arada tutmak, komut arayüzünü ve varsayılan davranışı değiştirmeyi kolaylaştırır.",
+    "sinav": "Tanım: `nargs='?'` konumsal argümanı isteğe bağlı yapar; girilmezse `default` atanır.\nÖrnek: `type=Path` parametresi metin yolunu `Path` nesnesine çevirir.\nSık hata: `nargs='?'` olmadan konumsal argüman girilmediğinde programın çökeceğini unutmak.",
+    "baslik": "Komut satırı argümanlarını tanımla"
+  },
+  {
+    "satirlar": [
+      31,
+      34
+    ],
+    "aciklama": "cv2.imread resmi IMREAD_GRAYSCALE modunda okuyarak her pikseli tek bir 0–255 yoğunluk değerine indirger. Okuma başarısızsa None için açık hata verilir; başarılıysa nicemle_6bit aynı satır-sütun boyutunda yeni değerler üretir. Gri giriş, bit düzeyindeki işlemin renk kanalları arasında karışmadan uygulanmasını sağlar.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` tek kanallı 8-bit yoğunluk matrisi verir; nicemleme boyutu değil parlaklık kademesini değiştirir.\nSık hata: `cv2.imread` `None` döndüğünde kontrol etmeyip işlem yapmaya çalışarak hata almak.",
+    "baslik": "Gri resmi oku ve nicemle"
+  },
+  {
+    "satirlar": [
+      35,
+      38
+    ],
+    "aciklama": "mkdir eksik çıktı klasörüyle birlikte üst klasörleri oluşturur ve exist_ok=True varsa aynı yolu sorun etmez. Döngü gri, 6-bit ve fark görüntüsünü adlarıyla eşleştirip cv2.imwrite ile kaydeder. Yazma başarısızsa dosya yolu hata ile bildirilir; böylece sessiz veri kaybı önlenir.",
+    "sinav": "Tanım: `mkdir(parents=True, exist_ok=True)` eksik üst dizinleri oluşturur, klasör varsa hata vermez.\nSık hata: Kayıpsız PNG yerine kayıplı JPEG kaydedip sıkıştırma gürültüsüyle nicemlenmiş seviyeleri bozmak.",
+    "baslik": "Çıktı klasörünü oluştur ve kaydet"
+  },
+  {
+    "satirlar": [
+      39,
+      39
+    ],
+    "aciklama": "np.unique her dizide en az bir kez görülen farklı değerleri sıralı olarak bulur, .size ise bu değerlerin sayısını verir. Bu ölçüm teorik kademe sayısını değil, o dosyada gerçekten kullanılan seviyeleri raporlar. Nicemleme sonrası sayı en çok 64 olabilir, ancak görüntü tüm kademeleri içermiyorsa daha az çıkar.",
+    "sinav": "Tanım: `np.unique(dizi).size` matristeki benzersiz değerlerin sayısını verir.\nÖrnek: 6-bit nicemlemede kuramsal üst sınır `2^6 = 64` seviyedir.\nSık hata: Girdi görüntüsünde bulunmayan seviyelerin de çıktıya eklenip tam 64 olacağını sanmak.",
+    "baslik": "Benzersiz parlaklık seviyelerini say"
+  },
+  {
+    "satirlar": [
+      42,
+      43
+    ],
+    "aciklama": "__name__ ile __main__ metinlerinin eşitliği denetimi main fonksiyonunu yalnız dosya doğrudan program olarak çalıştırıldığında çağırır. Başka bir dosya bunu modül olarak import ederse komut satırı okuma ve görüntü yazma akışı başlamaz. Bu koruma fonksiyonları yeniden kullanırken istenmeyen yan etkileri önler.",
+    "sinav": "Tanım: `__name__ == '__main__'` denetimi dosya ana program olarak çalıştırıldığında `main()` çağrısını yapar.\nSık hata: Bu denetimi koymayıp dosya içe aktarıldığında tüm dosya okuma ve yazma işlemlerinin çalışmasına yol açmak.",
+    "baslik": "Doğrudan çalıştırma kontrolü"
+  }
+]

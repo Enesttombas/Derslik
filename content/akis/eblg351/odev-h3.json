@@ -1,0 +1,497 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-o-h3-1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-1",
+   "dosya": "hafta3/odev1-kontrast-germe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    14,
+    16
+   ],
+   "etiketler": [
+    "kontrast-germe",
+    "min-max"
+   ],
+   "soru": "`(x - min) * 255 / (max - min)` formülü ne yapar?",
+   "secenekler": [
+    "En koyu pikseli 0'a, en parlağı 255'e eşleyip aradakileri doğrusal ölçekler",
+    "Her pikseli 255 ile çarpar",
+    "Histogramı eşitler",
+    "Yalnız ortalamayı 128 yapar"
+   ],
+   "dogru": 0,
+   "aciklama": "x = min → 0, x = max → 255. Aradaki değerler doğrusal olarak yerleşir. Dar aralıkta (örn. sis 92–249) kontrast tam dinamik aralığa açılır; histogramın şekli değişmez, yalnız gerilir."
+  },
+  {
+   "id": "351-o-h3-1-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-1",
+   "dosya": "hafta3/odev1-kontrast-germe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    14,
+    16
+   ],
+   "etiketler": [
+    "kontrast-germe",
+    "dogrusal"
+   ],
+   "soru": "`gri = [[92, 100], [200, 249]]` için min-max germe sonucu?",
+   "secenekler": [
+    "[[0, 13], [175, 255]]",
+    "[[0, 100], [200, 255]]",
+    "[[92, 100], [200, 249]]",
+    "[[0, 8], [108, 157]]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [[0 13] [175 255]]. 100 → (100−92)·255/157 = 12.99 → 13.",
+   "aciklama": "min=92, max=249, aralık=157. 200 → 108·255/157 = 175.4 → 175. En küçük 0, en büyük 255 olur; kalanı doğrusal serpilir."
+  },
+  {
+   "id": "351-o-h3-1-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-1",
+   "dosya": "hafta3/odev1-kontrast-germe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    14,
+    16
+   ],
+   "etiketler": [
+    "kontrast-germe",
+    "uint8-tasma"
+   ],
+   "kod": "en_kucuk = int(gri.min())\nen_buyuk = int(gri.max())\n# y = (x - min) * 255 / (max - min)\nsonuc = (gri - en_kucuk) * 255 / (en_buyuk - en_kucuk)\nsonuc = np.round(sonuc).astype(np.uint8)",
+   "hataSatir": 4,
+   "soru": "Hatalı satıra dokun: uint8 dizide ara hesap neden bozulur?",
+   "aciklama": "`gri` uint8 olduğu için `(gri - min) * 255` ara adımda 255'i aşıp modüler taşar (örn. (100−92)·255 = 2040 → 2040 mod 256 = 248). Önce `gri.astype(np.float32)` yapılmalı; kodda bu yüzden float32 dönüşümü var."
+  },
+  {
+   "id": "351-o-h3-1-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-1",
+   "dosya": "hafta3/odev1-kontrast-germe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    11,
+    12
+   ],
+   "etiketler": [
+    "kontrast-germe",
+    "max-min"
+   ],
+   "kod": "en_kucuk = int(gri.min())\nen_buyuk = int(gri.max())\n# tüm pikseller aynı değerdeyse?",
+   "soru": "Tüm pikselleri aynı değerde olan görüntüde bu formül hatasız çalışır.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. max = min ise payda 0 olur ve sıfıra bölme (NumPy'da uyarı + nan/inf) oluşur. Düz görüntüde gerilecek bir kontrast yoktur; böyle durumu ayrıca ele almak gerekir."
+  },
+  {
+   "id": "351-o-h3-2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-2",
+   "dosya": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    16,
+    21
+   ],
+   "etiketler": [
+    "histogram-esitleme",
+    "cdf"
+   ],
+   "soru": "CDF (kümülatif dağılım) neden kullanılıyor?",
+   "secenekler": [
+    "`cdf[i]`, gri değeri ≤ i olan piksel sayısıdır; eşitleme dönüşümü bundan çıkar",
+    "Piksel sırasını karıştırmak için",
+    "Gürültüyü azaltmak için",
+    "Görüntüyü küçültmek için"
+   ],
+   "dogru": 0,
+   "aciklama": "Hist[i] i değerinin sayısı, cdf[i] ise 0..i toplamıdır. Çok pikselin toplandığı aralıkta cdf hızlı artar; formül bu bölgeyi geniş bir çıktı aralığına yayar. Böylece histogram yaklaşık düzleşir."
+  },
+  {
+   "id": "351-o-h3-2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-2",
+   "dosya": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    23,
+    28
+   ],
+   "etiketler": [
+    "histogram-esitleme",
+    "tablo"
+   ],
+   "soru": "`gri = [0,0,1,1,1,2,3,3]` için eşitleme tablosunun ilk dört girişi (`tablo[0..3]`)?",
+   "secenekler": [
+    "[0, 128, 170, 255]",
+    "[0, 85, 170, 255]",
+    "[2, 5, 6, 8]",
+    "[0, 64, 128, 192]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: cdf = [2 5 6 8], cdf_min = 2 → tablo [0, 128, 170, 255].",
+   "aciklama": "N=8, cdf_min=2. x=1: (5−2)/(8−2)·255 = 127.5 → 128. x=2: (6−2)/6·255 = 170. x=3: 255. Sık görülen 1 değeri geniş bir aralığa yayıldı."
+  },
+  {
+   "id": "351-o-h3-2-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-2",
+   "dosya": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    25,
+    28
+   ],
+   "etiketler": [
+    "histogram-esitleme",
+    "cdf-min"
+   ],
+   "kod": "cdf_min = next(c for c in cdf if c > 0)\ntablo[i] = max(0, round((cdf[i] - cdf_min) / (n - cdf_min) * 255))",
+   "soru": "`cdf_min` yerine 0 kullanılsaydı `[0,0,1,1,1,2,3,3]` görüntüsünde 0 değerli piksel hangi değere giderdi?",
+   "degisiklik": {
+    "eski": "cdf_min = ilk sıfırdan büyük cdf",
+    "yeni": "cdf_min = 0"
+   },
+   "secenekler": [
+    "64'e; en koyu piksel 0'a inmez",
+    "Yine 0 olurdu",
+    "255 olurdu",
+    "Program hata verirdi"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: cdf=[2 5 6 8], cdf_min=0 → tablo(0) = 2/8·255 = 63.75 → 64; cdf_min=2 ile 0.",
+   "aciklama": "`cdf_min`, görüntüde bulunan en koyu seviyenin cdf değeridir. Çıkarılınca en koyu piksel kesin 0 olur ve aralık tam 0–255 kullanılır. 0 alınırsa koyu uç yukarıda kalır, kazanç azalır."
+  },
+  {
+   "id": "351-o-h3-2-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-2",
+   "dosya": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    30,
+    34
+   ],
+   "etiketler": [
+    "histogram-esitleme",
+    "std"
+   ],
+   "soru": "Eşitleme sonrası `std` neden genelde artar?",
+   "aciklama": "Standart sapma parlaklık yayılımının ölçüsüdür. Eşitleme yoğun gri aralıkları genişletip seyrek aralıkları sıkıştırdığı için değerler 0–255'e yayılır, std yükselir. Her piksel `tablo[gri]` ile sorgulanır: dönüşüm tek bir 256'lık arama tablosudur, bu yüzden hızlıdır.",
+   "secenekler": [
+    "Eşitleme değerleri 0–255'e yayar, std yükselir; dönüşüm tek bir 256'lık arama tablosudur",
+    "Eşitleme değerleri sıkıştırır, std düşer",
+    "std yalnız piksel sayısına bağlıdır",
+    "Her piksel için ayrı hesap yapıldığı için yavaştır"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-o-h3-3-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-3",
+   "dosya": "hafta3/odev3-clahe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    20,
+    23
+   ],
+   "etiketler": [
+    "clahe",
+    "clip-limit"
+   ],
+   "soru": "`limit = max(int(clip_limit * alan / 256), 1)` neyi sınırlar?",
+   "secenekler": [
+    "Bir gri seviyesinin karodaki en fazla piksel sayısını; kırpılan fazlalık sonra dağıtılır",
+    "Karo sayısını",
+    "Görüntünün parlaklığını",
+    "Çıktının en büyük değerini"
+   ],
+   "dogru": 0,
+   "aciklama": "Düz bir karoda her seviyeye ortalama alan/256 piksel düşer. clipLimit=2.0 bunun 2 katını tavan yapar. Tepe noktaları kırpılıp fazlalık tüm seviyelere eşit dağıtılır; böylece düz bölgelerde gürültü aşırı güçlenmez."
+  },
+  {
+   "id": "351-o-h3-3-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-3",
+   "dosya": "hafta3/odev3-clahe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    20,
+    23
+   ],
+   "etiketler": [
+    "clahe",
+    "limit-hesabi"
+   ],
+   "soru": "Karo 64×64 piksel ve `clip_limit = 2.0` ise `limit` kaçtır?",
+   "secenekler": [
+    "32",
+    "16",
+    "64",
+    "4096"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: alan = 4096, int(2.0·4096/256) = 32.",
+   "aciklama": "Düz dağılımda her seviyede 4096/256 = 16 piksel olur; clip_limit 2 olduğundan tavan 32. Bir seviyede 32'den fazla piksel varsa fazlası kırpılıp yeniden dağıtılır."
+  },
+  {
+   "id": "351-o-h3-3-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-3",
+   "dosya": "hafta3/odev3-clahe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    36,
+    40
+   ],
+   "etiketler": [
+    "clahe",
+    "kirpma"
+   ],
+   "kod": "fazla = 0\nfor k in range(256):\n    if hist[k] > limit:\n        fazla += hist[k] - limit\n        # hist[k] = limit  (unutuldu)\npay, kalan = divmod(fazla, 256)\nfor k in range(256):\n    hist[k] += pay",
+   "hataSatir": 5,
+   "soru": "Hatalı satıra dokun: kırpma neden etkisiz kalır ve toplam piksel sayısı bozulur?",
+   "aciklama": "Fazlalık hesaplanıyor ama `hist[k] = limit` yazılmadığı için tepe düşmez; üstüne fazlalık bir de tüm seviyelere eklenir. Toplam alan kadar olması gereken histogram şişer ve CDF'in son değeri 255'i aşar. Tepe önce limite çekilmeli."
+  },
+  {
+   "id": "351-o-h3-3-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-3",
+   "dosya": "hafta3/odev3-clahe/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    58,
+    72
+   ],
+   "etiketler": [
+    "clahe",
+    "ara-deger"
+   ],
+   "soru": "CLAHE'de piksel neden dört karonun tablosundan çift doğrusal ara değerle hesaplanır?",
+   "aciklama": "Her karo kendi dönüşüm tablosunu kullanırsa karo sınırlarında ani sıçrama (bloklaşma) olur. Piksel, çevresindeki 4 karonun merkezlerine uzaklığa göre ağırlıklandırılmış dört tablo çıktısını karıştırır; geçişler pürüzsüz olur. Bu yüzden CLAHE yerel kontrastı artırırken blok izi bırakmaz.",
+   "secenekler": [
+    "Daha hızlı olduğu için",
+    "Karo sayısı yetmediği için",
+    "Bilgi kaybını önlemek için",
+    "Karo sınırında ani sıçrama/bloklaşma olmasın diye dört karonun tablosu uzaklığa göre karıştırılır"
+   ],
+   "dogru": 3
+  },
+  {
+   "id": "351-o-h3-4-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-4",
+   "dosya": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    9,
+    12
+   ],
+   "etiketler": [
+    "ortalama-filtre",
+    "cekirdek"
+   ],
+   "soru": "Çekirdekteki her elemanın 1/9 olması ne demektir?",
+   "secenekler": [
+    "Çıktı, 3×3 penceredeki 9 pikselin aritmetik ortalamasıdır",
+    "Merkez piksel 9 kat güçlenir",
+    "Görüntü 9 parçaya bölünür",
+    "Kenarlar korunur"
+   ],
+   "dogru": 0,
+   "aciklama": "Ağırlıklar toplamı 1 olduğu için parlaklık korunur. Her çıktı pikseli komşularıyla ortalanır: gürültü azalır ama kenarlar da bulanıklaşır."
+  },
+  {
+   "id": "351-o-h3-4-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-4",
+   "dosya": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    33,
+    37
+   ],
+   "etiketler": [
+    "ortalama-filtre",
+    "tek-nokta"
+   ],
+   "soru": "3×3 pencerede 8 piksel 10, merkez piksel 100 ise çıktı değeri?",
+   "secenekler": [
+    "20",
+    "10",
+    "55",
+    "100"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: cv2.blur → 20; (8·10 + 100)/9 = 20.",
+   "aciklama": "Tek parlak aykırı değer ortalamayı yukarı çeker (100 → 20) ama yok etmez, komşuları da etkiler. Bu yüzden ortalama filtre tuz-biber için kötüdür; medyan daha iyidir."
+  },
+  {
+   "id": "351-o-h3-4-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-4",
+   "dosya": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    23,
+    26
+   ],
+   "etiketler": [
+    "ortalama-filtre",
+    "yansitma"
+   ],
+   "kod": "satirlar = [1] + list(range(h)) + [h - 2]\nsutunlar = [1] + list(range(w)) + [w - 2]\ngenis = gri[satirlar][:, sutunlar]",
+   "soru": "Bir satırın değerleri [1, 2, 3] ise bu yansıtma sonrası genişletilmiş satır nedir?",
+   "degisiklik": {
+    "eski": "orijinal satır [1, 2, 3]",
+    "yeni": "yansıtılmış satır"
+   },
+   "secenekler": [
+    "[2, 1, 2, 3, 2]",
+    "[1, 1, 2, 3, 3]",
+    "[0, 1, 2, 3, 0]",
+    "[3, 1, 2, 3, 1]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: cv2.BORDER_REFLECT_101 → [2 1 2 3 2]; kod aynı \"1 0 1\" desenini kullanır.",
+   "aciklama": "İndeks 1 başa, h−2 sona eklenir: kenar pikseli ikinci pikselin değeriyle sarılır (kenar tekrarlanmadan). cv2.blur varsayılan sınır modu aynıdır; böylece elle yazılan filtre aynı sonucu verir."
+  },
+  {
+   "id": "351-o-h3-4-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-4",
+   "dosya": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    15,
+    17
+   ],
+   "etiketler": [
+    "ortalama-filtre",
+    "psnr"
+   ],
+   "kod": "def psnr(a, b):\n    mse = np.mean((a.astype(np.float64) - b.astype(np.float64)) ** 2)\n    return 10 * np.log10(255 ** 2 / mse)",
+   "soru": "Filtre sonrası PSNR yükselirse görüntü temiz referansa daha yakın demektir.",
+   "dogruMu": true,
+   "aciklama": "Doğru. PSNR, MSE ile ters orantılıdır: hata küçüldükçe PSNR (dB) büyür. Gürültülü görüntüden filtreliye PSNR'ın artması filtrenin gürültüyü azalttığını gösterir; ama aşırı bulanıklık kenarları bozup yine PSNR'ı düşürebilir."
+  },
+  {
+   "id": "351-o-h3-5-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-5",
+   "dosya": "hafta3/odev5-medyan-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    25,
+    29
+   ],
+   "etiketler": [
+    "medyan-filtre",
+    "pencere"
+   ],
+   "soru": "`katmanlar` listesi ne tutar?",
+   "secenekler": [
+    "25 öteleme: her katman, her pikselin 5×5 penceresindeki bir komşunun değerlerini tutar",
+    "25 farklı görüntü",
+    "Pikselin tüm komşularının ortalamaları",
+    "Yalnız kenar pikselleri"
+   ],
+   "dogru": 0,
+   "aciklama": "(dy, dx) ötelemeleriyle `genis` dilimlenir; her dilim görüntü boyutundadır ve her piksel için o pozisyondaki komşuyu verir. 25 katmanı eleman bazında sıralamak, her pikselin 25 komşusunu aynı anda sıralamak demektir."
+  },
+  {
+   "id": "351-o-h3-5-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-5",
+   "dosya": "hafta3/odev5-medyan-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    40,
+    41
+   ],
+   "etiketler": [
+    "medyan-filtre",
+    "aykiri"
+   ],
+   "soru": "3×3 pencerede değerler [10,10,10,10,255,10,10,10,10] ise medyan ve ortalama?",
+   "secenekler": [
+    "Medyan 10, ortalama ≈ 37",
+    "Medyan 255, ortalama 10",
+    "Medyan 10, ortalama 10",
+    "Medyan ≈ 37, ortalama 10"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: np.median → 10.0, np.mean → 37.22.",
+   "aciklama": "Medyan sıralı dizinin ortasıdır; tek aykırı değer (tuz) sıralamanın ucuna gider ve medyanı etkilemez. Ortalama ise 37'ye çıkar. Bu yüzden medyan filtre tuz-biber gürültüsünde keskin kenarı bozmadan temizler."
+  },
+  {
+   "id": "351-o-h3-5-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-5",
+   "dosya": "hafta3/odev5-medyan-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    40,
+    41
+   ],
+   "etiketler": [
+    "medyan-filtre",
+    "indeks"
+   ],
+   "kod": "n = len(katmanlar)   # 25\n# ... kabarcık sıralaması ile katmanlar artan sıralı ...\nreturn katmanlar[0]",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: sonuç neden medyan değil?",
+   "aciklama": "Sıralı 25 değerde `katmanlar[0]` en küçük değerdir (minimum filtresi: koyu lekeler). Medyan ortadaki 13. değerdir, indeks `n // 2` = 12. `katmanlar[n - 1]` ise maksimum olurdu."
+  },
+  {
+   "id": "351-o-h3-5-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "odev": "h3-5",
+   "dosya": "hafta3/odev5-medyan-filtre/hazir_fonksiyonsuz.py",
+   "satirlar": [
+    31,
+    38
+   ],
+   "etiketler": [
+    "medyan-filtre",
+    "kabarcik"
+   ],
+   "soru": "Kabarcık sıralaması neden `np.minimum` / `np.maximum` ile yazılmış?",
+   "aciklama": "Klasik karşılaştır-ve-yer-değiştir her piksel için ayrı yapılırdı. `minimum`/`maximum` iki katmanı tüm piksellerde aynı anda küçüğü öne büyüğü arkaya koyar; bir görüntü boyutundaki dizi işlemi 1 sıralama adımına denk gelir. 25 elemanda 300 karşılaştırma yapılır (24+23+…+1).",
+   "secenekler": [
+    "Python'da `sorted` yasak olduğu için",
+    "`minimum`/`maximum` iki katmanı tüm piksellerde aynı anda sıralar; 25 elemanda 300 karşılaştırma yapılır",
+    "Her piksel ayrı sıralanır, bu yalnız okunaklıdır",
+    "Sıralama gereksizdir, ortalama alınır"
+   ],
+   "dogru": 1
+  }
+ ]
+}

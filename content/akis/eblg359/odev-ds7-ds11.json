@@ -1,0 +1,474 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-o-ds7-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds7",
+   "dosya": "kuyruk_iki_yigin.py",
+   "satirlar": [
+    24,
+    30
+   ],
+   "etiketler": [
+    "kuyruk",
+    "iki-yigin"
+   ],
+   "soru": "`_aktar()` neden yalnız `giden` boşken çalışır?",
+   "secenekler": [
+    "`giden` doluyken aktarsak sıra bozulur; boşken aktarmak FIFO sırasını korur",
+    "Bellek tasarrufu için",
+    "Python zorunlu kıldığı için",
+    "Gelen yığın boşsa hata oluşmasın diye"
+   ],
+   "dogru": 0,
+   "aciklama": "`gelen`'in tepesi en yeni, `giden`'e boşaltınca tepesi en eski olur. `giden` doluyken aktarsaydık eski elemanların önüne yeniler geçerdi. Kural: önce `giden` tükenmeli."
+  },
+  {
+   "id": "359-o-ds7-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds7",
+   "dosya": "kuyruk_iki_yigin.py",
+   "satirlar": [
+    58,
+    66
+   ],
+   "etiketler": [
+    "kuyruk",
+    "fifo"
+   ],
+   "soru": "ekle(1,2,3); çıkar; ekle(4); çıkar; çıkar; çıkar sırasıyla ne döner?",
+   "secenekler": [
+    "1, 2, 3, 4",
+    "1, 4, 2, 3",
+    "3, 2, 1, 4",
+    "1, 2, 4, 3"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: çıkarmalar 1, 2, 3, 4; ilk çıkarma sonrası gelen=[], giden=[3,2]; ekle(4) sonrası gelen=[4], giden=[3,2].",
+   "aciklama": "İlk çıkarmada 1,2,3 `giden`'e ters aktarılır (tepe=1). 4 `gelen`'de bekler; `giden` boşalana kadar aktarılmaz. Sıra bozulmaz: 1,2,3 sonra 4."
+  },
+  {
+   "id": "359-o-ds7-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds7",
+   "dosya": "kuyruk_iki_yigin.py",
+   "satirlar": [
+    77,
+    87
+   ],
+   "etiketler": [
+    "amortize",
+    "en-kotu"
+   ],
+   "soru": "500 eleman eklendikten sonra TEK bir `kuyruktan_cikar()` çağrısının işlem maliyeti?",
+   "secenekler": [
+    "501 (500 aktarım + 1 çıkarma)",
+    "1",
+    "500",
+    "250"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: tek çıkarma maliyeti 501 işlem; n=500 karışık akışta toplam aktarım 500, n=1000 için 1000.",
+   "aciklama": "O çağrıda tüm 500 eleman `giden`'e taşınır (tek çağrı O(n)). Ama her eleman en fazla bir kez aktarıldığı için n işlem boyunca toplam aktarım ≤ n: çağrı başına amortize O(1)."
+  },
+  {
+   "id": "359-o-ds7-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds7",
+   "dosya": "kuyruk_iki_yigin.py",
+   "satirlar": [
+    89,
+    102
+   ],
+   "etiketler": [
+    "amortize",
+    "aktarim"
+   ],
+   "kod": "assert cikarilan == list(range(n))\nassert test_k.aktarim <= n",
+   "soru": "Toplam aktarım sayısı hiçbir ekle/çıkar sırasında eklenen eleman sayısını aşamaz.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Her eleman `gelen`'den `giden`'e yalnız bir kez geçer (sonra çıkar). Bu yüzden toplam aktarım ≤ eklenen sayısı; amortize analizin muhasebe (potansiyel) yöntemi tam budur."
+  },
+  {
+   "id": "359-o-ds8-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds8",
+   "dosya": "hash_tablosu.py",
+   "satirlar": [
+    19,
+    24
+   ],
+   "etiketler": [
+    "hash",
+    "polinom"
+   ],
+   "soru": "`h = h * 31 + ord(ch)` ve sonda `% len(self.kovalar)` ne sağlar?",
+   "secenekler": [
+    "Metni sayıya çevirir ve kova sayısına göre bir indekse sıkıştırır; aynı anahtar hep aynı kovaya gider",
+    "Metni şifreler",
+    "Anahtarları sıralar",
+    "Çakışmayı tamamen önler"
+   ],
+   "dogru": 0,
+   "aciklama": "Taban 31 polinom hash karakter konumlarını da hesaba katar ('ab' ≠ 'ba'). Mod işlemi sonucu 0..m−1 aralığına indirir. Çakışma (iki anahtar aynı kova) yine olabilir; zincirleme bunu listeyle çözer."
+  },
+  {
+   "id": "359-o-ds8-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds8",
+   "dosya": "hash_tablosu.py",
+   "satirlar": [
+    80,
+    93
+   ],
+   "etiketler": [
+    "hash",
+    "yeniden-hashleme"
+   ],
+   "soru": "4 kovayla başlayıp 20 anahtar eklendiğinde yeniden hashleme sayısı, son kova sayısı ve yük oranı?",
+   "secenekler": [
+    "3, 32, 0.625",
+    "5, 128, 0.156",
+    "2, 16, 1.25",
+    "3, 32, 1.0"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: yeniden hashleme sayısı 3; kova 32; yük oranı 0.625 (20/32).",
+   "aciklama": "Yük oranı 0.75'i aşınca kova ikiye katlanır: 4→8→16→32. 20/32 = 0.625 < 0.75 olduğundan 4. kez büyümez. Büyütme hash'i (mod) değiştirdiği için tüm elemanlar yeniden dağıtılır."
+  },
+  {
+   "id": "359-o-ds8-3",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds8",
+   "dosya": "hash_tablosu.py",
+   "satirlar": [
+    30,
+    40
+   ],
+   "etiketler": [
+    "hash",
+    "yeniden-hashleme"
+   ],
+   "kod": "def _yeniden_hashle(self):\n    eski_kovalar = self.kovalar\n    self.kovalar = [[] for _ in range(len(eski_kovalar) * 2)]\n    for kova in eski_kovalar:\n        for k, v in kova:\n            self.kovalar[self._hash(k)].append([k, v])",
+   "hataSatir": 3,
+   "soru": "Hatalı yere dokun: büyütme sonrası eleman sayısı için hangi alan bozulur?",
+   "aciklama": "`eleman_sayisi` sıfırlanmıyor ve yeniden eklenirken artırılmıyor: sayaç ya eski değerde kalır ya da (artırılıyorsa) iki katına çıkar. Yük oranı yanlış hesaplanır, gereksiz sık büyütme olur. Orijinal kod önce 0'a çeker, her eklemede +1 yapar."
+  },
+  {
+   "id": "359-o-ds8-4",
+   "tur": "acikla",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds8",
+   "dosya": "hash_tablosu.py",
+   "satirlar": [
+    95,
+    107
+   ],
+   "etiketler": [
+    "hash",
+    "arama-maliyeti"
+   ],
+   "soru": "Ortalama arama maliyeti neden yaklaşık 1 + α (α = yük oranı) civarında çıkar?",
+   "aciklama": "Aranan anahtarın kovasında ortalama α eleman beklenir; bulunan elemanın kendisi +1 karşılaştırma. Çıktı: 1.30 ≤ 1 + 0.625 = 1.62. Yük oranını 0.75'in altında tutmak bu yüzden önemli: α büyürse zincirler uzar, arama O(n)'e yaklaşır."
+  },
+  {
+   "id": "359-o-ds9-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds9",
+   "dosya": "ikili_yigin_heap.py",
+   "satirlar": [
+    25,
+    32
+   ],
+   "etiketler": [
+    "heap",
+    "indeks"
+   ],
+   "soru": "Dizi tabanlı heap'te i. düğümün ebeveyni, sol ve sağ çocuğu hangi formüllerle bulunur?",
+   "secenekler": [
+    "Ebeveyn (i−1)//2, sol 2i+1, sağ 2i+2",
+    "Ebeveyn i//2, sol 2i, sağ 2i+1",
+    "Ebeveyn i−1, sol i+1, sağ i+2",
+    "Ebeveyn 2i, sol i, sağ i"
+   ],
+   "dogru": 0,
+   "aciklama": "0 tabanlı indekste kök 0; çocuklar 1 ve 2; 1'in çocukları 3 ve 4. Böylece işaretçi tutmadan ağaç diziye gömülür ve gezinme O(1)'dir."
+  },
+  {
+   "id": "359-o-ds9-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds9",
+   "dosya": "ikili_yigin_heap.py",
+   "satirlar": [
+    34,
+    47
+   ],
+   "etiketler": [
+    "heap",
+    "ekle"
+   ],
+   "soru": "Boş min-heap'e sırayla 5, 3, 8, 1 eklenince `veri` listesi?",
+   "secenekler": [
+    "[1, 3, 8, 5]",
+    "[1, 3, 5, 8]",
+    "[5, 3, 8, 1]",
+    "[1, 5, 8, 3]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: veri = [1, 3, 8, 5]; sonra en_kucuk_cikar → 1, veri = [3, 5, 8].",
+   "aciklama": "5 → [5]; 3 yukarı sızar → [3,5]; 8 → [3,5,8]; 1 (indeks 3) ebeveyni 5'i ve sonra 3'ü geçer → [1,3,8,5]. Heap tam sıralı değildir; yalnız ebeveyn ≤ çocuk kuralı geçerlidir."
+  },
+  {
+   "id": "359-o-ds9-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds9",
+   "dosya": "ikili_yigin_heap.py",
+   "satirlar": [
+    81,
+    86
+   ],
+   "etiketler": [
+    "heap",
+    "floyd"
+   ],
+   "soru": "Floyd yöntemi `listeden_kur([9,7,5,3,1,2,4])` sonrası `veri`?",
+   "secenekler": [
+    "[1, 3, 2, 9, 7, 5, 4]",
+    "[1, 2, 3, 4, 5, 7, 9]",
+    "[9, 7, 5, 3, 1, 2, 4]",
+    "[1, 3, 2, 4, 7, 5, 9]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [1, 3, 2, 9, 7, 5, 4]; döngü (n−2)//2 = 2'den 0'a iner.",
+   "aciklama": "Yaprak olmayan son düğümden (indeks 2) köke doğru her birini aşağı sızdırır. Alttan yukarı kurulduğu için toplam O(n); tek tek ekleme O(n log n). 1000 elemanda 3557 vs 2591 işlem (1.37x)."
+  },
+  {
+   "id": "359-o-ds9-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds9",
+   "dosya": "ikili_yigin_heap.py",
+   "satirlar": [
+    60,
+    79
+   ],
+   "etiketler": [
+    "heap",
+    "asagi-sizdir"
+   ],
+   "kod": "def _asagi_sizdir(self, i):\n    n = len(self.veri)\n    sol, sag = 2 * i + 1, 2 * i + 2\n    ebk = i\n    if sol < n and self.veri[sol] < self.veri[ebk]:\n        ebk = sol\n    if sag < n and self.veri[sag] < self.veri[ebk]:\n        ebk = sag\n    if ebk != i:\n        self.veri[i], self.veri[ebk] = self.veri[ebk], self.veri[i]",
+   "hataSatir": 10,
+   "soru": "Hatalı yere dokun: kökten çıkarma sonrası yığın kuralı neden tutmayabilir?",
+   "aciklama": "Takas yapılıyor ama sızma devam etmiyor: takas edilen düğüm yeni konumunda hâlâ çocuklarından büyük olabilir. Orijinal kod `while True` ile `i = ebk` yapıp çocuk kalmayana ya da kural sağlanana kadar sürer."
+  },
+  {
+   "id": "359-o-ds10-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds10",
+   "dosya": "ikili_arama_agaci.py",
+   "satirlar": [
+    24,
+    44
+   ],
+   "etiketler": [
+    "bst",
+    "ekle"
+   ],
+   "soru": "`ekle` aynı anahtar ikinci kez eklenirse ne yapar?",
+   "secenekler": [
+    "Hiçbir şey eklemez, döngüyü kırar (yinelemesiz ağaç)",
+    "Sola ekler",
+    "Sağa ekler",
+    "Hata fırlatır"
+   ],
+   "dogru": 0,
+   "aciklama": "`anahtar < m.anahtar` sola, `>` sağa gider; eşitlikte `else: break` çalışır ve yeni düğüm ağaca bağlanmaz. Böylece anahtarlar benzersiz kalır."
+  },
+  {
+   "id": "359-o-ds10-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds10",
+   "dosya": "ikili_arama_agaci.py",
+   "satirlar": [
+    61,
+    69
+   ],
+   "etiketler": [
+    "bst",
+    "dolasim"
+   ],
+   "soru": "50, 30, 70, 20, 40, 60, 80 sırayla eklenince `ortanca_dolasim()` ve `yukseklik()`?",
+   "secenekler": [
+    "[20,30,40,50,60,70,80] ve 3",
+    "[50,30,20,40,70,60,80] ve 3",
+    "[20,30,40,50,60,70,80] ve 7",
+    "[80,70,60,50,40,30,20] ve 3"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: dolaşım [20, 30, 40, 50, 60, 70, 80], yükseklik 3; ara(60) 3 adım.",
+   "aciklama": "Ortanca (inorder) dolaşım sol–kök–sağ sırasıyla anahtarları artan verir; BST'nin tanımı bunu garanti eder. Dengeli yerleşimde 7 düğümün yüksekliği 3'tür."
+  },
+  {
+   "id": "359-o-ds10-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds10",
+   "dosya": "ikili_arama_agaci.py",
+   "satirlar": [
+    123,
+    128
+   ],
+   "etiketler": [
+    "bst",
+    "dejenere"
+   ],
+   "soru": "1..200 sıralı eklenen ağaçta yükseklik ve 200'ü arama adımı (karışık sırada ekleneni dengeli kabul et)?",
+   "secenekler": [
+    "200 ve 200 adım (dengeli: 18 yükseklik, 6 adım)",
+    "8 ve 8 adım",
+    "100 ve 100 adım",
+    "200 ve 1 adım"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: dejenere yükseklik 200, arama 200 adım; dengeli yükseklik 18, 6 adım → hızlanma 33.33x.",
+   "aciklama": "Sıralı ekleme her düğümü sağa zincirler: ağaç bağlı listeye döner, arama O(n). Karışık eklemede yükseklik ≈ log n. Bu yüzden self-balancing ağaçlar (AVL, kırmızı-siyah) vardır."
+  },
+  {
+   "id": "359-o-ds10-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds10",
+   "dosya": "ikili_arama_agaci.py",
+   "satirlar": [
+    46,
+    53
+   ],
+   "etiketler": [
+    "bst",
+    "arama"
+   ],
+   "kod": "def ara(self, anahtar):\n    m = self.kok\n    while m is not None:\n        if anahtar == m.anahtar:\n            return True\n        m = m.sol if anahtar > m.anahtar else m.sag\n    return False",
+   "hataSatir": 6,
+   "soru": "Hatalı yere dokun: arama neden anahtarları bulamaz?",
+   "aciklama": "Karşılaştırma ters: anahtar büyükse sağa, küçükse sola gidilmeli (`m.sol if anahtar < m.anahtar else m.sag`). Ters yönde ilerlemek, doğru alt ağacı hiç ziyaret etmez ve var olan anahtarlar bulunmaz."
+  },
+  {
+   "id": "359-o-ds11-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 5,
+   "odev": "ds11",
+   "dosya": "karsilastirma.py",
+   "satirlar": [
+    47,
+    50
+   ],
+   "etiketler": [
+    "list",
+    "insert-bas"
+   ],
+   "soru": "`l.insert(0, i)` neden n kez yapıldığında O(n²) tutar?",
+   "secenekler": [
+    "Her insert mevcut tüm elemanları bir sağa kaydırır (O(n))",
+    "Her insert yeni liste oluşturur",
+    "insert yavaş bir Python fonksiyonu olduğu için",
+    "Dizi her seferinde sıralanır"
+   ],
+   "dogru": 0,
+   "aciklama": "Python list dizi tabanlıdır; başa ekleme için hepsi kayar. k. eklemede k eleman: toplam n(n−1)/2. Aynı iş `deque.appendleft` ve bağlı listede O(1)'dir."
+  },
+  {
+   "id": "359-o-ds11-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 5,
+   "odev": "ds11",
+   "dosya": "karsilastirma.py",
+   "satirlar": [
+    113,
+    116
+   ],
+   "etiketler": [
+    "adim",
+    "kaydirma"
+   ],
+   "soru": "N=2000 için `kaydirma` değeri ve diğer sütunların (List Son, Deque, BL) adım sayısı?",
+   "secenekler": [
+    "1999000 ve 2000, 2000, 2000",
+    "2000 ve 2000, 2000, 2000",
+    "4000000 ve 2000, 2000, 2000",
+    "1000 ve 1, 1, 1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: 2000·1999/2 = 1999000; diğer yöntemler eleman başına 1 adım = 2000.",
+   "aciklama": "Başa ekleme toplam n(n−1)/2 kaydırma; sona ekleme, deque ve bağlı liste n adım. Süre tablosu makineye bağlı gürültülüdür; bu yüzden kod ayrıca deterministik adım tablosu verir."
+  },
+  {
+   "id": "359-o-ds11-3",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 5,
+   "odev": "ds11",
+   "dosya": "karsilastirma.py",
+   "satirlar": [
+    121,
+    130
+   ],
+   "etiketler": [
+    "karmasiklik",
+    "tablo"
+   ],
+   "kod": "(\"Hash Tablosu\", \"O(1) / O(n)\", \"O(1) / O(n)\", \"O(1) / O(n)\")\n(\"BST (Arama)\", \"O(log n) / O(n)\", \"O(log n)\", \"O(log n)\")",
+   "soru": "Hash tablosunun işlemleri sıralı eklenmiş BST'den her zaman daha hızlıdır.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Hash ortalama O(1) ama kötü hash/çok çakışmada O(n)'e düşer. Sıralı eklenmiş dejenere BST de O(n) olur; dengeli BST garanti O(log n) verir. 'Her zaman' ifadesi yanlış; ortalama/en kötü durum ayrımı gerekir."
+  },
+  {
+   "id": "359-o-ds11-4",
+   "tur": "acikla",
+   "ders": "EBLG359",
+   "hafta": 5,
+   "odev": "ds11",
+   "dosya": "karsilastirma.py",
+   "satirlar": [
+    26,
+    42
+   ],
+   "etiketler": [
+    "olcum",
+    "tek-bagli-liste"
+   ],
+   "soru": "Tek bağlı listede hem `basa_ekle` hem `sona_ekle` neden O(1) çalışır?",
+   "aciklama": "Liste hem `bas` hem `son` işaretçisini tutar. Başa eklemede yeni düğümün `sonraki`'si eski baş olur; sona eklemede `son.sonraki` yeni düğümü gösterir ve `son` güncellenir. İkisi de gezinme gerektirmez: sabit sayıda işaretçi ataması."
+  }
+ ]
+}

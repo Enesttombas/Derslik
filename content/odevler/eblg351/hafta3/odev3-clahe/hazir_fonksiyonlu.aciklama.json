@@ -1,0 +1,38 @@
+[
+  {
+    "satirlar": [
+      1,
+      6
+    ],
+    "baslik": "OpenCV CLAHE nesnesini yapılandır",
+    "aciklama": "cv2.createCLAHE çağrısı 2.0 kontrast kırpma sınırı ve 8x8 karo ızgara boyutuyla CLAHE nesnesini oluşturur. CLAHE (Contrast Limited Adaptive Histogram Equalization), görüntüyü küçük ızgara bloklarına bölerek her bölgede yerel histogram eşitleme yapar. Klip limiti sayesinde homojen alanlarda aşırı gürültü yükselmesi engellenir.",
+    "sinav": "Tanım: CLAHE (Contrast Limited Adaptive Histogram Equalization), yerel kontrastı artırırken gürültüyü sınırlayan uyarlamalı yöntemdir.\nÖrnek: `clipLimit=2.0, tileGridSize=(8, 8)` parametreleri 64 yerel karo tanımlar.\nSık hata: Düz zeminli bölgelerde `clipLimit` konulmazsa arka plan gürültüsünün aşırı yükselmesi."
+  },
+  {
+    "satirlar": [
+      8,
+      9
+    ],
+    "baslik": "Girdi görsellerini gri modda oku",
+    "aciklama": "Döngü dağ ve sis dosyalarını sırayla ele alarak girdi dizininden gri tonlamalı formatta yükler. cv2.IMREAD_GRAYSCALE bayrağı görüntüyü 8-bit yoğunluk matrisine dönüştürerek yerel adaptif kontrast işlemine hazırlar. Görüntü tek kanallı gri formatta olmalıdır çünkü CLAHE doğrudan parlaklık yoğunluğu üzerinde çalışır.",
+    "sinav": "Tanım: CLAHE doğrudan tek kanallı gri matrisler üzerinde parlaklık dağılımını dengeler.\nSık hata: Renkli BGR görüntüye doğrudan CLAHE uygulayıp renk uzayı bozulmasına yol açmak (LAB uzayında L kanalına uygulanmalıdır)."
+  },
+  {
+    "satirlar": [
+      11,
+      11
+    ],
+    "baslik": "clahe.apply ile yerel eşitlemeyi uygula",
+    "aciklama": "clahe.apply(gri) metodu görüntüyü 8x8 karolara ayırır, her karoda kırpılmış histogram eşitlemesi uygular ve karolar arasında çift doğrusal ara değerleme (bilinear interpolation) yapar. Bu enterpolasyon karolar arasındaki sınır çizgisi yapaylıklarını ortadan kaldırarak geçişleri pürüzsüzleştirir. Sonuçta genel kontrast korunurken yerel detaylar belirginleşir.",
+    "sinav": "Tanım: Karo sınırlarında blok yapaylıklarını (blocking artifacts) önlemek için pikseller 4 komşu karodan bilineer enterpolasyonla hesaplanır.\nSık hata: Global histogram eşitleme ile CLAHE'nin aynı sonucu vereceğini sanmak."
+  },
+  {
+    "satirlar": [
+      13,
+      14
+    ],
+    "baslik": "Sonucu kaydet ve standart sapmayı yazdır",
+    "aciklama": "Dönüştürülmüş görsel cv2.imwrite ile cikti klasörüne aktarılır ve standart sapma değişimi konsola yazdırılır. Sis görüntüsünde standart sapmanın 37.28'den 45.95'e çıkması, yerel kontrastın gürültüyü patlatmadan dengeli bir şekilde arttığını gösterir. Bu kontrollü artış, global eşitlemenin yarattığı aşırı parlamanın önüne geçer.",
+    "sinav": "Örnek: `sis: std 37.28 -> 45.95` (global eşitlemedeki 74.33'e kıyasla daha kontrollü ve doğal kontrast artışı).\nSık hata: CLAHE'nin her zaman global histogram eşitlemeden daha yüksek standart sapma üreteceğini sanmak."
+  }
+]

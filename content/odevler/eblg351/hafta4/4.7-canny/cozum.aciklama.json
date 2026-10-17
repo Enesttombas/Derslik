@@ -1,0 +1,452 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Ödev 4.7 genel amacı ve Canny operatörü",
+    "aciklama": "Docstring Canny kenar tespitinin uygulanmasını ve geliştirilen tüm kenar operatörlerinin kapsamlı kıyaslamasını özetler. Histerezis eşiklemesi (50/100) ve L2 gradyan normu ile optimal kenar haritası üretilir.",
+    "sinav": "Tanım: Canny operatörü optimal kenar tespiti için 3 kriteri sağlar: düşük hata oranı, iyi konumlandırma ve tekil yanıt.\nFormül: Histerezis eşiklemesinde `T_dusuk = 50`, `T_yuksek = 100` kullanılır.\nSık hata: Histerezis eşiklemesinde tek bir eşik kullanıp kenar kopukluğu yaşamak."
+  },
+  {
+    "satirlar": [
+      6,
+      10
+    ],
+    "baslik": "9 varyant ve 3 test görüntüsü",
+    "aciklama": "Docstring 9 varyantın (Prewitt, Sobel, Laplacian Gauss'lu/suz, LoG ve Canny Gauss'lu/suz) 3 farklı test görüntüsünde (kamera, temiz sentetik ve gürültülü sentetik) test edildiğini açıklar.",
+    "sinav": "Tanım: Sentetik görüntüler bilinen yer gerçeği (ground truth) sayesinde sayısal doğruluk testleri için standart referans sağlar.\nSık hata: Yalnızca gerçek kamera görüntüsüne bakıp yer gerçeği olmadan subjektif puanlama yapmak."
+  },
+  {
+    "satirlar": [
+      11,
+      14
+    ],
+    "baslik": "Performans ölçümleri ve CSV kaydı",
+    "aciklama": "Her yöntem için 3 ısınma ve 20 ölçümle medyan çalışma süresi (ms) ölçülür. Sentetik görüntülerde 1 piksel toleranslı Precision, Recall ve F1 puanları hesaplanarak hafta4/cikti/olcumler.csv dosyasına yazılır.",
+    "sinav": "Tanım: F1 Skoru, Precision ve Recall değerlerinin harmonik ortalamasıdır: `F1 = 2 * (P * R) / (P + R)`.\nSık hata: Zaman ölçümünde ısınma turlarını atlayıp ilk çalıştırma önbellek gecikmesini hesaba katmak."
+  },
+  {
+    "satirlar": [
+      16,
+      21
+    ],
+    "baslik": "Gerekli standart modülleri yükle",
+    "aciklama": "csv veri tablosu kaydı için, pathlib dosya yollarını yönetmek için, sys kütüphane yollarını genişletmek için, time yüksek çözünürlüklü süre ölçümü için, cv2 görüntü işleme için ve numpy matris işlemleri için yüklenir.",
+    "sinav": "Tanım: `csv.DictWriter` sözlük listelerini doğrudan başlıklı CSV dosyalarına dönüştürür.\nSık hata: Sayısal ölçüm değerlerini metin yerine biçimlendirmeden yazıp CSV düzenini bozmak."
+  },
+  {
+    "satirlar": [
+      23,
+      28
+    ],
+    "baslik": "Hafta 4 ve repo dizinlerini sys.path'e bağla",
+    "aciklama": "Betiğin bulunduğu konumdan hafta4 ve repo kök dizinleri çözümlenerek sys.path'e eklenir. Bu sayede yerel kenarlar modülündeki tüm ortak fonksiyonlar sorunsuz import edilir.",
+    "sinav": "Tanım: `sys.path.insert(0, d)` modül arama önceliğini yerel çalışma dizinine verir.\nSık hata: sys.path genişletmesini yapmayıp alt modülleri bulamamak."
+  },
+  {
+    "satirlar": [
+      30,
+      35
+    ],
+    "baslik": "Ortak kenar modüllerini yükle (canny, ikili, skor, laplacian)",
+    "aciklama": "hafta4.kenarlar modülünden canny, gradyan_ikili, kenar_skoru ve laplacian fonksiyonları içe aktarılır. Bu fonksiyonlar Canny algoritmasını, ikili eşiklemeyi ve 1 piksel toleranslı doğruluk ölçümünü yürütür.",
+    "sinav": "Tanım: `kenar_skoru` tahmin edilen kenarlarla referans kenarları morfolojik genişletme ile 1 piksel pay vererek kıyaslar.\nSık hata: Birebir piksel çakışması arayıp 1 piksel kayma yüzünden F1 skorunu sıfıra düşürmek."
+  },
+  {
+    "satirlar": [
+      36,
+      40
+    ],
+    "baslik": "Ortak modüller (log, prewitt, sentetik, sıfır geçiş, sobel)",
+    "aciklama": "log_filtresi, prewitt, sentetik_veri_uret, sifir_gecis ve sobel fonksiyonları içe aktarılır. sentetik_veri_uret bilinen geometrik şekillerden oluşan temiz ve gürültülü test görüntüleri üretir.",
+    "sinav": "Tanım: `sentetik_veri_uret` daire ve kare içeren matematiksel olarak kesin kenar referansı sağlar.\nSık hata: Sentetik veri üretiminde rastgele tohumu sabitlemeyip her çalıştırmada farklı gürültü üretmek."
+  },
+  {
+    "satirlar": [
+      43,
+      46
+    ],
+    "baslik": "sure_olc fonksiyonu ve ısınma turları",
+    "aciklama": "sure_olc fonksiyonu verilen fonksiyonun medyan çalışma süresini milisaniye cinsinden ölçer. İlk olarak belirlenen ısınma (isinma=3) kadar fonksiyon çalıştırılarak CPU önbelleği ve kütüphane yüklemeleri ısıtılır.",
+    "sinav": "Tanım: Isınma turları (warm-up), JIT ve bellek önbellek etkilerini eleyerek kararlı zaman ölçümü sağlar.\nSık hata: Isınma turu yapmadan ilk çalıştırma maliyetini ölçüme dahil etmek."
+  },
+  {
+    "satirlar": [
+      47,
+      50
+    ],
+    "baslik": "time.perf_counter ile tekrarlı süre ölçümü",
+    "aciklama": "for döngüsü tekrar (tekrar=20) sayısı kadar çalışır ve time.perf_counter() ile fonksiyonun icra süresini nano saniye hassasiyetinde ölçer. Ölçülen fark 1000 ile çarpılarak milisaniye cinsinden sureler listesine eklenir.",
+    "sinav": "Tanım: `time.perf_counter()` işletim sisteminin en yüksek çözünürlüklü donanım saatini kullanır.\nFormül: `sure_ms = (t1 - t0) * 1000.0`.\nSık hata: `time.time()` kullanarak düşük zaman çözünürlüğü nedeniyle mikrosaniye seviyesini kaçırmak."
+  },
+  {
+    "satirlar": [
+      51,
+      53
+    ],
+    "baslik": "Medyan süreyi hesapla ve döndür",
+    "aciklama": "np.median(sureler) çağrısı 20 ölçümün ortanca değerini hesaplayarak float türünde döndürür. Medyan, işletim sistemi arka plan kesmelerinden kaynaklanan ani gecikmelerden (outlier) etkilenmeyen en sağlıklı ölçüttür.",
+    "sinav": "Tanım: Aritmetik ortalama yerine medyan kullanmak uç değerlerin ölçümü saptırmasını önler.\nÖrnek: `[1.2, 1.3, 1.2, 8.5, 1.2]` serisinde ortalama `2.68` iken medyan `1.2` ms'dir.\nSık hata: Uç değerlerin bulunduğu süre serilerinde aritmetik ortalamaya güvenmek."
+  },
+  {
+    "satirlar": [
+      56,
+      58
+    ],
+    "baslik": "calistir fonksiyonu ve tek iş parçacığı ayarı",
+    "aciklama": "calistir fonksiyonu ana yürütmeyi başlatır. cv2.setNumThreads(1) çağrısı OpenCV'nin tüm fonksiyonları tek çekirdekte çalıştırmasını zorunlu kılar. Bu ayar işlemci çekirdek sayısı farkından bağımsız adil bir süre kıyaslaması sağlar.",
+    "sinav": "Tanım: `cv2.setNumThreads(1)` çoklu iş parçacığı optimizasyonunu kapatarak algoritmaların saf tek çekirdek karmaşıklığını ölçer.\nSık hata: Thread sayısını serbest bırakıp farklı makinelerde tutarsız süreler ölçmek."
+  },
+  {
+    "satirlar": [
+      59,
+      62
+    ],
+    "baslik": "Yerel ve merkezi cikti klasörlerini hazırla",
+    "aciklama": "Ödevin yerel cikti klasörü ve merkezi hafta4/cikti klasörü mkdir ile oluşturulur. exist_ok=True klasör varsa çökmesini engeller.",
+    "sinav": "Tanım: Çıktı klasörlerinin oluşturulması dosya yazım hatalarını önler.\nSık hata: Dizin oluşturmayı atlayıp imwrite çağrısında hata almak."
+  },
+  {
+    "satirlar": [
+      64,
+      67
+    ],
+    "baslik": "Kamera girdi dosyasını kontrol et",
+    "aciklama": "hafta4/girdi/kamera.png dosyasının varlığı exists() ile denetlenir. Eksikse FileNotFoundError fırlatılarak program durdurulur.",
+    "sinav": "Tanım: Girdi dosyası denetimi dosya yolu hatalarını erkenden yakalar.\nSık hata: Eksik dosyayı denetlememek."
+  },
+  {
+    "satirlar": [
+      68,
+      70
+    ],
+    "baslik": "Kamera görüntüsünü gri tonda oku",
+    "aciklama": "cv2.imread kamera görselini IMREAD_GRAYSCALE modunda 512x512 piksel tek kanallı matris olarak okur. Okuma başarısız olursa ValueError üretilir.",
+    "sinav": "Tanım: IMREAD_GRAYSCALE 8-bit tek kanal yoğunluk matrisi verir.\nSık hata: Okuma sonucunun None olabileceğini hesaba katmamak."
+  },
+  {
+    "satirlar": [
+      72,
+      73
+    ],
+    "baslik": "Sentetik ve gürültülü referans verileri üret",
+    "aciklama": "sentetik_veri_uret() fonksiyonu 512x512 boyutunda temiz geometrik sentetik görseli, matematiksel olarak kesin kenar referansını ve Gauss gürültülü sentetik görseli tek çağrıda üretir.",
+    "sinav": "Tanım: Sentetik veri temiz zemin üzerinde daire ve kare gibi bilinen şekiller barındırır.\nÖrnek: `ref_kenar` kenar pikselleri 255, arka plan 0 olan ikili yer gerçeğidir.\nSık hata: Sentetik görseli elle çizip kenar kalınlığını referansla uyumsuz yapmak."
+  },
+  {
+    "satirlar": [
+      74,
+      77
+    ],
+    "baslik": "Sentetik test görsellerini diske kaydet",
+    "aciklama": "sentetik.png, sentetik_referans.png ve sentetik_gurultulu.png dosyaları merkezi cikti klasörüne kaydedilir. Bu görseller raporlarda görselleştirme için kullanılacaktır.",
+    "sinav": "Tanım: Referans görsellerin kaydedilmesi ölçümlerin şeffaflığını ve denetlenebilirliğini sağlar.\nSık hata: Sentetik görselleri diske yazmayı unutup raporda boş bağlantı bırakmak."
+  },
+  {
+    "satirlar": [
+      79,
+      84
+    ],
+    "baslik": "Varyant tanımları (Prewitt ve Sobel)",
+    "aciklama": "varyantlar listesi test edilecek 9 filtre konfigürasyonunu tanımlar. Prewitt ve Sobel yöntemleri hem yumuşatmasız (False) hem de Gauss yumuşatmalı (True) halleriyle listeye eklenir.",
+    "sinav": "Tanım: Gauss yumuşatmalı ve yumuşatmasız varyantlar gürültü direncinin sayısal etkisini gösterir.\nSık hata: Ön filtrelemenin etkisini ölçmek için yumuşatmasız halleri test etmemek."
+  },
+  {
+    "satirlar": [
+      85,
+      90
+    ],
+    "baslik": "Varyant tanımları (Laplacian, LoG ve Canny)",
+    "aciklama": "Laplacian False ve True varyantları, LoG True tek varyantı ve Canny False ve True varyantları listeye dahil edilir. Toplam 9 farklı filtre varyantı tamamlanır.",
+    "sinav": "Tanım: Canny algoritması kendi içinde Gauss yumuşatma barındırır; bu nedenle harici Gauss ile farkı incelenir.\nSık hata: Varyant sayısını eksik tutup tüm yöntemlerin karşılaştırılmasını engellemek."
+  },
+  {
+    "satirlar": [
+      92,
+      96
+    ],
+    "baslik": "Test görüntüleri koleksiyonu",
+    "aciklama": "test_goruntuleri listesi kamera, sentetik ve sentetik_gurultulu matrislerini ilgili referans kenar haritalarıyla eşleştirir. Kamera görüntüsünün yer gerçeği olmadığı için referansı None verilir.",
+    "sinav": "Tanım: Yer gerçeği olmayan görüntülerde Precision/Recall hesaplanamaz, yalnızca süre ölçülür.\nSık hata: Referansı olmayan kamera görüntüsüne rastgele referans atayıp yanıltıcı skor üretmek."
+  },
+  {
+    "satirlar": [
+      98,
+      101
+    ],
+    "baslik": "yontem_calistir fonksiyonu ve Prewitt dalı",
+    "aciklama": "yontem_calistir yardımcı fonksiyonu verilen görsel ve parametreye göre ilgili kenar haritasını üretir. Prewitt seçildiğinde prewitt fonksiyonu çağrılır ve gradyan büyüklüğü %20 eşikle ikiliye çevrilir.",
+    "sinav": "Tanım: `yontem_calistir` tüm algoritmaları standart `(img, yontem, yumusat)` arayüzü arkasında birleştirir.\nSık hata: Farklı fonksiyonların dönüş değerlerini normalize etmeden ikiliye çevirmek."
+  },
+  {
+    "satirlar": [
+      102,
+      104
+    ],
+    "baslik": "Sobel çalıştırma dalı",
+    "aciklama": "Yöntem Sobel ise sobel(img, yumusat) çağrılır ve dönen mag büyüklüğü gradyan_ikili fonksiyonuna %20 eşik oranıyla gönderilir.",
+    "sinav": "Tanım: Sobel operatörü gradyan büyüklüğü `hypot(gx, gy)` ile ikili kenara dönüştürülür.\nSık hata: Eşik oranını Prewitt ile farklı verip adil kıyası bozmak."
+  },
+  {
+    "satirlar": [
+      105,
+      107
+    ],
+    "baslik": "Laplacian çalıştırma dalı",
+    "aciklama": "Yöntem Laplacian ise laplacian(img, yumusat) çağrılır ve ikinci türev matrisi sifir_gecis fonksiyonuna %5 eğim eşiği ile verilerek ikili kenar elde edilir.",
+    "sinav": "Tanım: Laplacian çıktısı gradyan eşiklemesiyle değil, sıfır geçişi (zero-crossing) ile ikiliye dönüştürülür.\nSık hata: Laplacian çıktısını doğrudan büyüklük eşiklemesine sokmak."
+  },
+  {
+    "satirlar": [
+      108,
+      110
+    ],
+    "baslik": "LoG çalıştırma dalı",
+    "aciklama": "Yöntem LoG ise 7x7 analitik log_filtresi uygulanır ve sonuç sifir_gecis fonksiyonuna verilerek kenar haritası üretilir.",
+    "sinav": "Tanım: LoG filtresi sıfır geçiş noktalarında kenarları kapalı konturlar olarak yakalar.\nSık hata: LoG çıktısında sıfır geçişi yerine mutlak değer eşiklemesi yapmak."
+  },
+  {
+    "satirlar": [
+      111,
+      115
+    ],
+    "baslik": "Canny çalıştırma dalı ve hata fırlatma",
+    "aciklama": "Yöntem Canny ise canny(img, yumusat) çağrılır. Bilinmeyen bir yöntem adı gelirse ValueError fırlatılarak geçersiz parametre kullanımı önlenir.",
+    "sinav": "Tanım: OpenCV Canny fonksiyonu 50/100 eşikleri ve L2 gradyan normu ile doğrudan ikili kenar döner.\nSık hata: Canny çıktısına tekrar eşikleme uygulamaya çalışmak."
+  },
+  {
+    "satirlar": [
+      116,
+      117
+    ],
+    "baslik": "satirlar listesi başlatma",
+    "aciklama": "satirlar listesi tüm varyant ve görüntü kombinasyonlarının ölçüm sonuçlarını CSV satır sözlükleri olarak toplamak üzere boş olarak tanımlanır.",
+    "sinav": "Tanım: Sözlük listesi biriktirme yaklaşımı `csv.DictWriter` ile doğrudan yazıma uygundur.\nSık hata: Satır verilerini yapılandırılmamış düz metin olarak toplamak."
+  },
+  {
+    "satirlar": [
+      118,
+      120
+    ],
+    "baslik": "Test görüntüleri ve varyantlar çift döngüsü",
+    "aciklama": "İç içe iki for döngüsü 3 test görüntüsü ve 9 filtre varyantını gezerek toplam 27 kombinasyon üzerinde ölçümleri başlatır.",
+    "sinav": "Tanım: `3 x 9 = 27` ölçüm noktası farklı gürültü ve yöntem koşullarını sistematik olarak tarar.\nSık hata: Döngü sıralamasını karıştırıp çıktı tablosunda görüntü gruplarını dağıtmak."
+  },
+  {
+    "satirlar": [
+      121,
+      122
+    ],
+    "baslik": "Süre ölçümü icrası",
+    "aciklama": "sure_olc fonksiyonu anonim lambda fonksiyonu aracılığıyla ilgili yöntem ve görseli 20 kez çalıştırarak medyan süreyi (ms) hesaplar. Disk I/O süreye dahil edilmez.",
+    "sinav": "Tanım: Süre ölçümünde disk okuma-yazma işlemlerinin dışarıda tutulması saf algoritma hızını yansıtır.\nSık hata: Dosya kaydetme süresini algoritma hızına dahil edip filtreleri yavaş göstermek."
+  },
+  {
+    "satirlar": [
+      123,
+      125
+    ],
+    "baslik": "Doğruluk için kenar haritası üretimi",
+    "aciklama": "yontem_calistir bir kez daha çağrılarak doğruluk skorlamasında kullanılacak ikili tahmin matrisi (tahmin) elde edilir.",
+    "sinav": "Tanım: Süre ölçümü döngüsünden bağımsız olarak tek bir tahmin matrisi üretilip referansla kıyaslanır.\nSık hata: Tahmin matrisini süreyi ölçen döngü içinde gereksizce her seferinde yeniden üretmek."
+  },
+  {
+    "satirlar": [
+      126,
+      131
+    ],
+    "baslik": "Precision, Recall ve F1 skorlarını hesapla",
+    "aciklama": "Eğer görselin bir referansı varsa (sentetikler), kenar_skoru(tahmin, ref, tolerans=1) çağrılır. Dönen metrikler 4 ondalık basamaklı metin dizgilerine dönüştürülür.",
+    "sinav": "Formül: `Precision = TP / (TP + FP)`, `Recall = TP / (TP + FN)`, `F1 = 2PR / (P + R)`.\nTanım: `tolerans=1` kenar pikselinin 1 piksel komşuluğundaki eşleşmeleri de doğru kabul eder.\nSık hata: Bölme sıfır olduğunda `ZeroDivisionError` denetimi yapmamak."
+  },
+  {
+    "satirlar": [
+      132,
+      136
+    ],
+    "baslik": "Referanssız görseller için boş metrikler",
+    "aciklama": "Kamera görüntüsü gibi yer gerçeği olmayan durumlarda p_str, r_str ve f1_str boş bırakılır; böylece CSV tablosunda yanıltıcı sayılar oluşmaz.",
+    "sinav": "Tanım: Referansı olmayan doğal görüntülerde doğruluk metrikleri boş bırakılmalıdır.\nSık hata: Doğal görüntülere tahmini referans atayıp bilimsel tutarlılığı bozmak."
+  },
+  {
+    "satirlar": [
+      137,
+      142
+    ],
+    "baslik": "Ölçüm satırı sözlüğü oluştur (görüntü, yöntem, süre)",
+    "aciklama": "satirlar listesine eklenecek sözlük oluşturulur: goruntu adı, yontem adı, yumusatma durumu ve biçimlendirilmiş sure_ms eklenir.",
+    "sinav": "Tanım: Yapılandırılmış ölçüm sözlükleri CSV sütun başlıklarıyla birebir eşleşir.\nSık hata: Sütun anahtarlarını büyük-küçük harf duyarlılığına dikkat etmeden yazmak."
+  },
+  {
+    "satirlar": [
+      143,
+      147
+    ],
+    "baslik": "Doğruluk metriklerini ekle ve listeye kaydet",
+    "aciklama": "Sözlüğe precision, recall ve f1 metinleri eklenir ve satirlar listesine append edilir. Böylece bir test noktası tamamlanmış olur.",
+    "sinav": "Tanım: Her ölçüm satırı bir varyantın tek bir görüntü üzerindeki tam profilini saklar.\nSık hata: Satır sözlüğünü listeye eklemeyi unutup veriyi kaybetmek."
+  },
+  {
+    "satirlar": [
+      149,
+      152
+    ],
+    "baslik": "CSV dosya yolu ve sütun başlıkları",
+    "aciklama": "olcumler.csv dosyasının kayıt yolu belirlenir ve alanlar listesinde 7 sütun adı tanımlanır: goruntu, yontem, yumusatma, sure_ms, precision, recall, f1.",
+    "sinav": "Tanım: `alanlar` listesi CSV dosyasının başlık satırını (header) kesin olarak belirler.\nSık hata: Alan listesindeki adlarla sözlük anahtarlarını farklı yazmak."
+  },
+  {
+    "satirlar": [
+      153,
+      156
+    ],
+    "baslik": "DictWriter ile CSV dosyasını diske yaz",
+    "aciklama": "open ile dosya açılır, csv.DictWriter nesnesi kurulur, writeheader ile başlıklar ve writerows ile 27 satır tek hamlede diske yazılır.",
+    "sinav": "Tanım: `newline=''` parametresi Windows ortamında satırlar arasında boş satır oluşmasını engeller.\nSık hata: `newline=''` koymayıp her satırdan sonra boş satır bırakmak."
+  },
+  {
+    "satirlar": [
+      157,
+      160
+    ],
+    "baslik": "Canny görsel çıktılarını üret",
+    "aciklama": "canny(kamera_img, yumusat=True) ve canny(kamera_img, yumusat=False) çağrılarak Gauss'lu ve Gauss'suz Canny kenar haritaları üretilir.",
+    "sinav": "Tanım: Canny algoritması gürültülü görüntülerde Gauss yumuşatma ile çok daha temiz kenar çizgileri verir.\nSık hata: Histerezis eşiklerini görüntü kontrastına göre ayarlamayı unutmak."
+  },
+  {
+    "satirlar": [
+      161,
+      164
+    ],
+    "baslik": "Canny görsellerini yerel ve genel çıktıya yaz",
+    "aciklama": "kamera_canny_gauss.png ve kamera_canny_nogauss.png dosyaları cv2.imwrite ile hem yerel cikti hem de genel hafta4/cikti klasörüne kaydedilir.",
+    "sinav": "Tanım: Çıktıların çift yönlü kaydedilmesi hem ödev klasörünün hem de rapor modüllerinin dosyalara erişmesini sağlar.\nSık hata: Genel klasöre yazmayı atlamak."
+  },
+  {
+    "satirlar": [
+      166,
+      170
+    ],
+    "baslik": "Büyük panel görselleri (kamera Prewitt, Sobel, Laplacian)",
+    "aciklama": "12 panelli büyük karşılaştırma panosu için görseller toplanır: Kamera orijinal, Prewitt, Sobel ve Laplacian çıktıları listeye eklenir.",
+    "sinav": "Tanım: Karşılaştırma panosu tüm yöntemleri aynı ölçekte görsel olarak yan yana kıyaslar.\nSık hata: Panel görsellerinin boyutlarını eşitlemeden birleştirmeye çalışmak."
+  },
+  {
+    "satirlar": [
+      171,
+      175
+    ],
+    "baslik": "Büyük panel görselleri (kamera LoG, Canny ve gürültülü ilk yöntemler)",
+    "aciklama": "Kamera LoG ve Canny çıktıları ile gürültülü sentetik görsel, gürültülü Prewitt ve Sobel çıktıları listeye eklenir.",
+    "sinav": "Tanım: Gürültülü sentetik üzerinde yöntemlerin başarımı algoritmaların gürültü bağışıklığını sergiler.\nSık hata: Görsel sırasını başlık sırasıyla karıştırmak."
+  },
+  {
+    "satirlar": [
+      176,
+      180
+    ],
+    "baslik": "Büyük panel görselleri (gürültülü Laplacian, LoG, Canny)",
+    "aciklama": "Gürültülü sentetik üzerinde Laplacian, LoG ve Canny çıktıları listeye eklenerek toplam 12 görsel tamamlanır.",
+    "sinav": "Tanım: 12 görsel 2x6 düzeninde düzenlenerek tüm ödevlerin görsel özeti oluşturulur.\nSık hata: Görsellerden birini eksik bırakıp ızgara yapısını bozmak."
+  },
+  {
+    "satirlar": [
+      181,
+      186
+    ],
+    "baslik": "Panel başlıkları ilk satır (Kamera yöntemleri)",
+    "aciklama": "İlk satırdaki 6 görsel için 'Kamera Orijinal', 'Prewitt (Kamera)', 'Sobel (Kamera)', 'Laplacian (Kamera)', 'LoG (Kamera)' ve 'Canny (Kamera)' başlıkları verilir.",
+    "sinav": "Tanım: Başlıklar her yöntemin hangi görüntü üzerindeki sonucunu temsil ettiğini belirtir.\nSık hata: Başlık sıralamasını hatalı vermek."
+  },
+  {
+    "satirlar": [
+      187,
+      190
+    ],
+    "baslik": "Panel başlıkları ikinci satır başı (Gürültülü yöntemler 1)",
+    "aciklama": "İkinci satırın ilk 4 başlığı: 'Gurultulu Sentetik', 'Prewitt (Gurultulu)', 'Sobel (Gurultulu)' ve 'Laplacian (Gurultulu)' olarak tanımlanır.",
+    "sinav": "Tanım: İkinci satır yüksek gürültü altında yöntemlerin bozulma derecelerini gösterir.\nSık hata: Başlık metinlerini panelle uyumsuz yapmak."
+  },
+  {
+    "satirlar": [
+      191,
+      194
+    ],
+    "baslik": "Panel başlıkları ikinci satır sonu (LoG ve Canny)",
+    "aciklama": "'LoG (Gurultulu)' ve 'Canny (Gurultulu)' başlıkları eklenerek 12 başlıktan oluşan liste tamamlanır.",
+    "sinav": "Tanım: Canny gürültülü sentetikte histerezis sayesinde en yüksek F1 skoruna ulaşır.\nSık hata: Başlık listesi uzunluğunu görsel sayısından farklı bırakmak."
+  },
+  {
+    "satirlar": [
+      196,
+      198
+    ],
+    "baslik": "Panel tuvali matrisini oluştur",
+    "aciklama": "Görsellerin yükseklik h ve genişlik w değerleri alınır. np.full ile 2 satır ve 6 sütun içeren, her görselin üstünde 30 piksel başlık bandı bulunan 245 açık gri renkli 3 kanallı panel tuvali tahsis edilir.",
+    "sinav": "Formül: `panel_h = 2 * (h + 30)`, `panel_w = 6 * w`; 3 kanallı BGR matris oluşturulur.\nSık hata: Panel boyutunu hesaplarken başlık bandı yüksekliğini eklemeyi unutmak."
+  },
+  {
+    "satirlar": [
+      199,
+      203
+    ],
+    "baslik": "Panel ızgara koordinatları ve başlık kutusu",
+    "aciklama": "Döngü 12 görseli zip ile başlıklarla eşleştirir. r ve c ızgara satır-sütununu, y0 ve x0 sol-üst piksel koordinatlarını belirler. cv2.rectangle ile başlık arka planına koyu gri dikdörtgen çizilir.",
+    "sinav": "Tanım: `cv2.rectangle(panel, (x0, y0), (x0 + w, y0 + 30), (40, 40, 40), -1)` doldurulmuş başlık bandı çizer.\nSık hata: Koordinatları (x, y) yerine (y, x) sırasında verip dikdörtgeni yanlış çizmek."
+  },
+  {
+    "satirlar": [
+      204,
+      208
+    ],
+    "baslik": "cv2.putText ile başlık metnini yaz",
+    "aciklama": "cv2.putText fonksiyonu başlık bandının içine beyaz renkle, 0.45 ölçeğinde ve FONT_HERSHEY_SIMPLEX yazı tipiyle açıklayıcı metni yazar.",
+    "sinav": "Tanım: `cv2.putText` metin dizgilerini piksel matrisine çizer; `LINE_AA` yumuşatılmış yazı kenarları sağlar.\nSık hata: Metin koordinatını kutunun dışına verip yazıyı kaybetmek."
+  },
+  {
+    "satirlar": [
+      209,
+      213
+    ],
+    "baslik": "Yazı kenar yumuşatma ve kanal kontrolü",
+    "aciklama": "LINE_AA bayrağı metin çizimini pürüzsüzleştirir. len(img.shape) == 2 kontrolü görselin tek kanallı gri mi yoksa çok kanallı renkli mi olduğunu denetler.",
+    "sinav": "Tanım: `cv2.LINE_AA` anti-aliasing uygulayarak yazıların okunabilirliğini artırır.\nSık hata: Tek kanallı gri görselleri 3 kanallı renkli tuvale dönüştürmeden yerleştirmeye çalışmak."
+  },
+  {
+    "satirlar": [
+      214,
+      218
+    ],
+    "baslik": "Gri görseli BGR'ye çevir ve panele yerleştir",
+    "aciklama": "Tek kanallı görsel cv2.cvtColor ile BGR formatına çevrilir ve panel matrisinin ilgili dilimine panel[y0+30:y0+h+30, x0:x0+w] şeklinde kopyalanır.",
+    "sinav": "Tanım: `cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)` tek kanallı görüntüyü 3 kanala çoğaltarak renkli tuvale uyumlu kılar.\nSık hata: Dilimleme boyutlarının görsel boyutuyla birebir uyuşmaması."
+  },
+  {
+    "satirlar": [
+      220,
+      221
+    ],
+    "baslik": "Büyük paneli yerel ve genel çıktıya kaydet",
+    "aciklama": "karsilastirma_tum_yontemler.png dosyası cv2.imwrite ile hem yerel cikti hem de genel hafta4/cikti klasörüne kaydedilir.",
+    "sinav": "Tanım: Büyük karşılaştırma paneli tüm haftalık çalışmaların birleştirilmiş özet görselidir.\nSık hata: Dosyayı kaydederken klasör yolunu yanlış vermek."
+  },
+  {
+    "satirlar": [
+      223,
+      225
+    ],
+    "baslik": "Ödev 4.7 tamamlanma ve CSV satır sayısı bildirimi",
+    "aciklama": "Konsola Ödev 4.7'nin başarıyla tamamlandığı ve toplam ölçüm satırı adedi yazdırılır.",
+    "sinav": "Tanım: Konsol bildirimleri ölçüm aşamasının hatasız tamamlandığını doğrular.\nÖrnek: `Toplam 27 ölçüm satırı hafta4/cikti/olcumler.csv'ye yazıldı.`\nSık hata: Ölçüm satırlarının eksik yazıldığını fark etmemek."
+  },
+  {
+    "satirlar": [
+      227,
+      228
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart Python çalıştırma kontrolüdür.\nSık hata: Bu denetimi koymayıp import yan etkileri yaşamak."
+  }
+]

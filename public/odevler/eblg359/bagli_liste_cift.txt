@@ -1,0 +1,9 @@
+Baştan sona: [10, 20, 25, 30]
+Sondan başa: [30, 25, 20, 10]
+Silinen düğüm: 20
+Silme sonrası: [10, 25, 30]
+
+--- Düğüm Referansı Varken Silme Maliyeti Karşılaştırması ---
+N        Çift Bağlı (O(1))    Tek Bağlı (O(n))     Fark      
+100      1                    50                   50.0      x
+1000     1                    500                  500.0     x

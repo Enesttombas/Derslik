@@ -1,0 +1,12 @@
+# Copy to .dev.vars (gitignored) and fill in. Never commit real values.
+# Owner of the site (only this account + ALLOWED_EMAILS can sign in).
+OWNER_EMAIL=you@example.com
+# Optional: comma-separated invited accounts. Data stays isolated per user id.
+ALLOWED_EMAILS=
+# Optional: OpenAI-compatible endpoint for the study chat. Without a key the chat
+# route streams a built-in mock answer, so the app works offline.
+CHAT_API_KEY=
+CHAT_API_BASE=https://api.openai.com/v1
+CHAT_MODEL=
+CHAT_REASONING_EFFORT=medium
+CHAT_REASONING_EFFORT_URET=high

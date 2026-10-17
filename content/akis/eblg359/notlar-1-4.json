@@ -1,0 +1,373 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-n1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "etiketler": [
+    "dogrusal-arama",
+    "en-kotu-durum"
+   ],
+   "kod": "def ara(A, x):\n    for i in range(len(A)):\n        if A[i] == x:\n            return i\n    return -1",
+   "soru": "Eleman dizide yoksa kaç karşılaştırma yapılır (n = len(A))?",
+   "secenekler": [
+    "n",
+    "1",
+    "log n",
+    "n²"
+   ],
+   "dogru": 0,
+   "aciklama": "Eleman yoksa döngü sonuna kadar çalışır: her indekste bir karşılaştırma, toplam n. Bu doğrusal aramanın en kötü durumudur: T_worst(n) = Θ(n). En iyi durum ilk elemanda bulunmasıdır (1 karşılaştırma)."
+  },
+  {
+   "id": "359-n1-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "etiketler": [
+    "ikili-arama",
+    "karsilastirma-sayisi"
+   ],
+   "kod": "A = [12, 24, 37, 45, 59, 68, 73, 85, 91, 104]\nlo, hi, c = 0, 9, 0\nwhile lo <= hi:\n    m = lo + (hi - lo) // 2\n    c += 1\n    if A[m] == 73: break\n    elif A[m] < 73: lo = m + 1\n    else: hi = m - 1\nprint(c)",
+   "soru": "x = 73 için `c` kaç yazdırılır?",
+   "secenekler": [
+    "4",
+    "7",
+    "3",
+    "10"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 73 için 4, yok olan 99 için de 4 karşılaştırma. Doğrusal arama 73 için 7, 99 için 10.",
+   "aciklama": "mid sırası 4 → 7 → 5 → 6: indeksleri A[4]=59, A[7]=85, A[5]=68, A[6]=73. Dört karşılaştırma ≈ log₂10. Doğrusal arama aynı hedef için 7 karşılaştırma yapardı.",
+   "sinav": "Kaynak: Hafta 1 notları, Çözümlü Örnek. İkili arama üst sınırı ⌊log₂ n⌋ + 1."
+  },
+  {
+   "id": "359-n1-3",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "etiketler": [
+    "girdi-boyutu",
+    "bit-maliyeti"
+   ],
+   "kod": "def asal_mi(N):\n    for d in range(2, N):\n        if N % d == 0:\n            return False\n    return True",
+   "soru": "Girdi boyutu n, N'nin bit uzunluğu olarak alınırsa (n = ⌊log₂N⌋+1) çalışma süresi nasıl ifade edilir?",
+   "secenekler": [
+    "Θ(2ⁿ): üstel",
+    "Θ(n): doğrusal",
+    "Θ(n²): ikinci dereceden",
+    "Θ(log n)"
+   ],
+   "dogru": 0,
+   "aciklama": "Döngü N adım atar, ama girdinin boyutu N değil, onu yazmak için gereken bit sayısıdır: n ≈ log₂N. N = 2ⁿ olduğundan N adım = 2ⁿ adım, yani üstel. 'Sayıya göre doğrusal' ile 'girdi boyutuna göre doğrusal' farklıdır."
+  },
+  {
+   "id": "359-n1-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "etiketler": [
+    "big-o",
+    "en-kotu-durum"
+   ],
+   "soru": "\"Big-O en kötü durum demektir.\" İfadesi doğru mu?",
+   "dogruMu": false,
+   "aciklama": "Yanlış. En kötü durum bir girdi senaryosudur; Big-O ise fonksiyonun üst sınırını anlatan matematiksel bir gösterimdir. En iyi durum için de Big-O yazılabilir: T_best(n) ∈ O(1) gibi.",
+   "kod": "T_worst(n) = max t(x)\nT_best(n)  = min t(x)\nO(g) = büyüme hızı üst sınırı"
+  },
+  {
+   "id": "359-n1-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "etiketler": [
+    "ram-modeli",
+    "cache"
+   ],
+   "kod": "# RAM modeli: A[0] ve A[1_000_000] erişimi ikisi de Θ(1)",
+   "soru": "RAM modeli neden önbellek (cache) farkını modellemez?",
+   "aciklama": "Amaç donanımdan (CPU frekansı, önbellek, derleyici) bağımsız, karşılaştırılabilir bir büyüme hızı çıkarmaktır. Bellek erişimini Θ(1) kabul etmek analizi evrenselleştirir; gerçek donanım etkisi (cache miss) bu modelin dışında ayrıca ölçülür.",
+   "secenekler": [
+    "Çünkü önbellek gerçek değildir",
+    "RAM modeli önbelleği yanlış hesaplar",
+    "Amaç donanımdan bağımsız, karşılaştırılabilir büyüme hızıdır; bellek erişimi Θ(1) sayılır",
+    "Model yalnız eski bilgisayarları anlatır"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "359-n2-1",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "etiketler": [
+    "theta",
+    "ispat"
+   ],
+   "kod": "f(n) = 4n² − 6n + 11",
+   "soru": "f(n) için doğru asimptotik sınıf hangisidir?",
+   "secenekler": [
+    "Θ(n²)",
+    "Θ(n)",
+    "Θ(n³)",
+    "Θ(2ⁿ)"
+   ],
+   "dogru": 0,
+   "aciklama": "Baskın terim 4n²; katsayı ve düşük terimler ihmal edilir. Formel kanıt: n ≥ 3 için 2n² ≤ f(n) ≤ 15n², yani c₁ = 2, c₂ = 15, n₀ = 3."
+  },
+  {
+   "id": "359-n2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "etiketler": [
+    "theta",
+    "sabitler"
+   ],
+   "kod": "f = lambda n: 4*n*n - 6*n + 11\nn = 3\nprint(f(n), 2*n*n, 15*n*n)",
+   "soru": "Üç sayı sırayla?",
+   "secenekler": [
+    "29 18 135",
+    "29 36 135",
+    "23 18 135",
+    "29 18 45"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 29 18 135.",
+   "aciklama": "f(3) = 36 − 18 + 11 = 29, 2·9 = 18, 15·9 = 135. c₁ g(n) ≤ f(n) ≤ c₂ g(n) tanımı n₀ = 3 için sağlanır: 18 ≤ 29 ≤ 135."
+  },
+  {
+   "id": "359-n2-3",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "etiketler": [
+    "ussel",
+    "limit"
+   ],
+   "soru": "2²ⁿ ∈ O(2ⁿ) doğrudur.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. lim 2²ⁿ / 2ⁿ = lim 2ⁿ = ∞ olduğundan 2²ⁿ ∈ ω(2ⁿ). Üstteki n çarpanı sınıfı değiştirir. Karşıt örnek: 2ⁿ⁺¹ ∈ Θ(2ⁿ) çünkü oran sabit 2'dir.",
+   "kod": "2^(2n) ?∈ O(2^n)\nL = lim 2^(2n) / 2^n = lim 2^n"
+  },
+  {
+   "id": "359-n2-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "etiketler": [
+    "limit-testi",
+    "kucuk-o"
+   ],
+   "kod": "# f(n) = n², g(n) = n³\nL = lim f(n)/g(n)\n# L = 0\nsonuc: f ∈ Θ(g)",
+   "hataSatir": 4,
+   "soru": "Hatalı satıra dokun.",
+   "aciklama": "L = 0 ise f, g'ye göre kesin küçüktür: f ∈ o(g) (ve dolayısıyla O(g)). Θ için 0 < L < ∞ gerekir. L = ∞ ise ω, L sabit pozitifse Θ."
+  },
+  {
+   "id": "359-n2-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "etiketler": [
+    "logaritma",
+    "taban"
+   ],
+   "kod": "Θ(log₂ n) = Θ(ln n) = Θ(log₁₀ n)",
+   "soru": "Logaritma tabanı neden önemsizken 2^(log₂ n) ile 2^(ln n) farklıdır?",
+   "aciklama": "log_a n = log_b n / log_b a ve 1/log_b a sabit olduğundan taban değişimi bir sabit çarpandır. Ama logaritma üste geçince sabit çarpan üs olur: 2^(log₂ n) = n iken 2^(ln n) = n^(ln 2) ≈ n^0.693; farklı polinomlardır.",
+   "secenekler": [
+    "Logaritma tabanı üssün içinde olsa da değişmez",
+    "Taban değişimi sabit çarpandır; üste geçince sabit üs olur: 2^(log₂ n)=n, 2^(ln n)=n^0.693",
+    "2^(ln n) ile 2^(log₂ n) aynıdır",
+    "ln ile log₂ aynı fonksiyondur"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "359-n3-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "etiketler": [
+    "dongu-analizi",
+    "logaritmik"
+   ],
+   "kod": "n = 8; toplam = 0\nfor i in range(1, n + 1):\n    j = 1\n    while j < i:\n        toplam += 1\n        j *= 2\nprint(toplam)",
+   "soru": "`toplam` kaç olur?",
+   "secenekler": [
+    "17",
+    "24",
+    "8",
+    "36"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 17.",
+   "aciklama": "i için iç döngü ⌈log₂ i⌉ kez döner: 0,1,2,2,3,3,3,3 (i=1..8), toplam 17. Genel olarak Σ⌈log₂ i⌉ = Θ(n log n) (log(n!) ile aynı sınıf)."
+  },
+  {
+   "id": "359-n3-2",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "etiketler": [
+    "ic-ice-dongu",
+    "toplam"
+   ],
+   "kod": "for i in range(1, n + 1):\n    for j in range(1, i + 1):\n        islem()",
+   "soru": "`islem()` kaç kez çağrılır, sınıfı nedir?",
+   "secenekler": [
+    "n(n+1)/2: Θ(n²)",
+    "n²: Θ(n²) ama tam n²",
+    "n log n",
+    "2ⁿ"
+   ],
+   "dogru": 0,
+   "aciklama": "İç döngü i kez döner: Σᵢ i = n(n+1)/2. Tam değer n² değil, ama sınıf Θ(n²). Bağımlı sınırı n·n diye bağımsız çarpmak üst sınırı verir, sıkı değeri değil."
+  },
+  {
+   "id": "359-n3-3",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "etiketler": [
+    "yineleme",
+    "bol-yonet"
+   ],
+   "kod": "def f(A):\n    n = len(A)\n    if n <= 1: return\n    f(A[: n // 3])\n    f(A[n // 3 : 2 * n // 3])\n    for x in A: isle(x)   # Θ(n)",
+   "soru": "Bu fonksiyonun yineleme bağıntısı nedir?",
+   "secenekler": [
+    "T(n) = 2T(n/3) + Θ(n)",
+    "T(n) = 3T(n/3) + Θ(n)",
+    "T(n) = T(2n/3) + Θ(n)",
+    "T(n) = 2T(n/2) + Θ(1)"
+   ],
+   "dogru": 0,
+   "aciklama": "Üç parça ayrılmış ama yalnız iki tanesi özyinelemeli çağrılıyor: a = 2, alt problem boyutu n/3. Döngü Θ(n) birleştirme/işleme maliyetidir. Taban durumu T(1) = Θ(1) olmalıdır."
+  },
+  {
+   "id": "359-n3-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "etiketler": [
+    "dongu-degismezi",
+    "ikili-arama"
+   ],
+   "kod": "while lo <= hi:\n    mid = (lo + hi) // 2\n    if A[mid] < x: lo = mid\n    elif A[mid] > x: hi = mid - 1\n    else: return mid",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: hangi girdide sonsuz döngüye girer?",
+   "aciklama": "`lo = mid` aralığı daraltmaz. A = [1, 2], x = 2 için lo = 0, hi = 1, mid = 0 → A[0] < 2 → lo = 0 değişmez ve döngü sonsuz sürer. Doğrusu `lo = mid + 1`; ancak o zaman 'aralık her turda küçülür' koşulu ve sonlanma ispatı sağlanır."
+  },
+  {
+   "id": "359-n3-5",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "etiketler": [
+    "harmonik-seri"
+   ],
+   "soru": "Harmonik toplam Σ 1/i (i=1..n) Θ(log n) büyür.",
+   "dogruMu": true,
+   "aciklama": "Doğru: Hₙ = ln n + γ + O(1/n). Quicksort ortalama durum analizinde ve kupon toplayıcı probleminde karşımıza çıkar.",
+   "kod": "H_n = 1 + 1/2 + 1/3 + ... + 1/n\nH_n = ln n + γ + O(1/n)"
+  },
+  {
+   "id": "359-n4-1",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "etiketler": [
+    "master",
+    "durum-1"
+   ],
+   "kod": "T(n) = 4T(n/2) + n",
+   "soru": "Master teoremine göre çözüm?",
+   "secenekler": [
+    "Θ(n²)",
+    "Θ(n² log n)",
+    "Θ(n³)",
+    "Θ(n)"
+   ],
+   "dogru": 0,
+   "aciklama": "a = 4, b = 2 → n^(log₂4) = n². f(n) = n = O(n^(2−ε)) (ε = 1): Durum 1, yapraklar baskın, T(n) = Θ(n²).",
+   "sinav": "Eşik fonksiyonu: n^(log_b a). Karşılaştır: f(n) küçük → Θ(eşik); eşit → Θ(eşik·log n); büyük + düzenlilik → Θ(f)."
+  },
+  {
+   "id": "359-n4-2",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "etiketler": [
+    "master",
+    "durum-2"
+   ],
+   "kod": "T(n) = 4T(n/2) + n²",
+   "soru": "Master teoremine göre çözüm?",
+   "secenekler": [
+    "Θ(n² log n)",
+    "Θ(n²)",
+    "Θ(n³)",
+    "Θ(n log n)"
+   ],
+   "dogru": 0,
+   "aciklama": "f(n) = n² = Θ(n^(log₂4)) → Durum 2 (k = 0): her seviyede eşit iş yapılır, seviye sayısı log n olduğundan T(n) = Θ(n² log n)."
+  },
+  {
+   "id": "359-n4-3",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "etiketler": [
+    "master",
+    "durum-3",
+    "duzenlilik"
+   ],
+   "kod": "T(n) = 4T(n/2) + n²   # Θ(n² log n)",
+   "soru": "f(n) = n² yerine n³ olursa çözüm ve durum ne olur?",
+   "degisiklik": {
+    "eski": "f(n) = n²",
+    "yeni": "f(n) = n³"
+   },
+   "secenekler": [
+    "Durum 3: Θ(n³)",
+    "Durum 2: Θ(n³ log n)",
+    "Durum 1: Θ(n²)",
+    "Master uygulanamaz"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 4 notları, Çözümlü Örnek Problem 1. Düzenlilik: 4·(n/2)³ = n³/2 ≤ c·n³ ile c = 1/2 < 1.",
+   "aciklama": "n³ = Ω(n^(2+ε)) (ε = 1) → Durum 3 adayı. Düzenlilik koşulu a·f(n/b) ≤ c·f(n): 4·n³/8 = n³/2 ≤ ½·n³ sağlanır (c = 1/2). Kök baskın olduğundan T(n) = Θ(f(n)) = Θ(n³)."
+  },
+  {
+   "id": "359-n4-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "etiketler": [
+    "master",
+    "polinom-fark"
+   ],
+   "kod": "T(n) = 2T(n/2) + n/log n\na=2, b=2 → n^(log_b a) = n\nf(n) = n/log n = O(n^(1-ε))\nDurum 1: T(n) = Θ(n)",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun.",
+   "aciklama": "n/log n ile n arasında yalnız log n çarpanı fark var; n^ε gibi polinom boşluğu yok. Hiçbir ε > 0 için n/log n = O(n^(1−ε)) olmaz, Durum 1 işletilemez. Klasik master teoremi bu bağıntı için uygulanmaz; genişletilmiş yöntem ya da yineleme ağacı gerekir."
+  },
+  {
+   "id": "359-n4-5",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "etiketler": [
+    "yineleme",
+    "azalan-boyut"
+   ],
+   "soru": "T(n) = T(n−1) + O(1) yinelemesinin çözümü Θ(n)'dir.",
+   "dogruMu": true,
+   "aciklama": "Doğru: n kez 1 toplanır (aritmetik toplam). Master teoremi n/b biçimli bölünme ister; n−1 ile küçülen yinelemelerde doğrudan açarak (iterasyon) çözülür. Örnek: dizide özyinelemeli en büyük elemanı bulma.",
+   "kod": "T(n) = T(n-1) + O(1),  T(1) = Θ(1)"
+  }
+ ]
+}

@@ -1,0 +1,175 @@
+{
+ "EBLG351": {
+  "notlar": {
+   "1": "Görüntü okuma, griye çevirme ve kaydetme",
+   "2": "Temel işlemler, piksel erişimi ve ROI",
+   "3": "Parlaklık, kontrast ve histogram eşitleme",
+   "4": "Uzamsal filtreleme, yumuşatma ve kenar tespiti",
+   "5": "DFT ve FFT spektrum analizi",
+   "6": "Frekans domeninde filtreleme",
+   "7": "Görüntü onarımı, gürültü temizleme ve inpainting",
+   "8": "Uygulamalı tekrar ve görüntü boru hattı",
+   "9": "Renk uzayları ve renk maskeleme",
+   "10": "Görüntü piramitleri ve afin dönüşümler",
+   "11": "Sıkıştırma ve sayısal filigran",
+   "12": "Morfolojik işlemler ve şekil filtreleme",
+   "13": "Bölütleme, Otsu ve kontur analizi",
+   "14": "Öznitelik çıkarımı, köşe ve ORB",
+   "15": "Örüntü tanıma ve şablon eşleme",
+   "16": "Belge tarayıcı ve perspektif düzeltme"
+  },
+  "odevHaftalari": {
+   "1": "Klasör ölçekleme",
+   "2": "Nicemleme, thread, histogram",
+   "3": "Kontrast, histogram, filtreler",
+   "4": "Kenar algılama"
+  },
+  "odevler": {
+   "h1-2": [
+    "1.1",
+    "Klasör ölçekleme"
+   ],
+   "h2-1": [
+    "2.1",
+    "6-bit nicemleme"
+   ],
+   "h2-2": [
+    "2.2",
+    "4 parça thread parlaklık"
+   ],
+   "h2-3": [
+    "2.3",
+    "Parça histogramı"
+   ],
+   "h2-4": [
+    "2.4",
+    "Histogram süresi"
+   ],
+   "h2-5": [
+    "2.5",
+    "Parlaklık dönüşümü"
+   ],
+   "h3-1": [
+    "3.1",
+    "Kontrast germe"
+   ],
+   "h3-2": [
+    "3.2",
+    "Histogram eşitleme"
+   ],
+   "h3-3": [
+    "3.3",
+    "CLAHE"
+   ],
+   "h3-4": [
+    "3.4",
+    "Ortalama filtre"
+   ],
+   "h3-5": [
+    "3.5",
+    "Medyan filtre"
+   ],
+   "h4-1": [
+    "4.1",
+    "Prewitt X"
+   ],
+   "h4-2": [
+    "4.2",
+    "Prewitt Y"
+   ],
+   "h4-3": [
+    "4.3",
+    "Sobel"
+   ],
+   "h4-4": [
+    "4.4",
+    "Prewitt–Sobel"
+   ],
+   "h4-5": [
+    "4.5",
+    "Laplacian"
+   ],
+   "h4-6": [
+    "4.6",
+    "LoG"
+   ],
+   "h4-7": [
+    "4.7",
+    "Canny"
+   ]
+  }
+ },
+ "EBLG359": {
+  "notlar": {
+   "1": "Algoritmik analiz modeli ve maliyet",
+   "2": "Asimptotik notasyon ve ispatlar",
+   "3": "Döngüler, özyineleme ve yineleme bağıntısı",
+   "4": "Yineleme çözümü ve Master teoremi",
+   "5": "Böl ve yönet: merge sort, quicksort, ikili arama",
+   "6": "Sıralama alt sınırları ve doğrusal seçim",
+   "7": "Hash tabloları ve beklenen maliyet",
+   "8": "Karma alıştırma ve öz değerlendirme",
+   "9": "Ağaçlar ve amortize analiz",
+   "10": "Graf temelleri, BFS ve DFS",
+   "11": "En kısa yollar ve minimum kapsayan ağaçlar",
+   "12": "Açgözlü algoritmalar",
+   "13": "Dinamik programlama: durum, bağıntı, LCS",
+   "14": "DP: sırt çantası ve matris zinciri",
+   "15": "Geri izleme, P ve NP",
+   "16": "Bütünleşik tekrar ve algoritma seçimi"
+  },
+  "odevHaftalari": {
+   "1": "Dizi",
+   "2": "Bağlı liste",
+   "3": "Yığın ve kuyruk",
+   "4": "Hash ve ağaç",
+   "5": "Karşılaştırma"
+  },
+  "odevler": {
+   "ds1": [
+    "1.1",
+    "Statik dizi"
+   ],
+   "ds2": [
+    "1.2",
+    "Vector"
+   ],
+   "ds3": [
+    "2.1",
+    "Tek bağlı liste"
+   ],
+   "ds4": [
+    "2.2",
+    "Çift bağlı liste"
+   ],
+   "ds5": [
+    "3.1",
+    "Yığın"
+   ],
+   "ds6": [
+    "3.2",
+    "Dairesel kuyruk"
+   ],
+   "ds7": [
+    "3.3",
+    "İki yığınla kuyruk"
+   ],
+   "ds8": [
+    "4.1",
+    "Hash tablosu"
+   ],
+   "ds9": [
+    "4.2",
+    "İkili yığın"
+   ],
+   "ds10": [
+    "4.3",
+    "İkili arama ağacı"
+   ],
+   "ds11": [
+    "5.1",
+    "Hepsini yarıştır"
+   ]
+  }
+ }
+}

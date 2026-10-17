@@ -1,0 +1,38 @@
+[
+  {
+    "satirlar": [
+      1,
+      6
+    ],
+    "baslik": "Kütüphaneleri yükle ve girdi dizinini bağla",
+    "aciklama": "Pathlib dosya sistemi navigasyonu için, cv2 ise görüntü işleme ve filtreleme işlemleri için içe aktarılır. klasor ve girdi değişkenleri betiğin konumuna göre girdi ve çıktı yollarını dinamik olarak tanımlar. Bu dosya mimarisi kaynakların doğru noktadan okunup yazılmasını temin eder.",
+    "sinav": "Tanım: `Path(__file__).parent` ile dosya hiyerarşisi taşınabilir hale getirilir.\nSık hata: Dosya yollarını sabit metin olarak verip farklı işletim sistemlerinde yol ayracı hatası almak."
+  },
+  {
+    "satirlar": [
+      8,
+      10
+    ],
+    "baslik": "Temiz ve gürültülü görselleri oku",
+    "aciklama": "Döngü dağ ve sis görüntüleri için hem orijinal temiz görüntüyü hem de Gauss gürültüsü eklenmiş versiyonu okur. Her iki dosya da IMREAD_GRAYSCALE seçeneğiyle tek kanallı 8-bit matris olarak belleğe alınır. Temiz görüntü PSNR doğrulama metriğinde referans olarak kullanılacaktır.",
+    "sinav": "Tanım: Filtreleme kalitesini ölçmek için referans (temiz) görüntü ile filtrelenmiş görüntü karşılaştırılır.\nSık hata: Gürültülü görüntüyü okurken temiz dosyanın üzerine yazıp referansı kaybetmek."
+  },
+  {
+    "satirlar": [
+      12,
+      12
+    ],
+    "baslik": "cv2.blur ile 3x3 ortalama filtresi uygula",
+    "aciklama": "cv2.blur fonksiyonu gürültülü görüntüye 3x3 boyutunda homojen bir kutu (box) filtresi uygular. Filtre her pikselin yeni değerini kendisi ve etrafındaki 8 komşusunun aritmetik ortalaması olarak hesaplar. Bu alçak geçiren filtreleme rastgele Gauss gürültüsünü yumuşatarak varyansını belirgin şekilde düşürür.",
+    "sinav": "Tanım: Aritmetik ortalama filtresi (box filter), `1/K * sum(pikseller)` formülüyle çalışan doğrusal alçak geçiren filtredir.\nÖrnek: 3x3 çekirdeğin tüm elemanları `1/9` değerindedir.\nSık hata: Ortalama filtrenin kenarları ve ince detayları da bulanıklaştırdığını unutmak."
+  },
+  {
+    "satirlar": [
+      14,
+      15
+    ],
+    "baslik": "Sonucu kaydet ve PSNR iyileşmesini ölç",
+    "aciklama": "cv2.imwrite filtrelenmiş görüntüyü cikti klasörüne kaydeder. cv2.PSNR fonksiyonu temiz referansa göre hem gürültülü görüntünün hem de filtrelenmiş görüntünün tepe sinyal-gürültü oranını (PSNR) hesaplayarak ekrana basar. Dağ görüntüsünde PSNR'nin 22.37 dB'den 31.70 dB'ye çıkması gürültünün 9 dB üzerinde bastırıldığını kanıtlar.",
+    "sinav": "Formül: `PSNR = 10 * log10(MAX^2 / MSE)`; desibel (dB) birimiyle ifade edilir.\nÖrnek: `dag: 22.37 dB -> 31.70 dB`, `sis: 22.56 dB -> 31.00 dB`.\nSık hata: Yüksek PSNR değerinin daha kaliteli ve gürültüsüz bir görüntüye işaret ettiğini karıştırmak."
+  }
+]

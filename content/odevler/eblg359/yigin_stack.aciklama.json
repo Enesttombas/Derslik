@@ -1,0 +1,110 @@
+[
+  {
+    "satirlar": [1, 7],
+    "aciklama": "Bu başlangıç modülü yığın (stack) veri yapısının temellerini ve kullanım örneklerini tanıtır. Yığın yapısı LIFO (Last-In First-Out) prensibine göre çalışır ve elemanlar en üstten eklenip çıkarılır. Algoritma analizinde operasyonların adım maliyetleri incelenerek başarım ölçülür. Kod çalıştırıldığında doğrulama testleri ve O(1) maliyet ölçümü gerçekleştirilir.",
+    "sinav": "Tanım: Yığın (stack), yalnızca en üstteki elemana doğrudan erişim sağlayan LIFO veri yapısıdır.\nÖrnek: Web tarayıcısındaki geri tuşu geçmişi ve fonksiyon çağrı yığını (call stack).\nSık hata: Yığını FIFO kuyruk yapısıyla karıştırmak veya ortadaki bir elemana doğrudan erişilebileceğini varsaymak.",
+    "baslik": "Modül Tanıtımı ve Yığın Dokümantasyonu"
+  },
+  {
+    "satirlar": [10, 15],
+    "aciklama": "`Yigin` sınıfı LIFO prensibiyle çalışan veri yapısını temsil eder. `__init__` kurucu metodu içerisinde boş bir Python listesi olan `self.elemanlar` tanımlanır. Ayrıca yapılan işlem sayısını takip etmek amacıyla `self.islem` sayacı sıfırlanır. Liste yapısı dinamik dizi olarak çalıştığı için sonuna ekleme işlemi amortize O(1) karmaşıklığa sahiptir.",
+    "sinav": "Tanım: Yığın başlatma işlemi, veri yapısının iç saklama alanını ve sayaçlarını hazır hale getirir.\nFormül: Alan karmaşıklığı: O(n), Başlatma süresi: O(1).\nÖrnek: Başlangıçta elemanlar listesi boş olup uzunluğu 0'dır.\nSık hata: Yapıcı metodda sayaçları sıfırlamayı unutmak veya sabit boyut zorunluluğu olduğunu düşünmek.",
+    "baslik": "Yığın Sınıfı ve Başlangıç Durumu"
+  },
+  {
+    "satirlar": [17, 20],
+    "aciklama": "`it` metodu alınan `x` elemanını listenin sonuna ekler. Python dinamik dizisinin sonuna `append` ile eleman ekleme işlemi amortize O(1) adımda tamamlanır. İşlem sayacını bir artırarak algoritma adım sayısının deneysel ölçülmesini sağlar. Yığının mantıksal tepe noktası listenin son indeksine karşılık gelir.",
+    "sinav": "Tanım: İtme (push) operasyonu, yığının tepe noktasına yeni bir eleman yerleştirir.\nFormül: Zaman Karmaşıklığı: O(1) amortize.\nÖrnek: Boş yığına sırasıyla 10 ve 20 itildiğinde yığın [10, 20] durumuna gelir.\nSık hata: Listenin başına ekleme (insert(0, x)) yaparak O(n) kaydırma maliyeti oluşturmak.",
+    "baslik": "Yığına Eleman Ekleme İşlemi"
+  },
+  {
+    "satirlar": [22, 27],
+    "aciklama": "`cik` metodu yığının tepesindeki en son eklenen elemanı çıkarıp döndürür. Eğer yığın boşsa `IndexError` hatası fırlatarak güvenli çalışma sağlar. Listenin son elemanını `pop` ile çıkarmak O(1) zaman alır çünkü kaydırma yapılmaz. Her başarılı çıkarma işlemi `self.islem` sayacını bir artırır.",
+    "sinav": "Tanım: Çıkarma (pop) operasyonu, en son eklenen tepe elemanı yığından alır ve siler.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: [10, 20] yığınından `cik()` çağrıldığında 20 döner ve yığında [10] kalır.\nSık hata: Boş yığından eleman çıkarmaya çalışırken hata denetimi yapmayıp programın çökmesine yol açmak.",
+    "baslik": "Yığından Eleman Çıkarma İşlemi"
+  },
+  {
+    "satirlar": [29, 34],
+    "aciklama": "`tepe` metodu yığındaki son elemanı silmeden okumak için kullanılır. Yığın boşsa `IndexError` fırlatarak hatalı bellek erişimini önler. Python listelerinde negatif indeks `self.elemanlar[-1]` ile son elemana O(1) sürede erişilir. Yapı üzerinde değişiklik yapılmadığı için veri bütünlüğü korunur.",
+    "sinav": "Tanım: İnceleme (peek/top) operasyonu, yığının tepe elemanını çıkarmadan değerini okur.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: [10, 20] yığınında `tepe()` çağrıldığında 20 döner, yığın boyutu değişmez.\nSık hata: Tepe elemanını okurken elemanı yığından çıkaran `pop()` metodunu çağırmak.",
+    "baslik": "Tepe Elemanını Gözlemleme İşlemi"
+  },
+  {
+    "satirlar": [36, 41],
+    "aciklama": "`bos_mu` metodu yığının boş olup olmadığını mantıksal (boolean) olarak döndürür. `__len__` özel metodu ise mevcut eleman sayısını verir. Her iki metot da liste uzunluğunu okuduğundan O(1) zaman karmaşıklığında çalışır. Bu kontroller yığın üzerindeki diğer işlemlerin güvenli şekilde çalışmasına olanak tanır.",
+    "sinav": "Tanım: Durum denetimi metotları, yığının boşluk ve boyut bilgisini anlık olarak sorgular.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: Eleman sayısı 0 ise `bos_mu()` True, aksi halde False döner.\nSık hata: Boyut kontrolü için liste elemanlarını döngü ile sayarak O(n) gereksiz maliyet üretmek.",
+    "baslik": "Boşluk Denetimi ve Eleman Sayısı"
+  },
+  {
+    "satirlar": [44, 48],
+    "aciklama": "`parantez_dengeli_mi` fonksiyonu metin içindeki parantezlerin eşleşmesini kontrol eder. Açma ve kapama karakterleri için bir sözlük haritası oluşturulur. Karakterler sırayla taranırken bir `Yigin` nesnesi kullanılır. Metin uzunluğu n olmak üzere algoritma tek bir geçişte O(n) zaman harcar.",
+    "sinav": "Tanım: Parantez dengeleme, açılan her parantezin doğru sırada ve tipte kapatıldığını denetleme problemidir.\nFormül: Zaman Karmaşıklığı: O(n), Alan Karmaşıklığı: O(n).\nÖrnek: `{[()]}` ifadesi dengeli, `{[(])}` ifadesi çapraz kapandığı için dengesizdir.\nSık hata: Sadece parantez sayılarını sayarak kontrol etmek; bu durum çapraz kapanma sıralamasını yakalayamaz.",
+    "baslik": "Parantez Dengeleme Fonksiyonu Başlangıcı"
+  },
+  {
+    "satirlar": [49, 54],
+    "aciklama": "Döngü içerisinde açma parantezleri yığına itilirken, kapama parantezleri geldiğinde tepe kontrol edilir. Eğer yığın boşsa veya tepe elemanı eşleşmiyorsa `False` döndürülür. Tüm karakterler incelendikten sonra yığının tamamen boş olması gerekir. Her karakter en fazla bir kez yığına girip çıktığı için O(n) çalışma süresi garanti edilir.",
+    "sinav": "Tanım: Kapanış parantezi geldiğinde LIFO kuralı gereği en son açılan parantezle eşleşme sınanır.\nÖrnek: ')' geldiğinde yığından '(' çıkarılmalı, aksi halde denge bozulmuştur.\nSık hata: Döngü bittiğinde yığında kalan kapatılmamış parantezleri denetlemeyi unutmak.",
+    "baslik": "Parantezlerin Yığınla Denetlenmesi"
+  },
+  {
+    "satirlar": [57, 63],
+    "aciklama": "`sonek_hesapla` fonksiyonu boşlukla ayrılmış postfix matematiksel ifadeleri çözümler. Girdi metni simgelere ayrılarak sırayla incelenir ve yardımcı bir `Yigin` oluşturulur. Bir operatörle karşılaşıldığında yığından iki operand çıkarılır. LIFO yapısı gereği ilk çıkarılan eleman ikinci operand (`b`), sonraki ise ilk operand (`a`) olur.",
+    "sinav": "Tanım: Sonek (postfix) gösterim, operatörün operandlardan sonra yazıldığı parantezsiz matematiksel ifadedir.\nÖrnek: '3 4 +' ifadesi infix olarak '3 + 4' işlemine karşılık gelir.\nSık hata: Yığından çekilen operandların sırasını ters alarak çıkarma ve bölmede hatalı sonuç üretmek.",
+    "baslik": "Sonek İfade Ayrıştırma ve Operatörler"
+  },
+  {
+    "satirlar": [64, 70],
+    "aciklama": "Çıkarılan `a` ve `b` değerleri gelen operatör simgesine göre işleme sokulur. Toplama, çıkarma ve çarpma işlemleri sırayla koşullu ifadelerle belirlenir. Hesaplanan ara değer tekrar yığına itilerek sonraki işlemlerde kullanılır. Her bir aritmetik işlem O(1) adımda gerçekleştirilir.",
+    "sinav": "Tanım: Aritmetik işlem adımı, iki girdi değerinden tek bir sonuç üreten temel matematiksel operatördür.\nFormül: İşlem süresi: O(1).\nÖrnek: a = 3, b = 4 ve operatör '+' ise sonuç 7 olur.\nSık hata: Koşullu dallanmalarda çıkarma işlemini `b - a` şeklinde ters sırada uygulamak.",
+    "baslik": "Aritmetik İşlemlerin Hesaplanması"
+  },
+  {
+    "satirlar": [71, 75],
+    "aciklama": "Bölme operatöründe gerçek bölme yapılarak float sonuç elde edilir. Sayısal simgeler `float` türüne dönüştürülerek yığına itilir. Tüm simgeler bittiğinde yığında kalan tek eleman ifadenin nihai sonucudur. Fonksiyon n simge için O(n) zaman ve O(n) yığın alanı kullanır.",
+    "sinav": "Tanım: Sonek değerlendirme sonunda yığında kalan tek değer nihai hesaplama sonucudur.\nFormül: Zaman Karmaşıklığı: O(n).\nÖrnek: '3 4 + 2 *' ifadesinde son kalan değer 14.0 sonucunu verir.\nSık hata: Bölme işleminde tamsayı bölmesi (`//`) kullanarak ondalık hassasiyeti kaybetmek.",
+    "baslik": "Bölme İşlemi ve Sonucun Döndürülmesi"
+  },
+  {
+    "satirlar": [78, 84],
+    "aciklama": "`main` fonksiyonu temel yığın operasyonlarının doğruluğunu test eder. 10, 20 ve 30 sayıları sırasıyla yığına eklenir. `assert` yardımıyla çıkarılan sıranın 30, 20 ve 10 olduğu denetlenir. Böylece son giren elemanın ilk çıktığı (LIFO) açıkça kanıtlanır.",
+    "sinav": "Tanım: Birim test ve doğrulama, veri yapısının kurallara uygun çalıştığını otomatik olarak denetler.\nÖrnek: 10, 20, 30 itilip peş peşe çıkarıldığında 30, 20, 10 sırası elde edilir.\nSık hata: Testlerde çıkarma sırasını kontrol etmeden sadece boyutun sıfırlandığına bakmak.",
+    "baslik": "Ana Doğrulama ve LIFO Testi"
+  },
+  {
+    "satirlar": [86, 92],
+    "aciklama": "Boş bir yığından eleman çıkarılmaya çalışıldığında `IndexError` oluşup oluşmadığı sınanır. `try/except` bloğu kullanılarak beklenen istisnanın fırlatıldığı yakalanır. `assert` ifadesi ile hatanın gerçekleştiği teyit edilir. Bu yaklaşım veri yapısının sınır durumlarındaki güvenirliğini ölçer.",
+    "sinav": "Tanım: Kenar durum (edge case) testi, sınır koşullarda sistemin beklenen istisnayı fırlatmasını denetler.\nÖrnek: Elemanı olmayan yığından `cik()` çağrıldığında `IndexError` oluşmalıdır.\nSık hata: Boş yapıdan çıkarma denemesinde None döndürüp çağıran tarafta kontrolsüz hatalara yol açmak.",
+    "baslik": "Boş Yığın Hata Durumu Testi"
+  },
+  {
+    "satirlar": [94, 99],
+    "aciklama": "Farklı parantez dizilimleri üzerinde algoritmanın başarısı test edilir. Dengeli ifade için `True`, dengesiz ve eksik ifadeler için `False` üretildiği assert edilir. Tüm test senaryoları algoritmanın doğru çalıştığını doğrular. Çıktılar konsola bilgilendirici şekilde yazdırılır.",
+    "sinav": "Tanım: Doğrulama aşaması, uç ve geçersiz girdi senaryolarının fonksiyondan geçmesini sınar.\nÖrnek: '{[()()]}' dengeli iken '{[(])}' ve '(' dizileri dengesizdir.\nSık hata: Sadece pozitif (dengeli) durumları test edip negatif durumları test kapsamı dışında bırakmak.",
+    "baslik": "Parantez Denge Doğrulama Testi"
+  },
+  {
+    "satirlar": [101, 104],
+    "aciklama": "`sonek_ifade` değişkeni ile verilen postfix ifadenin hesaplaması gerçekleştirilir. Çıkan sonucun beklenen 14.0 değerine eşit olduğu `assert` ile kontrol edilir. Operatör önceliği paranteze gerek kalmadan çözülmüş olur. Elde edilen sonuç açıklayıcı bir metinle ekrana basılır.",
+    "sinav": "Tanım: Sonek doğrulama, operatörlerin doğru operandlarla eşleştiğini sayısal olarak teyit eder.\nFormül: (3 + 4) * 2 = 14.\nÖrnek: '3 4 + 2 *' ifadesinde sonuç float olarak 14.0 çıkmalıdır.\nSık hata: Ondalıklı sonuç beklerken tamsayı karşılaştırmasında tür uyumsuzluğu yaşamak.",
+    "baslik": "Sonek İfade Doğrulama Testi"
+  },
+  {
+    "satirlar": [106, 111],
+    "aciklama": "Yığın veri yapısının eleman başına sabit sürede çalıştığını kanıtlamak için ölçek testi başlatılır. n=100 ve n=1000 eleman için test döngüsü kurulur. Her boyutta n adet eleman yığına sırasıyla itilir. Her itme işlemi O(1) maliyetlidir.",
+    "sinav": "Tanım: Ölçekleme testi, girdi boyutu büyüdükçe algoritmanın zaman karmaşıklığının sabit kaldığını ölçer.\nFormül: n ekleme işlemi için toplam karmaşıklık: O(n).\nÖrnek: n=100 eleman eklendiğinde tam olarak 100 ekleme işlemi sayılır.\nSık hata: Sayaçların her döngüde sıfırlanmasını atlayıp kümülatif hatalı toplam üretmek.",
+    "baslik": "Ölçeklenme Testi Başlangıcı ve Ekleme"
+  },
+  {
+    "satirlar": [112, 116],
+    "aciklama": "Eklenen elemanlar tek tek çıkarılarak toplam işlem sayısı ölçülür. n ekleme ve n çıkarma için toplam işlem sayısının 2*n olduğu `assert` edilir. Eleman başına işlem oranı 2.0 çıkarak operasyonların O(1) olduğu kanıtlanır. Sonuçlar formatlı bir tablo halinde konsola yazdırılır.",
+    "sinav": "Tanım: Operasyon başına ortalama maliyet analizi, yığın işlemlerinin O(1) sabit kaldığını ispatlar.\nFormül: Ortalama işlem maliyeti = Toplam İşlem / n = 2.0 = O(1).\nÖrnek: n=1000 için 2000 işlem yapılır ve eleman başına oran 2.00 olur.\nSık hata: Liste boyutu büyüdükçe yığın işlemlerinin yavaşlayacağını varsaymak.",
+    "baslik": "Çıkarma Ölçümü ve O(1) Tablosu"
+  },
+  {
+    "satirlar": [119, 120],
+    "aciklama": "Dosya doğrudan çalıştırıldığında `main` fonksiyonunun tetiklenmesini sağlar. Python idiomuna uygun olarak `__name__` değişkeni kontrol edilir. Böylece modül başka dosyalara import edildiğinde testler otomatik çalışmaz. Kodun yeniden kullanılabilirliğini ve temiz mimariyi destekler.",
+    "sinav": "Tanım: Giriş noktası (`__main__`), Python dosyalarının bağımsız çalıştırılabilirliğini yönetir.\nÖrnek: Komut satırından `python yigin_stack.py` yazıldığında testler yürütülür.\nSık hata: `main()` çağrısını koşulsuz yazıp dosya kütüphane olarak import edildiğinde yan etkiler oluşturmak.",
+    "baslik": "Uygulama Giriş Noktası Çalıştırma"
+  }
+]

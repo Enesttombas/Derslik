@@ -1,0 +1,158 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "Veri Yapıları Karşılaştırma Modülü",
+    "aciklama": "Bu modül dinamik dizi, çift uçlu kuyruk ve tek bağlı liste yapılarının ekleme performansını karşılaştırır. Başa ve sona ekleme senaryoları hem süre hem de işlem adımı bazında incelenir. Teorik karmaşıklık ile pratik bellek yerleşimi arasındaki farklar deneysel olarak ortaya konur.",
+    "sinav": "Tanım: Performans analizi farklı veri yapılarının aynı operasyon kümesindeki kaynak tüketimini kıyaslar.\nFormül: Dizi başına ekleme O(n), bağlı liste ve deque başına ekleme O(1) maliyettedir.\nÖrnek: N eleman başa eklendiğinde dizi n*(n-1)/2 kaydırma yapar.\nSık hata: Dinamik dizide başa eklemenin de sona ekleme gibi O(1) olduğunu varsaymak."
+  },
+  {
+    "satirlar": [9, 10],
+    "baslik": "Kütüphane İçe Aktarımları",
+    "aciklama": "Standart kütüphaneden `deque` veri yapısı ve hassas zaman ölçümü için `time` modülü içe aktarılır. Harici kütüphane kullanılmadan saf Python ortamında başarım testi gerçekleştirilir. `time.perf_counter` sistemi en yüksek çözünürlüklü zamanlayıcıyı sunar.",
+    "sinav": "Tanım: `collections.deque`, C düzeyinde çift bağlı blok dizileriyle uygulanan çift uçlu kuyruktur.\nÖrnek: `time.perf_counter()` ile iki nokta arasındaki mikrosaniye düzeyindeki fark ölçülür.\nSık hata: Zaman ölçümünde `time.time()` kullanarak işletim sistemi saat ayarlamalarından etkilenmek."
+  },
+  {
+    "satirlar": [13, 16],
+    "baslik": "Tek Bağlı Liste Düğüm Yapısı",
+    "aciklama": "`Dugum` sınıfı tek bağlı listenin temel yapı taşını temsil eder. Her düğüm nesnesi depolanan `veri` değerini ve bir sonraki düğüme işaret eden `sonraki` referansını taşır. Varsayılan olarak `sonraki` bağı `None` yapılarak bağımsız bir düğüm oluşturulur.",
+    "sinav": "Tanım: Bağlı liste düğümü, veriyi ve bir sonraki elemanın bellek adresini saklayan nesnedir.\nFormül: Düğüm = (veri, sonraki_adres).\nÖrnek: `Dugum(5)` verisi 5 olan ve sonraki elemanı bulunmayan bir düğüm üretir.\nSık hata: Düğüm referansını başlatmayıp liste bağlama adımlarında istisna üretmek."
+  },
+  {
+    "satirlar": [19, 24],
+    "baslik": "Tek Bağlı Liste Başlangıç Durumu",
+    "aciklama": "`TekBagliListe` sınıfı listenin başını (`bas`), sonunu (`son`), eleman sayısını (`boyut`) ve işlem sayacını (`adim`) tutar. Son işaretçisi tutulması sayesinde liste sonuna eleman ekleme işlemi O(1) karmaşıklığına indirgenir. Başlangıçta tüm işaretçiler `None` olarak yapılandırılır.",
+    "sinav": "Tanım: Kuyruk işaretçili (tail pointer) tek bağlı liste, sona ekleme süresini O(n)'den O(1)'e düşürür.\nFormül: Boş listede `bas = None`, `son = None`, `boyut = 0`.\nÖrnek: Liste ilk kurulduğunda sıfır elemanlıdır ve hiçbir düğümü göstermez.\nSık hata: Son işaretçisi tutmayıp her sona eklemede listeyi baştan sona yürümek."
+  },
+  {
+    "satirlar": [26, 32],
+    "baslik": "Başa Eleman Ekleme Metodu",
+    "aciklama": "`basa_ekle` metodu yeni bir düğüm oluşturup mevcut baş işaretçisine bağlar. Listenin başı yeni düğüm yapılır ve liste önceden boşsa son işaretçisi de güncellenir. Bu işlem hiçbir eleman kaydırması gerektirmeden kesinlikle O(1) sürede tamamlanır.",
+    "sinav": "Tanım: Bağlı listede başa ekleme, yeni düğümün sonraki işaretçisini eski başa yönlendirip başı güncellemektir.\nFormül: Karmaşıklık daima O(1)'dir.\nÖrnek: [2, 3] listesine başa 1 eklendiğinde [1, 2, 3] elde edilir.\nSık hata: Liste boşken başa ekleme yapıldığında `son` işaretçisini güncellemeyi unutmak."
+  },
+  {
+    "satirlar": [34, 38],
+    "baslik": "Sona Eleman Ekleme Başlangıcı",
+    "aciklama": "`sona_ekle` metodu gelen veriyle yeni bir düğüm oluşturur. Eğer liste tamamen boşsa hem baş hem de son işaretçisi bu yeni düğüme atanır. Bu kontrol ilk elemanın listeye güvenli şekilde yerleşmesini sağlar.",
+    "sinav": "Tanım: Boş listeye sona ekleme yapmak, başa ekleme yapmakla eşdeğer bir başlangıç durumu oluşturur.\nFormül: Liste boşsa `bas = son = yeni`.\nÖrnek: Boş listeye 10 eklendiğinde tek düğüm hem baş hem son olur.\nSık hata: Boş liste kontrolünü atlayıp `son.sonraki` satırında `NoneType` hatası almak."
+  },
+  {
+    "satirlar": [39, 42],
+    "baslik": "Sona Ekleme Bağlantısı ve Boyut",
+    "aciklama": "Liste doluysa mevcut son düğümün `sonraki` bağı yeni düğüme bağlanır ve `son` referansı güncellenir. Boyut ve adım sayaçları birer artırılarak ekleme işlemi tamamlanır. Son işaretçisi sayesinde bu işlem O(1) maliyetle yürütülür.",
+    "sinav": "Tanım: Son işaretçili bağlı listede sona ekleme ardışıl yürümeye gerek kalmadan O(1) zamanda gerçekleşir.\nFormül: `self.son.sonraki = yeni; self.son = yeni`.\nÖrnek: [1, 2] listesinde son 2 iken 3 eklendiğinde son 3 olur.\nSık hata: Son işaretçisini yeni düğüme kaydırmayı unutup kuyruğu eski düğümde bırakmak."
+  },
+  {
+    "satirlar": [45, 50],
+    "baslik": "Dizi Başına Ekleme Süre Ölçümü",
+    "aciklama": "Python listesinde `insert(0, i)` kullanılarak n adet eleman sırayla başa eklenir. Her yeni eleman tüm mevcut elemanların bellekte bir sağa kaydırılmasını gerektirir. Bu nedenle toplam süre n kare ile orantılı artarak O(n^2) bir toplam maliyet doğurur.",
+    "sinav": "Tanım: Dinamik diziler ardışık bellek kullandığından 0. indekse ekleme tüm elemanları kaydırır.\nFormül: n ekleme için toplam kaydırma = n * (n - 1) // 2 olup O(n^2) karmaşıklıktadır.\nÖrnek: 8000 eleman için yaklaşık 32 milyon kaydırma işlemi yapılır.\nSık hata: Python listesinin başa ekleme işlemini bağlı liste kadar hızlı yapacağını varsaymak."
+  },
+  {
+    "satirlar": [52, 56],
+    "baslik": "Dizi Sonuna Ekleme Süre Ölçümü",
+    "aciklama": "Python listesinde `append` metodu ile sona n adet eleman eklenir. Dinamik dizi amortize O(1) sürede genişlediğinden sona eklemeler son derece hızlı tamamlanır. Bu işlem başa eklemeyle taban tabana zıt bir performans sergiler.",
+    "sinav": "Tanım: Dinamik dizilerde sona ekleme amortize O(1) maliyetlidir.\nFormül: n adet `append` toplam O(n) zaman alır.\nÖrnek: 8000 elemanın sona eklenmesi bir milisaniyeden kısa sürer.\nSık hata: Dinamik dizinin kapasite artış anındaki O(n) yeniden tahsisini kalıcı maliyet sanmak."
+  },
+  {
+    "satirlar": [58, 62],
+    "baslik": "Deque Başına Ekleme Süre Ölçümü",
+    "aciklama": "`collections.deque` nesnesine `appendleft` ile başa eleman eklenir. Deque yapısı sabit boyutlu bellek bloklarından oluşan çift yönlü bağlı bir blok zinciridir. Başa ekleme eleman kaydırmaksızın O(1) zamanda gerçekleşir.",
+    "sinav": "Tanım: Deque yapısında başa ekleme `appendleft` ile O(1) zamanda çalışır.\nFormül: n ekleme için toplam süre O(n) ölçeğindedir.\nÖrnek: 8000 eleman başa eklendiğinde milisaniyenin altında süre harcanır.\nSık hata: Deque başa eklemesinin Python listesi gibi O(n) kaydırma yapacağını düşünmek."
+  },
+  {
+    "satirlar": [64, 68],
+    "baslik": "Deque Sonuna Ekleme Süre Ölçümü",
+    "aciklama": "Deque yapısına `append` çağrısıyla son kısımdan n adet eleman eklenir. Çift uçlu yapının sağladığı simetri sayesinde sona ekleme de O(1) zamanda biter. Deque her iki uçta da tutarlı bir şekilde yüksek performans sunar.",
+    "sinav": "Tanım: Deque her iki uçtan da O(1) sürede ekleme ve çıkarma desteği sunan veri yapısıdır.\nFormül: Sona ekleme süresi O(1) mertebesindedir.\nÖrnek: Sona 8000 eleman ekleme adımı doğrusal süreyle tamamlanır.\nSık hata: Deque'in rastgele indeks erişiminde dinamik dizi kadar hızlı olduğunu zannetmek."
+  },
+  {
+    "satirlar": [70, 74],
+    "baslik": "Bağlı Liste Başına Ekleme Ölçümü",
+    "aciklama": "Kendi yazdığımız `TekBagliListe` yapısına `basa_ekle` ile n eleman yerleştirilir. Her eklemede yeni düğüm tahsis edilip referans güncellenir. Bellek kaydırması olmaksızın O(1) sürede başa ekleme gerçekleştirilir.",
+    "sinav": "Tanım: Bağlı listede başa ekleme düğüm tahsisi ve işaretçi güncellemesinden ibarettir.\nFormül: Ekleme adımı O(1) karmaşıklıktadır.\nÖrnek: Yeni düğüm doğrudan listenin başına yerleşir.\nSık hata: Düğüm tahsisinin Python nesne ek yükü getirdiğini unutup süreleri C düzeyindeki yapılarla birebir kıyaslamak."
+  },
+  {
+    "satirlar": [76, 80],
+    "baslik": "Bağlı Liste Sonuna Ekleme Ölçümü",
+    "aciklama": "`sona_ekle` çağrısıyla bağlı listenin sonuna yeni düğümler eklenir. `son` işaretçisi sayesinde son düğüm doğrudan bilinir ve O(1) sürede ekleme tamamlanır. Tüm liste baştan taranmadığı için doğrusal maliyetten kaçınılmış olur.",
+    "sinav": "Tanım: Kuyruk işaretçisi olan bağlı listelerde sona ekleme O(1) sürede yapılır.\nFormül: Ekleme maliyeti O(1)'dir.\nÖrnek: 8000 elemanın sona eklenmesi tek tek O(1) adımlarla tamamlanır.\nSık hata: Bağlı liste sonuna ekleme yaparken kuyruk işaretçisi tutulmadığında O(n) gecikme yaşanacağını unutmak."
+  },
+  {
+    "satirlar": [82, 84],
+    "baslik": "Ölçüm Sonuçları Demeti Döndürme",
+    "aciklama": "Hesaplanan süreler ve oluşturulan veri yapısı örnekleri iki demet halinde döndürülür. Bu ayrım hem zaman tablosunun hem de doğruluk denetimlerinin aynı veri üzerinden yapılmasını sağlar. Test verilerinin tutarlılığı güvenceye alınır.",
+    "sinav": "Tanım: Fonksiyon çıktılarının yapılandırılmış demetlerle dönmesi kodun test edilebilirliğini artırır.\nÖrnek: `sureler` ve `objeler` demetleri çağıran ana fonksiyona aktarılır.\nSık hata: Fonksiyon içinde global değişkenler kullanarak test sonuçlarını birbirine karıştırmak."
+  },
+  {
+    "satirlar": [87, 90],
+    "baslik": "Ana Fonksiyon ve Süre Başlığı",
+    "aciklama": "`main` fonksiyonu içinde test edilecek girdi boyutları (2000, 4000, 8000) belirlenir. Performans raporu başlığı ve milisaniye cinsinden çalışma süreleri tablosunun ilk satırı yazdırılır. Deneyler artan N değerleriyle yapılandırılır.",
+    "sinav": "Tanım: Deney tablosu başlığı karşılaştırılan veri yapılarının ve metriklerin net okunmasını sağlar.\nÖrnek: N = 2000, 4000, 8000 boyutlarında deneyler yürütülür.\nSık hata: Test boyutlarını çok küçük seçip süre farklarının ölçülememesine neden olmak."
+  },
+  {
+    "satirlar": [91, 94],
+    "baslik": "Süre Tablosu Sütun Başlıkları",
+    "aciklama": "Tablonun sütun başlıkları ve ayırıcı çizgi ekrana basılır. Sütunlarda List Başa/Sona, Deque Başa/Sona ve Bağlı Liste Başa/Sona süreleri yer alır. Formatlı metin hizalama okunabilirliği artırır.",
+    "sinav": "Tanım: Tablo başlığı, karşılaştırılan algoritmaların sütun bazında ayrışmasını sağlar.\nÖrnek: Sütunlar 10 karakter genişliğinde hizalanır.\nSık hata: Tablo sütun genişliklerini sabit tutmayıp kayan satırlara yol açmak."
+  },
+  {
+    "satirlar": [96, 101],
+    "baslik": "Test Ölçümü ve Doğruluk Denetimi",
+    "aciklama": "Her N boyutu için `olcum_yap` çağrılarak süreler ve yapılar elde edilir. Bağlı listenin boyutu ve adım sayacının N olduğu `assert` ile kesinleştirilir. Ayrıca ilk ve son elemanların değerleri doğrulanarak mantıksal doğruluk kanıtlanır.",
+    "sinav": "Tanım: Doğruluk testleri, süre ölçümünden önce veri yapısının işlevini eksiksiz yerine getirdiğini sınar.\nFormül: `b_bas.boyut == n` ve `len(l_bas) == n`.\nÖrnek: 2000 eleman eklenen bağlı listenin boyutu tam 2000 olmalıdır.\nSık hata: Zaman testlerine odaklanıp verinin doğru sırada depolanıp depolanmadığını denetlememek."
+  },
+  {
+    "satirlar": [102, 105],
+    "baslik": "Süre Satırlarının Yazdırılması",
+    "aciklama": "Ölçülen süre değişkenleri formatlanarak ilgili N satırına yazdırılır. Listede başa ekleme süresinin N arttıkça karesel patlama yaptığı açıkça görülür. Deque ve bağlı liste süreleri ise doğrusal ölçekte stabil kalır.",
+    "sinav": "Tanım: Deneysel çalışma süresi tablosu kuramsal karmaşıklık eğrilerinin pratik yansımasıdır.\nÖrnek: N = 8000 için listede başa ekleme 12 ms sürerken sona ekleme 0.36 ms sürer.\nSık hata: Süreler donanıma göre dalgalanabileceğinden süre değerleri üzerine assert yazmak."
+  },
+  {
+    "satirlar": [106, 107],
+    "baslik": "Boş Bağlı Liste Sınır Denetimi",
+    "aciklama": "Yeni oluşturulan boş bir `TekBagliListe` nesnesinin başlangıç durumu `assert` ile kontrol edilir. `bas` ve `son` referanslarının `None`, `boyut` değerinin ise 0 olduğu doğrulanır. Bu adım sınır durum güvencesi sağlar.",
+    "sinav": "Tanım: Boş veri yapısı değişmezleri sınıfın ilk durumunun doğru başlatıldığını teyit eder.\nFormül: `bas is None and son is None and boyut == 0`.\nÖrnek: Boş liste nesnesi bellekte hiçbir düğüme işaret etmemelidir.\nSık hata: Boş liste durumunu test etmeyip ilk düğüm ekleme adımlarındaki hataları gizlemek."
+  },
+  {
+    "satirlar": [109, 112],
+    "baslik": "Deterministik Adım Tablosu Başlığı",
+    "aciklama": "Donanım bağımsız kesin işlem sayılarını gösteren ikinci tablonun başlığı yazdırılır. Bu tablo kaydırma ve ekleme işlemlerini matematiksel adım cinsinden karşılaştırır. Böylece süre dalgalanmalarından bağımsız nesnel bir analiz sunulur.",
+    "sinav": "Tanım: Deterministik adım sayısı, algoritmanın işlemci hızından bağımsız matematiksel işlem miktarıdır.\nÖrnek: Liste başa eklemede kaydırma sayısı formülle hesaplanır.\nSık hata: İşlem adım sayısını rastgele sayaçlarla ölçüp matematiksel modelden kopmak."
+  },
+  {
+    "satirlar": [113, 116],
+    "baslik": "Matematiksel Kaydırma Adımları Hesabı",
+    "aciklama": "Dinamik dizide başa ekleme kaydırma formülü `n * (n - 1) // 2` ile hesaplanır. Deque ve bağlı listede ise her ekleme 1 işlem olmak üzere toplam n adım sürer. Hesaplanan adım sayıları tablo satırına yazılarak kuramsal fark somutlaştırılır.",
+    "sinav": "Tanım: Dizi başa ekleme kaydırma sayısı 1'den n-1'e kadar olan sayıların toplamıdır.\nFormül: Toplam kaydırma = n * (n - 1) // 2.\nÖrnek: N = 8000 için kaydırma sayısı tam olarak 31,996,000 adımdır.\nSık hata: Kaydırma sayısını n kare sanıp katsayıyı (1/2) formülde unutmak."
+  },
+  {
+    "satirlar": [118, 120],
+    "baslik": "Teorik Karmaşıklık Tablosu Başlığı",
+    "aciklama": "Temel veri yapılarının kuramsal zaman karmaşıklıklarını özetleyen üçüncü tablonun başlığı basılır. Ekleme, arama ve silme sütunları karşılaştırmalı olarak tanımlanır. Bu bölüm öğrencilerin ders sınavına hazırlanması için referans özet niteliğindedir.",
+    "sinav": "Tanım: Zaman karmaşıklığı tablosu, veri yapılarının temel işlemlerindeki asimptotik sınırları gösterir.\nÖrnek: Sütunlar: Veri Yapısı, Ekleme, Arama, Silme.\nSık hata: Ortalama durum ile en kötü durum karmaşıklıklarını birbirine karıştırmak."
+  },
+  {
+    "satirlar": [121, 125],
+    "baslik": "Dizi ve Bağlı Liste Karmaşıklıkları",
+    "aciklama": "Dinamik dizi, bağlı liste, deque ve yığın veri yapılarının karmaşıklık verileri listelenir. Dizide sona ekleme O(1) iken başa ekleme O(n) maliyettedir. Bağlı liste ve deque yapılarında ise uçlara ekleme O(1) zamanda gerçekleşir.",
+    "sinav": "Tanım: Doğrusal veri yapılarının uç işlemlerinde bağlı listeler dizilere göre kaydırma maliyeti oluşturmaz.\nFormül: Bağlı liste uç ekleme: O(1), Dizi başa ekleme: O(n).\nÖrnek: Yığın (stack) LIFO yapısıyla tepeden O(1) sürede itme ve çekme yapar.\nSık hata: Bağlı listede arama işleminin de O(1) olacağını sanmak."
+  },
+  {
+    "satirlar": [126, 130],
+    "baslik": "Kuyruk Hash ve Ağaç Karmaşıklıkları",
+    "aciklama": "Kuyruk, ikili yığın, hash tablosu ve ikili arama ağacı yapılarının O() değerleri listelenir. İkili yığın O(log n) ekleme ve silme sunarken, hash tablosu ortalama O(1) süre sağlar. BST ise dengeli yapıda O(log n), dejenere yapıda O(n) verir.",
+    "sinav": "Tanım: Doğrusal olmayan ağaç ve hash yapıları arama ve öncelik yönetiminde logaritmik veya sabit süreler sunar.\nFormül: Hash ekleme ortalama O(1), BST arama dengeli O(log n).\nÖrnek: İkili min-yığında kök silme O(log n) zamanda gerçekleşir.\nSık hata: Hash tablosunun en kötü durumda çakışmalar yüzünden O(n)'e düşebileceğini unutmak."
+  },
+  {
+    "satirlar": [131, 132],
+    "baslik": "Karmaşıklık Özet Tablosu Çıktısı",
+    "aciklama": "Tanımlanan sabit karmaşıklık satırları bir döngü ile formatlanarak ekrana yazdırılır. Her bir veri yapısının asimptotik başarım profili derli toplu sunulur. Böylece hangi yapının hangi senaryoda tercih edilmesi gerektiği özetlenir.",
+    "sinav": "Tanım: Algoritma seçiminde doğru veri yapısı işlem profiline göre belirlenir.\nÖrnek: Çok sayıda başa ekleme yapılacaksa dinamik dizi yerine deque veya bağlı liste seçilir.\nSık hata: Her problem için tek bir veri yapısının en iyi olacağını düşünmek."
+  },
+  {
+    "satirlar": [135, 136],
+    "baslik": "Ana Program Başlatıcı Bloğu",
+    "aciklama": "Dosyanın doğrudan komut satırından çalıştırıldığını kontrol eden standart yapı kurulur. Koşul sağlandığında `main()` fonksiyonu tetiklenerek ölçümler ve tablolar üretilir. Kodun başka bir betik tarafından modül olarak kullanılmasına imkan tanınır.",
+    "sinav": "Tanım: `__name__ == '__main__'` kontrolü çalıştırılabilir betik standardıdır.\nÖrnek: `python karsilastirma.py` komutu ana fonksiyonu yürütür.\nSık hata: Doğrudan çalıştırılan kodları ana blok içine almayıp genel kapsamda bırakmak."
+  }
+]

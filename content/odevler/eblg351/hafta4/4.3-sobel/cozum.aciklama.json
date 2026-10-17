@@ -1,0 +1,164 @@
+[
+  {
+    "satirlar": [
+      1,
+      4
+    ],
+    "baslik": "Ödev 4.3 amacı ve Sobel operatörü",
+    "aciklama": "Docstring 3x3 Sobel gradyan operatörü ödevini açıklar. Kamera görüntüsüne 5x5 Gauss yumuşatma uygulanır ve 3x3 Sobel operatörü ile gx (dikey kenar), gy (yatay kenar) ve hipotenüs gradyan büyüklüğü hesaplanır.",
+    "sinav": "Tanım: Sobel operatörü, Prewitt'e kıyasla merkez piksele 2 ağırlığı vererek türev alırken aynı anda yumuşatma yapar.\nFormül: `Sobel Gx = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]`.\nSık hata: Sobel ile Prewitt katsayılarını birbiriyle karıştırmak."
+  },
+  {
+    "satirlar": [
+      5,
+      8
+    ],
+    "baslik": "Eşikleme ve panel özeti",
+    "aciklama": "Docstring tepe gradyan büyüklüğünün %20'si eşik alınarak ikili (binary) kenar haritası üretildiğini ve 2x3 ızgara panelinde tüm adımların kaydedildiğini belirtir.",
+    "sinav": "Tanım: Gradyan büyüklüğü eşikleme: `I_ikili = (mag >= 0.20 * max(mag)) * 255`.\nSık hata: Mutlak eşik değeri verip farklı aydınlatmalı görüntülerde kenarları kaybetmek."
+  },
+  {
+    "satirlar": [
+      10,
+      14
+    ],
+    "baslik": "Kütüphaneleri yükle",
+    "aciklama": "Pathlib dosya yollarını, sys çalışma dizinini, cv2 görüntü işleme fonksiyonlarını ve numpy matris matematiğini sağlar.",
+    "sinav": "Tanım: Gerekli modüller betiğin çalışma kapsamını genişletir.\nSık hata: Modül içe aktarımlarını fonksiyon içine yazıp gereksiz ek yük oluşturmak."
+  },
+  {
+    "satirlar": [
+      15,
+      20
+    ],
+    "baslik": "Çalışma dizinlerini sys.path'e ekle",
+    "aciklama": "Betiğin üst dizinleri hafta4 ve repo kökü çözümlenerek sys.path'e eklenir; böylece yerel paket importları sorunsuz çalışır.",
+    "sinav": "Tanım: `sys.path` genişletmesi bağımsız betik çalıştırmalarında import hatalarını çözer.\nSık hata: Yolu eklemeden üst paketten import yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      22,
+      25
+    ],
+    "baslik": "Ortak kenar modülleri (Gauss, ikili, işaretli)",
+    "aciklama": "hafta4.kenarlar modülünden gauss_yumusat, gradyan_ikili ve isaretli_goruntu_uint8 fonksiyonları içe aktarılır. Bu fonksiyonlar yumuşatma, eşikleme ve işaretli görselleştirme adımlarını yürütür.",
+    "sinav": "Tanım: `gradyan_ikili` tepe değer oranına göre ikili kenar haritası üretir.\nSık hata: Gradyan büyüklüğünü eşiklemeden doğrudan ikili kenar sanmak."
+  },
+  {
+    "satirlar": [
+      26,
+      30
+    ],
+    "baslik": "Ortak kenar modülleri (mutlak, panel, sobel)",
+    "aciklama": "hafta4.kenarlar modülünden mutlak_uint8, panel_olustur ve sobel fonksiyonları içe aktarılır. sobel fonksiyonu gx, gy ve mag hipotenüs büyüklüğünü tek çağrıda hesaplar.",
+    "sinav": "Formül: Gradyan büyüklüğü `mag = np.hypot(gx, gy) = sqrt(gx^2 + gy^2)`.\nSık hata: Büyüklük yerine yalnızca `gx + gy` toplayıp yönlü hata üretmek."
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "baslik": "Çıktı klasörlerini oluştur",
+    "aciklama": "calistir fonksiyonu yerel ve merkezi çıktı klasörlerini hazırlar. exist_ok=True klasör varsa çökmesini önler.",
+    "sinav": "Tanım: Çıktı dizinlerinin önceden oluşturulması güvenli dosya yazımı sağlar.\nSık hata: Klasör olmadan yazmaya çalışıp dosya hatası almak."
+  },
+  {
+    "satirlar": [
+      39,
+      41
+    ],
+    "baslik": "Girdi dosyasının varlığını denetle",
+    "aciklama": "girdi_yol ile kamera.png dosyasının varlığı denetlenir. Dosya diskte mevcut değilse açık bir FileNotFoundError fırlatılarak program güvenli biçimde durdurulur.",
+    "sinav": "Tanım: `exists()` kontrolü dosya yolu hatalarını erkenden yakalar.\nSık hata: Dosya yokken doğrudan okuma yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      43,
+      45
+    ],
+    "baslik": "Kamera görüntüsünü gri seviyede oku",
+    "aciklama": "cv2.imread kamera.png dosyasını IMREAD_GRAYSCALE modunda 8-bit tek kanallı matris olarak okur. Okuma başarısız olursa None kontrolüyle ValueError üretilir.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` tek kanallı piksel yoğunluk matrisi verir.\nSık hata: `None` dönen matrisi kontrol etmeden işlem yapmak."
+  },
+  {
+    "satirlar": [
+      47,
+      50
+    ],
+    "baslik": "Sobel gradyanlarını ve görselleştirmeyi hesapla",
+    "aciklama": "sobel(gri, yumusat=True) fonksiyonu 5x5 Gauss yumuşatmanın ardından gx, gy ve mag matrislerini üretir. gx_vis ve gy_vis işaretli türevleri 128 tabanında görselleştirir.",
+    "sinav": "Tanım: Sobel merkez piksel katsayısı 2 olduğu için Prewitt'e göre daha pürüzsüz türev üretir.\nÖrnek: `gx` dikey kenarları, `gy` yatay kenarları vurgular.\nSık hata: `yumusat=False` yapıp gürültülü kenarlar elde etmek."
+  },
+  {
+    "satirlar": [
+      51,
+      53
+    ],
+    "baslik": "Büyüklük ve %20 eşikli ikili kenar haritası",
+    "aciklama": "mag_vis mutlak uint8 büyüklük görüntüsünü üretir. gradyan_ikili(mag, esik_orani=0.2) en büyük gradyanın %20'sini aşan pikselleri 255 (beyaz), altındakileri 0 (siyah) yaparak temiz ikili kenar haritası oluşturur.",
+    "sinav": "Formül: `esik = 0.20 * max(mag)`; `ikili = (mag >= esik) * 255`.\nTanım: Gradyan büyüklüğü yön bağımsız toplam kenar gücünü temsil eder.\nSık hata: Çok yüksek eşik seçip ince kenarları koparmak veya çok düşük eşikle gürültü almak."
+  },
+  {
+    "satirlar": [
+      54,
+      59
+    ],
+    "baslik": "Panel görsel listesini hazırla",
+    "aciklama": "Girdi, Gauss yumuşatılmış, Sobel Gx, Sobel Gy, Gradyan Büyüklüğü ve İkili Kenar görselleri 2x3 panel listesinde toplanır. yumusak matrisi ara adım görselleştirmesi için gauss_yumusat ile ayrıca üretilir.",
+    "sinav": "Tanım: 2x3 panel gradyan türev zincirinin tüm aşamalarını bir arada sunar.\nSık hata: Panel listesine eksik matris koyup boyut hatası almak."
+  },
+  {
+    "satirlar": [
+      60,
+      64
+    ],
+    "baslik": "Panel başlıkları ilk satır",
+    "aciklama": "Panelin ilk satırındaki üç görsel için '1. Girdi (Orijinal)', '2. Gauss Yumusatma (5x5)' ve '3. Sobel Gx (Dikey Kenar)' başlıkları tanımlanır.",
+    "sinav": "Tanım: Başlık bantları görsellerin üzerine çizilerek panelin okunabilirliğini artırır.\nSık hata: Başlık metinlerini panelle uyumsuz sırada vermek."
+  },
+  {
+    "satirlar": [
+      65,
+      68
+    ],
+    "baslik": "Panel başlıkları ikinci satır ve panel oluşturma",
+    "aciklama": "'4. Sobel Gy (Yatay Kenar)', '5. Gradyan Buyuklugu' ve '6. Ikili Kenar (%20 Esik)' başlıkları tanımlanır ve panel_olustur ile (2, 3) ızgara paneli oluşturulur.",
+    "sinav": "Tanım: `panel_olustur` ızgara şekline göre görselleri birleştirir ve başlık şeridi ekler.\nSık hata: Izgara boyutuyla görsel sayısı uyuşmadığında indeks hatası almak."
+  },
+  {
+    "satirlar": [
+      70,
+      75
+    ],
+    "baslik": "Yerel cikti klasörüne tüm çıktıları kaydet",
+    "aciklama": "kamera_sobel_gx.png, kamera_sobel_gy.png, kamera_sobel_hypot.png, kamera_sobel_ikili.png ve panel_sobel.png yerel cikti dizinine kaydedilir.",
+    "sinav": "Tanım: `cv2.imwrite` türetilen tüm filtre matrislerini diske yazar.\nSık hata: Ara çıktıları kaydetmeyip raporda eksik dosya hatası almak."
+  },
+  {
+    "satirlar": [
+      77,
+      80
+    ],
+    "baslik": "Genel cikti klasörünü güncelle",
+    "aciklama": "Tüm Sobel çıktıları merkezi hafta4/cikti klasörüne de kopyalanarak genel raporlama ve karşılaştırma araçlarının kullanımına sunulur.",
+    "sinav": "Tanım: Merkezi çıktı arşivleme farklı ödevlerin birbirini referans almasını sağlar.\nSık hata: Genel klasörü güncellemeyi atlamak."
+  },
+  {
+    "satirlar": [
+      81,
+      84
+    ],
+    "baslik": "İkili kenar dosyasını kaydet ve tamamla",
+    "aciklama": "kamera_sobel_ikili.png dosyası genel çıktıya yazılır ve Ödev 4.3'ün tamamlandığı konsola bildirilir.",
+    "sinav": "Tanım: İkili kenar haritası kenar piksellerinin kesin konumunu belirler.\nSık hata: Çıktı doğrulamasını yapmadan betiği sonlandırmak."
+  },
+  {
+    "satirlar": [
+      86,
+      87
+    ],
+    "baslik": "Doğrudan çalıştırma kontrolü",
+    "aciklama": "if __name__ == '__main__' bloğu dosya doğrudan yürütüldüğünde calistir() fonksiyonunu çağırır.",
+    "sinav": "Tanım: Standart doğrudan çalıştırma kalıbıdır.\nSık hata: Bu denetimi koymayıp import yan etkileri yaratmak."
+  }
+]

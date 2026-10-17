@@ -1,0 +1,134 @@
+[
+  {
+    "satirlar": [1, 7],
+    "aciklama": "Bu modül ayrık zincirleme (separate chaining) ve dinamik yeniden hashleme tekniklerini içeren hash tablosu yapısını ele alır. Polinomsal hash fonksiyonu ile anahtarlar kovalar arasına homojen şekilde yayılır. Doluluk oranı eşik değeri aştığında tablo büyütülerek çakışmalar en aza indirilir. Sözlük işlemlerinin ortalama O(1) başarımı sağlanır.",
+    "sinav": "Tanım: Ayrık zincirleme (separate chaining), çakışan anahtarların aynı kovada bir bağlı liste veya dinamik dizide saklanmasıdır.\nÖrnek: 'elma' ve 'armut' aynı kovaya düştüğünde zincir halinde arka arkaya saklanır.\nSık hata: Çakışma durumunda yeni gelen anahtarın eskisinin üzerine yazıldığını zannetmek.",
+    "baslik": "Modül Dokümanı ve Hash Tablosu"
+  },
+  {
+    "satirlar": [10, 12],
+    "aciklama": "`ZincirliHash` sınıfı anahtar-değer ilişkisini dinamik bir sözlük modeli olarak hayata geçirir. Veriler kovalardan oluşan bir liste listesi içerisinde saklanır. Bu yöntem bellek verimliliği ile hızlı erişimi dengeler. Sınıf yapısı modern veritabanı indeksleme mantığının temelini oluşturur.",
+    "sinav": "Tanım: Hash tablosu sınıfı, anahtarları indekslere dönüştürerek doğrudan bellek erişimi sunar.\nFormül: Alan karmaşıklığı: O(m + n) (m kova sayısı, n eleman sayısı).\nÖrnek: Başlangıçta 4 kova ayrılır ve elemanlar geldikçe dağıtılır.\nSık hata: Hash tablosunun sıralı bir veri yapısı olduğunu varsaymak.",
+    "baslik": "Zincirli Hash Sınıf Tanıtımı"
+  },
+  {
+    "satirlar": [13, 17],
+    "aciklama": "`__init__` metodunda `baslangic_kapasite` kadar boş kova listesi oluşturulur. `self.eleman_sayisi` tablodaki toplam öğe sayısını izlerken, `self.islem` sayacı kova içi karşılaştırmaları kaydeder. `self.yeniden_hash` ise yeniden boyutlandırma adetini sayar. Başlatma aşaması O(baslangic_kapasite) adımda tamamlanır.",
+    "sinav": "Tanım: Kova (bucket) listesi, çakışan eleman gruplarını tutan iki boyutlu liste yapısıdır.\nÖrnek: `kovalar = [[], [], [], []]` şeklinde 4 boş kova hazırlanır.\nSık hata: Tüm kovaların tek bir liste referansını paylaşması (örneğin `[[]]*4` hatası).",
+    "baslik": "Hash Tablosu Durum Değişkenleri"
+  },
+  {
+    "satirlar": [19, 24],
+    "aciklama": "`_hash` özel metodu, deterministik bir polinom fonksiyonu kullanarak metin anahtarları tamsayıya dönüştürür. 31 tabanı (Horner metodu) kullanılarak her karakterin ASCII değeri `ord(ch)` akümülatöre eklenir. Sonuç kova sayısına göre modulo alınarak geçerli bir indeks elde edilir. Python `hash()` fonksiyonu yerine deterministik çalışır ve O(L) zaman alır.",
+    "sinav": "Tanım: Polinomsal hash fonksiyonu, karakterlerin sıra ve değerlerini asal bir çarpanla toplayarak dağıtan algoritmadır.\nFormül: h = (sum(ch[i] * 31^(L - 1 - i))) % kova_sayisi.\nÖrnek: 'ab' için h = (ord('a')*31 + ord('b')) % m.\nSık hata: Karakter sıralamasını dikkate almayıp sadece ASCII toplamı alarak anagramlarda çakışma üretmek.",
+    "baslik": "Polinomsal Hash Fonksiyonu Hesabı"
+  },
+  {
+    "satirlar": [26, 29],
+    "aciklama": "`yuk_orani` metodu tablonun doluluk seviyesini `self.eleman_sayisi / len(self.kovalar)` oranıyla hesaplar. Algoritma literatüründe alpha ile simgelenen bu metrik, kova başına düşen ortalama eleman sayısını gösterir. Arama başarımını belirleyen en kritik parametredir. Hesaplama O(1) zamanda tek bir bölme işlemiyle gerçekleşir.",
+    "sinav": "Tanım: Yük oranı (load factor, alpha), tablodaki toplam eleman sayısının kova sayısına bölümüdür.\nFormül: alpha = n / m.\nÖrnek: 6 eleman ve 8 kova varsa yuk_orani = 6 / 8 = 0.75'tir.\nSık hata: Yük oranını sadece boş olmayan kovaların sayısıyla hesaplamak.",
+    "baslik": "Yük Oranı Metodu ve Tanımı"
+  },
+  {
+    "satirlar": [30, 35],
+    "aciklama": "`_yeniden_hashle` metodu yük oranı 0.75 eşiğini aştığında çağrılır. `self.yeniden_hash` sayacı bir artırılır ve kova sayısı iki katına çıkarılır. Yeni ve daha geniş bir kova dizisi `self.kovalar` olarak tahsis edilir. Eleman sayacı yeniden doldurulmak üzere sıfırlanır.",
+    "sinav": "Tanım: Yeniden hashleme (rehashing), kova sayısını artırıp elemanları yeni kovalara aktarma işlemidir.\nFormül: Yeni kova sayısı = 2 * Eski kova sayısı.\nÖrnek: 4 kovadan 8 kovaya, ardından 16 ve 32 kovaya büyütme.\nSık hata: Yeniden hashlemede kova sayısı değiştiği için elemanların eski indekslerini koruyacağını sanmak.",
+    "baslik": "Yeniden Hashleme Kapasite Artırımı"
+  },
+  {
+    "satirlar": [36, 41],
+    "aciklama": "Eski kovalardaki tüm anahtar-değer çiftleri yeni kova sayısına göre tekrar hashlenir. Her çift yeni tablodaki ilgili kovaya `append` ile eklenir ve `self.eleman_sayisi` artırılır. Bu taşıma işlemi n eleman için O(n) zaman alır. Boyutlandırma amortize edildiğinde ekleme maliyetini O(1) seviyesinde tutar.",
+    "sinav": "Tanım: Dağıtım aşaması, modulo tabanı değiştiği için tüm anahtarların yeni indekslere taşınmasıdır.\nFormül: Rehash zaman karmaşıklığı: O(n + m).\nÖrnek: Eski tablodaki 3. indeksteki anahtar yeni 32'lik tabloda 19. indekse geçebilir.\nSık hata: Yeniden dağıtım sırasında elemanların kaybolması veya eleman sayacının güncellenmemesi.",
+    "baslik": "Elemanların Yeniden Dağıtılması"
+  },
+  {
+    "satirlar": [42, 47],
+    "aciklama": "`ekle` metodu verilen `anahtar` için `_hash` ile hedef kovayı bulur. Kova içerisindeki mevcut çiftler taranarak anahtarın daha önce eklenip eklenmediği kontrol edilir. Her karşılaştırmada `self.islem` sayacı bir artırılır. Bu tarama ortalama O(1 + alpha) süre alır.",
+    "sinav": "Tanım: Ekleme öncesi arama, var olan anahtarın üzerine yazılmasını ve yinelenen anahtar oluşmamasını sağlar.\nFormül: Ortalama karşılaştırma sayısı = O(1 + alpha).\nÖrnek: Hedef kovada 2 eleman varsa en fazla 2 karşılaştırma yapılır.\nSık hata: Aynı anahtarı kova sonuna ekleyip tabloda çift kayıt oluşturmak.",
+    "baslik": "Eleman Ekleme Arama Döngüsü"
+  },
+  {
+    "satirlar": [48, 54],
+    "aciklama": "Eğer anahtar kova içinde bulunduysa yeni değer atanarak metottan çıkılır. Anahtar yoksa yeni `[anahtar, deger]` çifti kovaya eklenir ve boyut bir artırılır. Ekleme sonrasında yük oranı 0.75'i aştıysa `_yeniden_hashle` çağrısı yapılır. Dinamik boyutlandırma sayesinde ekleme amortize O(1) kalır.",
+    "sinav": "Tanım: Eşik kontrolü (threshold check), yük oranının kabul edilebilir performans sınırında tutulmasını sağlar.\nÖrnek: 4 kovaya 4. eleman eklendiğinde yük oranı 1.0 > 0.75 olur ve rehash tetiklenir.\nSık hata: Rehash tetikleme kontrolünü eleman eklenmeden önce yapıp erken boyutlandırma yapmak.",
+    "baslik": "Güncelleme Yeni Eleman ve Rehash"
+  },
+  {
+    "satirlar": [55, 59],
+    "aciklama": "`ara` metodu verilen anahtarın değerini sorgulamak için kova indeksini hesaplar. Hedef kovadaki çiftler sırasıyla incelenmek üzere for döngüsüne girilir. Döngüde her kontrol öncesinde `self.islem` sayacı artırılarak ölçüm sağlanır. Bu sayaç teorik başarım testlerinde kullanılır.",
+    "sinav": "Tanım: Hash arama (lookup), anahtarın hash indeksine giderek ilgili kovayı sorgulamaktır.\nFormül: En iyi durum: O(1), Ortalama durum: O(1 + alpha).\nÖrnek: 'muz' anahtarının hash kodu 13 ise doğrudan 13 numaralı kovaya bakılır.\nSık hata: Aranacak anahtar için tüm kovaları baştan sona dolaşarak O(n) arama yapmak.",
+    "baslik": "Anahtar Arama İşlemi Başlangıcı"
+  },
+  {
+    "satirlar": [60, 63],
+    "aciklama": "Döngü sırasında anahtar eşleşirse saklanan değer derhal döndürülür. Kova sonuna kadar anahtar bulunamazsa `None` döndürülerek bulunamadığı bildirilir. Dengeli dağılımda arama ortalama O(1) adımda tamamlanır. Karşılaştırma maliyetinin düşüklüğü hashlemenin gücünü gösterir.",
+    "sinav": "Tanım: Bulunamama durumu, aranan anahtarın kova listesinde yer almadığını teyit eder.\nÖrnek: Tabloda olmayan 'ejder_meyvesi' için arama None döner.\nSık hata: Bulunamayan anahtar için hata fırlatmak yerine None dönen sözleşmeyi ihlal etmek.",
+    "baslik": "Değer Eşleştirme ve None Dönüşü"
+  },
+  {
+    "satirlar": [64, 69],
+    "aciklama": "`sil` metodu tablodan bir anahtar-değer çiftini çıkarmak için çalışır. Anahtarın ait olduğu kova indeksine gidilir ve `enumerate` ile elemanlar taranır. Yapılan her anahtar karşılaştırmasında `self.islem` sayacı artırılır. Hedef çift bulunduğunda silme aşaması başlatılır.",
+    "sinav": "Tanım: Hash silme (deletion), hedeflenen anahtarı kova zincirinden çıkartıp bellekten düşürür.\nFormül: Zaman Karmaşıklığı: Ortalama O(1 + alpha).\nÖrnek: 13. kovadaki 2 eleman taranarak 'elma' aranır.\nSık hata: Silme işlemi sırasında döngü indekslerini yanlış yöneterek indeks kayması yaşamak.",
+    "baslik": "Anahtar Silme Tarama Döngüsü"
+  },
+  {
+    "satirlar": [70, 74],
+    "aciklama": "Eşleşen çift `del self.kovalar[idx][i]` ifadesiyle kova listesinden çıkarılır. Toplam eleman sayısını gösteren `self.eleman_sayisi` bir azaltılır ve `True` döndürülür. Kova taraması bitip eleman bulunamazsa `False` dönülür. Bu işlem O(1) amortize sürede tamamlanır.",
+    "sinav": "Tanım: Çiftin zincirden silinmesi, kovanın boyutunu küçültür ve tablo eleman sayacını düşürür.\nÖrnek: 'elma' silindiğinde toplam eleman 20'den 19'a düşer ve True döner.\nSık hata: Eleman silindiğinde eleman sayacını azaltmayı unutup yük oranını hatalı hesaplamak.",
+    "baslik": "Kovadan Silme ve Boyut Azaltma"
+  },
+  {
+    "satirlar": [75, 76],
+    "aciklama": "`__len__` özel metodu, standart Python `len(ht)` çağrısı yapıldığında `self.eleman_sayisi` değerini döndürür. Bu metot sayaç değişkenini doğrudan okuduğu için O(1) zamanda çalışır. Nesnenin Pythonik koleksiyon kurallarına uymasını sağlar. Kod kalitesini ve okunabilirliği artırır.",
+    "sinav": "Tanım: Uzunluk sorgusu, tablodaki toplam aktif anahtar-değer çifti adedini bildirir.\nFormül: Zaman Karmaşıklığı: O(1).\nÖrnek: `len(ht)` çağrısı güncel eleman sayısı olan 20'yi verir.\nSık hata: Toplam eleman sayısını bulmak için tüm kovaları döngüyle sayıp O(m) maliyet oluşturmak.",
+    "baslik": "Hash Tablosu Uzunluk Protokolü"
+  },
+  {
+    "satirlar": [79, 85],
+    "aciklama": "`main` fonksiyonu 4 başlangıç kapasiteli bir `ZincirliHash` tablosu oluşturur. 20 adet benzersiz meyve adından oluşan bir test kümesi hazırlanır. Bu küme deterministik verilerle tablonun gerçek davranışını test eder. İlk parti elemanlar döngü içinde tabloya eklenmeye hazırlanır.",
+    "sinav": "Tanım: Test kümesi kurulumu, algoritmanın kontrollü ve tekrarlanabilir girdiyle sınanmasını sağlar.\nÖrnek: 20 meyve ismi başlangıçta 4 kovalık tabloya eklenir.\nSık hata: Rastgele üretilen verilerin tekrarlanamaz olması sebebiyle testlerin kararsız çıkması.",
+    "baslik": "Ana Doğrulama ve Veri Listesi Hazırlığı"
+  },
+  {
+    "satirlar": [86, 90],
+    "aciklama": "Döngü ile 20 meyve anahtarı ve değerleri tabloya eklenir. Tablodaki toplam eleman sayısının 20 olduğu `assert len(ht) == 20` ile teyit edilir. Elemanlar eklendikçe kapasite aşıldığı için otomatik rehash işlemleri devreye girer. Veri bütünlüğü tam olarak korunur.",
+    "sinav": "Tanım: Çoklu ekleme doğrulaması, zincirleme ve rehash mekanizmalarının eşzamanlı çalıştığını sınar.\nÖrnek: 20 anahtar eklenir ve her birine indeksinin 10 katı değer atanır.\nSık hata: Ekleme sırasında bazı elemanların rehash esnasında düşmesi veya kaybolması.",
+    "baslik": "Elemanların Eklenmesi ve Boyut Doğrulaması"
+  },
+  {
+    "satirlar": [91, 97],
+    "aciklama": "Tablonun en az 3 kez yeniden hashlandığı `assert ht.yeniden_hash >= 3` ile kanıtlanır. Kova sayısı 4'ten 8, 16 ve son olarak 32 seviyesine ulaşır. Kova başına eleman sayıları konsola yazdırılarak homojen dağılım görselleştirilir. Yapısal ölçeklenme başarıyla belgelenir.",
+    "sinav": "Tanım: Dağılım gözlemi, hash fonksiyonunun anahtarları kovalara ne kadar dengeli dağıttığını gösterir.\nFormül: 4 -> 8 -> 16 -> 32 kova (3 kez rehash).\nÖrnek: 32 kovaya 20 eleman dağıtıldığında yük oranı 0.625 olur.\nSık hata: Hash fonksiyonunun tüm anahtarları tek bir kovaya yığarak O(n) listeye dönüşmesi.",
+    "baslik": "Rehash Sayısı ve Kova Dağılımı Denetimi"
+  },
+  {
+    "satirlar": [98, 104],
+    "aciklama": "Sayaç sıfırlanarak 20 anahtarın tamamı tablodan aranır ve bulunan değerlerin doğruluğu `assert` edilir. Toplam karşılaştırma sayısı 20'ye bölünerek arama başına ortalama karşılaştırma sayısı hesaplanır. Tüm elemanlar başarıyla bulunur ve ortalama maliyet konsola basılır. Hash arama verimliliği ölçülür.",
+    "sinav": "Tanım: Arama başarım testi, tüm kayıtların eksiksiz bulunabilirliğini ve sorgu başı maliyeti ölçer.\nÖrnek: 20 anahtar aramasında ortalama 1.30 karşılaştırma ile değerler bulunur.\nSık hata: Arama testi yaparken sadece varlık kontrolü yapıp döndürülen değerlerin doğruluğunu sınamamak.",
+    "baslik": "Anahtar Arama ve Ortalama Karşılaştırma"
+  },
+  {
+    "satirlar": [105, 111],
+    "aciklama": "Ortalama arama maliyetinin teorik üst sınır olan `1 + alpha` civarında kaldığı `assert` ile kanıtlanır. Ayrıca tabloda bulunmayan bir anahtar sorgulandığında fonksiyonun `None` döndürdüğü doğrulanır. Bu adım sınır şartlarını ve teorik beklentileri eksiksiz şekilde doğrular.",
+    "sinav": "Tanım: Teorik başarı sınırı, başarılı aramada beklenen kova derinliğinin 1 + alpha / 2 civarında kalmasıdır.\nFormül: Beklenen karşılaştırma <= 1 + alpha.\nÖrnek: alpha = 0.625 iken ortalama karşılaştırma 1.30 çıkar ve 1.62 sınırının altında kalır.\nSık hata: Olmayan anahtar arandığında None yerine istisna fırlatılması beklentisine girmek.",
+    "baslik": "Teorik Sınır ve Olmayan Anahtar Sınaması"
+  },
+  {
+    "satirlar": [112, 116],
+    "aciklama": "`sil('elma')` metodu çağrılarak silmenin `True` döndürdüğü kontrol edilir. Ardından 'elma' tekrar arandığında `None` döndüğü ve eleman sayısının 19'a düştüğü `assert` edilir. Bu test ayrık zincirden eleman çıkarmanın sorunsuz çalıştığını belgeler. Başarı çıktısı ekrana yazdırılır.",
+    "sinav": "Tanım: Silme doğrulama testi, silinen anahtarın erişilemez olduğunu ve boyutun düştüğünü ispatlar.\nÖrnek: 'elma' silindikten sonra `ara('elma')` None döner ve `len(ht)` 19 olur.\nSık hata: Silme sonrası zincirdeki bağın koparak arkadaki diğer elemanların kaybolması.",
+    "baslik": "Eleman Silme İşlemi Doğrulaması"
+  },
+  {
+    "satirlar": [117, 123],
+    "aciklama": "Test sonuçları metrikler tablosu formatında ekrana basılır. Toplam eleman, kova adedi, nihai yük oranı ve ortalama arama maliyeti listelenir. Tablo verileri algoritmanın O(1) sözlük başarımını öğrenciye görsel olarak özetler. Analitik sonuçlar derli toplu sunulur.",
+    "sinav": "Tanım: Başarım özeti tablosu, hash tablosunun nihai durumunu gösteren analitik rapordur.\nÖrnek: 19 eleman, 32 kova, 0.594 yük oranı ve 1.30 ortalama arama maliyeti.\nSık hata: Tablo metriklerinin birbirini doğrulamadığını fark edememek.",
+    "baslik": "Hash Tablosu Başarım Özeti Tablosu"
+  },
+  {
+    "satirlar": [125, 126],
+    "aciklama": "Dosya bağımsız script olarak çağrıldığında `main` fonksiyonunu başlatır. Import edildiğinde ise testlerin çalışmasını önleyerek güvenli modül davranışı sergiler. Python standartlarına tam uyum sağlanır. Proje gereksinimleri eksiksiz tamamlanmış olur.",
+    "sinav": "Tanım: Script çalıştırma koşulu (`if __name__ == '__main__'`), modülün bağımsız yürütülmesini sağlar.\nÖrnek: Terminalden `python hash_tablosu.py` komutu verildiğinde tüm testler yürütülür.\nSık hata: Giriş koşulunu atlayıp dosya kütüphane olarak kullanıldığında testleri çalıştırmak.",
+    "baslik": "Hash Tablosu Giriş Noktası Çalıştırıcı"
+  }
+]

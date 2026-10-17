@@ -1,0 +1,9 @@
+Orijinal liste: [10, 20, 30, 40]
+Başı silindi (10): [20, 30, 40]
+Sonu silindi (40): [20, 30]
+Ters çevrildi: [30, 20]
+
+--- Tek Bağlı Liste İşlem Adımı Karşılaştırması ---
+N        Sona Ekle (O(1))   Ara (O(n))      Ters Çevir (O(n))   
+100      1.0                100             100                 
+1000     1.0                1000            1000                

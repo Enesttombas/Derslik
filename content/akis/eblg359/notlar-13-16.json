@@ -1,0 +1,389 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-n13-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 13,
+   "etiketler": [
+    "dp",
+    "memoization",
+    "ortusen-altproblem"
+   ],
+   "kod": "cagri = 0\ndef fib(n):\n    global cagri; cagri += 1\n    return n if n < 2 else fib(n - 1) + fib(n - 2)\nfib(20); print(cagri)",
+   "soru": "Memoization olmadan `fib(20)` kaç çağrı yapar?",
+   "secenekler": [
+    "21891",
+    "20",
+    "39",
+    "1024"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 21891 çağrı. Memoization ile aynı hesap 39 çağrıda (2n − 1) biter.",
+   "aciklama": "Aynı alt problemler (fib(18), fib(17)…) defalarca yeniden hesaplanır: örtüşen alt problemler. Önbellek (memo) her alt problemi bir kez çözer ve üstel süreyi doğrusala indirir."
+  },
+  {
+   "id": "359-n13-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 13,
+   "etiketler": [
+    "lcs",
+    "tablo"
+   ],
+   "kod": "X, Y = 'ABCBDAB', 'BDCABA'\nm, n = len(X), len(Y)\nc = [[0] * (n + 1) for _ in range(m + 1)]\nfor i in range(1, m + 1):\n    for j in range(1, n + 1):\n        c[i][j] = c[i-1][j-1] + 1 if X[i-1] == Y[j-1] else max(c[i-1][j], c[i][j-1])\nprint(c[m][n])",
+   "soru": "LCS uzunluğu?",
+   "secenekler": [
+    "4",
+    "3",
+    "5",
+    "6"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 4 (örneğin BCBA).",
+   "aciklama": "Karakterler eşleşirse c[i−1][j−1] + 1, değilse yukarı ve soldan büyüğü alınır. Tablo (m+1)(n+1) hücre, her hücre O(1): Θ(mn) zaman ve alan. Alt dizi ardışık olmak zorunda değildir (alt dizgi/substring ile karıştırma).",
+   "sinav": "Bağıntı: c[i,j] = 0 | c[i−1,j−1] + 1 (x_i = y_j) | max(c[i−1,j], c[i,j−1])."
+  },
+  {
+   "id": "359-n13-3",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 13,
+   "etiketler": [
+    "lcs",
+    "zaman-alan"
+   ],
+   "kod": "c = [[0] * (n + 1) for _ in range(m + 1)]   # m = len(X), n = len(Y)\n# iki iç içe döngü, her hücre O(1)",
+   "soru": "LCS tablosunun zaman ve alan karmaşıklığı?",
+   "secenekler": [
+    "Θ(mn) zaman, Θ(mn) alan",
+    "Θ(m + n) zaman",
+    "Θ(2^m) zaman",
+    "Θ(mn) zaman, Θ(1) alan"
+   ],
+   "dogru": 0,
+   "aciklama": "Her (i, j) çifti bir hücredir ve O(1) işlemle dolar. Yalnızca uzunluk gerekiyorsa son satır yeter (alan Θ(min(m, n))); ama diziyi geriye izlemeyle kurmak için tablonun tamamı gerekir."
+  },
+  {
+   "id": "359-n13-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 13,
+   "etiketler": [
+    "memoization",
+    "onbellek"
+   ],
+   "kod": "def fib(n, memo):\n    if n in memo: return memo[n]\n    if n < 2: return n\n    return fib(n - 1, memo) + fib(n - 2, memo)",
+   "hataSatir": 4,
+   "soru": "Hatalı satıra dokun: neden süre hâlâ üstel?",
+   "aciklama": "Hesaplanan sonuç hiç `memo`'ya yazılmıyor, dolayısıyla `n in memo` her zaman yanlış kalır. Doğrusu: `memo[n] = fib(n-1, memo) + fib(n-2, memo); return memo[n]`."
+  },
+  {
+   "id": "359-n13-5",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 13,
+   "etiketler": [
+    "dp",
+    "bol-yonet"
+   ],
+   "soru": "Merge Sort'un alt problemleri örtüşür, bu yüzden dinamik programlamayla hızlandırılabilir.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Merge Sort'un alt problemleri ayrıktır (disjoint); aynı alt problem iki kez çözülmez, önbelleğe alacak bir şey yoktur. DP'nin iki şartı optimal alt yapı ve örtüşen alt problemlerdir.",
+   "kod": "merge_sort(A[:m]); merge_sort(A[m:])   # ayrık alt problemler"
+  },
+  {
+   "id": "359-n14-1",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 14,
+   "etiketler": [
+    "sirt-cantasi",
+    "dp-tablosu"
+   ],
+   "kod": "W = 6; esyalar = [(2, 12), (3, 18), (4, 25)]   # (ağırlık, değer)\ndp = [0] * (W + 1)\nfor w, v in esyalar:\n    for x in range(W, w - 1, -1):\n        dp[x] = max(dp[x], dp[x - w] + v)\nprint(dp)",
+   "soru": "Son `dp` dizisi?",
+   "secenekler": [
+    "[0, 0, 12, 18, 25, 30, 37]",
+    "[0, 0, 12, 18, 30, 30, 55]",
+    "[0, 12, 18, 25, 30, 37, 37]",
+    "[0, 0, 12, 18, 18, 30, 30]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [0, 0, 12, 18, 25, 30, 37]. En iyi değer 37 (eşya 1 + eşya 3).",
+   "aciklama": "W = 6'da en iyi birleşim eşya 1 (w=2) + eşya 3 (w=4): 12 + 25 = 37. dp[w] = w kapasitede max değer. Tek boyutlu diziyi azalan sırada güncellemek, aynı eşyanın iki kez alınmasını engeller."
+  },
+  {
+   "id": "359-n14-2",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 14,
+   "etiketler": [
+    "sirt-cantasi",
+    "dongu-yonu"
+   ],
+   "kod": "# tek eşya (w=2, v=5), W = 6\nfor x in range(W, w - 1, -1):\n    dp[x] = max(dp[x], dp[x - w] + v)",
+   "soru": "İç döngü artan sırada (`range(w, W + 1)`) çalışırsa dp[6] ne olur?",
+   "degisiklik": {
+    "eski": "range(W, w - 1, -1)  (azalan)",
+    "yeni": "range(w, W + 1)  (artan)"
+   },
+   "secenekler": [
+    "15: eşya üç kez alınır (sınırsız çanta)",
+    "5: değişmez",
+    "10",
+    "0"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: artan sırada dp = [0, 0, 5, 5, 10, 10, 15]; azalan sırada [0, 0, 5, 5, 5, 5, 5]. Kaynak: Hafta 14 notları, 1-Boyutlu Dizi Optimizasyonu.",
+   "aciklama": "Artan sırada dp[x − w] aynı eşya için az önce güncellenmiş yeni değerdir; eşya tekrar tekrar eklenir ve problem 'sınırsız sırt çantası'na dönüşür. Azalan sırada dp[x − w] hâlâ önceki eşya satırından gelir."
+  },
+  {
+   "id": "359-n14-3",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 14,
+   "etiketler": [
+    "sozde-polinom",
+    "np-zor"
+   ],
+   "kod": "zaman = Θ(n · W)    # W bir tamsayı değeri",
+   "soru": "Bu süre neden polinom sayılmaz?",
+   "secenekler": [
+    "W girdide log W bit ile yazılır; süre bit uzunluğuna göre üsteldir (sözde-polinom)",
+    "n çok büyük olduğu için",
+    "DP her zaman üsteldir",
+    "W sabittir"
+   ],
+   "dogru": 0,
+   "aciklama": "Girdi boyutu W'nin bit sayısı b = ⌈log₂W⌉'dir. Θ(n·W) = Θ(n·2^b): bit uzunluğuna göre üstel. 0/1 sırt çantası bu yüzden zayıf NP-zordur: W küçük bir tamsayıyken pratik, W devasa ise pratik değildir."
+  },
+  {
+   "id": "359-n14-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 14,
+   "etiketler": [
+    "matris-zinciri",
+    "parantezleme"
+   ],
+   "kod": "# A1: 10×20, A2: 20×30, A3: 30×40\nsol = 10*20*30 + 10*30*40      # ((A1·A2)·A3)\nsag = 20*30*40 + 10*20*40      # (A1·(A2·A3))\nprint(sol, sag)",
+   "soru": "İki parantezlemenin skaler çarpma sayıları?",
+   "secenekler": [
+    "18000 32000",
+    "24000 32000",
+    "18000 18000",
+    "6000 24000"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: sol = 6000 + 12000 = 18000, sağ = 24000 + 8000 = 32000.",
+   "aciklama": "p×q ile q×r çarpımı p·q·r skaler çarpma yapar. Çarpma birleşmeli olduğundan sonuç aynı, maliyet farklıdır. Olası parantezleme sayısı Catalan sayısıyla üstel artar; aralık DP bunu Θ(n³) zaman, Θ(n²) alanda çözer.",
+   "sinav": "Formül: m[i,j] = min_{i≤k<j} m[i,k] + m[k+1,j] + p_{i−1}·p_k·p_j."
+  },
+  {
+   "id": "359-n14-5",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 14,
+   "etiketler": [
+    "matris-zinciri",
+    "catalan"
+   ],
+   "soru": "Matris zinciri için tüm parantezlemeleri denemek üsteldir, ama aralık DP polinomdur.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Parantezleme sayısı Catalan sayısıdır (Ω(4ⁿ / n^1.5)); DP ise m[i, j] tablosunu zincir uzunluğuna göre doldurarak Θ(n³) zamanda çözer.",
+   "kod": "parantezleme sayısı: Catalan(n−1)\nDP: m[i,j], zaman Θ(n³)"
+  },
+  {
+   "id": "359-n15-1",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 15,
+   "etiketler": [
+    "np",
+    "tanim"
+   ],
+   "soru": "NP, 'polinom zamanda çözülemeyen' problemler sınıfıdır.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. NP, çözümü (sertifika) polinom zamanda doğrulanabilen problemler sınıfıdır (non-deterministic polynomial). P ⊆ NP'dir; P ≠ NP olup olmadığı açıktır. 'NP' 'polinom değil' demek değildir.",
+   "kod": "P ⊆ NP\nNP = sertifikası polinom zamanda doğrulanan problemler"
+  },
+  {
+   "id": "359-n15-2",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 15,
+   "etiketler": [
+    "np",
+    "dogrulayici"
+   ],
+   "kod": "def dogrula(S, hedef, sertifika):\n    return sum(sertifika) == hedef and all(x in S for x in sertifika)",
+   "soru": "Bu fonksiyon alt küme toplamı probleminin hangi özelliğini gösterir?",
+   "secenekler": [
+    "Sertifika polinom zamanda doğrulanır → problem NP'dedir",
+    "Problem P'dedir",
+    "Problem NP-tamdır kesin",
+    "Problem çözülemez"
+   ],
+   "dogru": 0,
+   "aciklama": "Sertifika (önerilen alt küme) O(n) zamanda doğrulanıyor. Bu NP üyeliğini gösterir; çözümün bulunması ise bilinen en iyi durumda üsteldir. NP-tamlık için ayrıca NP-zor olduğunu göstermek gerekir."
+  },
+  {
+   "id": "359-n15-3",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 15,
+   "etiketler": [
+    "indirgeme",
+    "np"
+   ],
+   "kod": "A ≤ₚ B   ve   B ∈ P",
+   "soru": "Bu durumda A hakkında ne söylenir?",
+   "secenekler": [
+    "A ∈ P",
+    "A NP-tamdır",
+    "B ∈ NP-tam",
+    "Hiçbir şey söylenemez"
+   ],
+   "dogru": 0,
+   "aciklama": "A'nın örneği polinom zamanda B'nin örneğine çevrilir, B polinom zamanda çözülür; birleşim A'yı polinom zamanda çözer. Tersi: A NP-zorsa ve A ≤ₚ B ise B de NP-zordur. NP-tamlık ispatında indirgeme yönü bilinen NP-tam problemden yeni probleme gider."
+  },
+  {
+   "id": "359-n15-4",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 15,
+   "etiketler": [
+    "geri-izleme",
+    "n-vezir"
+   ],
+   "kod": "def vezir(n):\n    sut = []\n    def uygun(r, k):\n        return all(k != c and abs(k - c) != r - rr for rr, c in enumerate(sut))\n    def git(r):\n        if r == n: return 1\n        t = 0\n        for k in range(n):\n            if uygun(r, k):\n                sut.append(k); t += git(r + 1); sut.pop()\n        return t\n    return git(0)\nprint(vezir(6))",
+   "soru": "6×6 tahtada kaç yerleşim bulunur?",
+   "secenekler": [
+    "4",
+    "6",
+    "2",
+    "92"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: n=4 → 2, n=6 → 4, n=8 → 92.",
+   "aciklama": "Geri izleme satır satır yerleştirir; çakışma olunca o dalı budar (pop ile geri döner). Budama arama uzayını n^n yerine çok daha küçük tutar ama en kötü durum yine üsteldir."
+  },
+  {
+   "id": "359-n15-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 15,
+   "etiketler": [
+    "np-tam",
+    "ispat-adimlari"
+   ],
+   "kod": "Π ∈ NP-tam  ⇔  (Π ∈ NP) ∧ (bilinen bir NP-tam Q için Q ≤ₚ Π)",
+   "soru": "Yeni bir problemin NP-tam olduğunu ispatlamanın doğru adımları hangisidir?",
+   "aciklama": "1) Π ∈ NP: sertifikayı polinom zamanda doğrulayan bir doğrulayıcı göster. 2) Bilinen bir NP-tam problem Q seç (3-SAT gibi). 3) Q'dan Π'ye polinom zamanlı bir indirgeme kur: Q'nun evet örnekleri Π'nin evet örneklerine, hayır örnekleri hayır örneklerine gitsin. Yön önemlidir; ters yönde indirgeme hiçbir şey kanıtlamaz.",
+   "secenekler": [
+    "Q'dan Π'ye değil, Π'den Q'ya indirge",
+    "Yalnız Π ∈ NP göstermek yeter",
+    "Π için üstel zamanlı çözüm bul",
+    "Π ∈ NP göster, bilinen NP-tam Q seç, Q'dan Π'ye polinom indirgeme kur"
+   ],
+   "dogru": 3
+  },
+  {
+   "id": "359-n16-1",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 16,
+   "etiketler": [
+    "algoritma-secimi",
+    "en-kisa-yol"
+   ],
+   "kod": "# yönlü, ağırlıklı çizge, tüm ağırlıklar ≥ 0, tek kaynak",
+   "soru": "En uygun algoritma ve zamanı (ikili yığınla)?",
+   "secenekler": [
+    "Dijkstra, O((V + E) log V)",
+    "Bellman-Ford, O(V·E)",
+    "BFS, Θ(V + E)",
+    "Kruskal, O(E log V)"
+   ],
+   "dogru": 0,
+   "aciklama": "Negatif olmayan ağırlıklar → Dijkstra. Negatif kenar varsa Bellman-Ford; ağırlıksız çizgede BFS yeter; Kruskal MST içindir, en kısa yol vermez."
+  },
+  {
+   "id": "359-n16-2",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 16,
+   "etiketler": [
+    "algoritma-secimi",
+    "knapsack"
+   ],
+   "kod": "# n eşya, her biri ya tam alınır ya hiç; W kapasite; maksimum değer",
+   "soru": "Doğru paradigma ve neden?",
+   "secenekler": [
+    "Dinamik programlama: örtüşen alt problemler, açgözlü seçim çöker",
+    "Açgözlü oran: optimal kanıtlıdır",
+    "Böl ve yönet: alt problemler ayrık",
+    "BFS"
+   ],
+   "dogru": 0,
+   "aciklama": "0/1 çantada oran sıralaması karşıt örnekle (160 ≠ 220) çöker; durum dp[i, w] örtüşen alt problemler üretir. Eşyalar bölünebiliyorsa (kesirli çanta) açgözlü oran optimaldir."
+  },
+  {
+   "id": "359-n16-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 16,
+   "etiketler": [
+    "lis",
+    "sabir-siralama"
+   ],
+   "kod": "import bisect\nkuyruk = []\nfor x in [10, 9, 2, 5, 3, 7, 101, 18]:\n    i = bisect.bisect_left(kuyruk, x)\n    if i == len(kuyruk): kuyruk.append(x)\n    else: kuyruk[i] = x\nprint(len(kuyruk))",
+   "soru": "En uzun artan alt dizi uzunluğu?",
+   "secenekler": [
+    "4",
+    "3",
+    "5",
+    "8"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 4 (örneğin 2, 3, 7, 18).",
+   "aciklama": "`kuyruk[i]` uzunluğu i+1 olan artan alt dizinin en küçük olası son elemanını tutar ve sıralı kalır. Her eleman için ikili arama O(log n): toplam O(n log n). Klasik DP'nin O(n²) çözümünden hızlıdır."
+  },
+  {
+   "id": "359-n16-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 16,
+   "etiketler": [
+    "algoritma-secimi",
+    "acgozlu-secim"
+   ],
+   "soru": "Açgözlü seçim özelliği doğrulanamayan bir optimizasyon probleminde ilk tercih dinamik programlama olmalıdır.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Açgözlü yöntem hem açgözlü seçim özelliği hem optimal alt yapı ister. Takas argümanıyla kanıtlanamıyorsa DP (optimal alt yapı + örtüşen alt problemler) ya da geri izleme gibi daha kapsamlı bir paradigma kullanılır.",
+   "kod": "açgözlü seçim özelliği kanıtlanamadı?\nDP: optimal alt yapı + örtüşen alt problemler"
+  },
+  {
+   "id": "359-n16-5",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 16,
+   "etiketler": [
+    "paradigma-secimi",
+    "bol-yonet-dp-acgozlu"
+   ],
+   "kod": "bol-yonet | açgözlü | dinamik programlama | geri izleme",
+   "soru": "Paradigma seçimi için doğru sıralama hangisidir?",
+   "aciklama": "1) Alt problemler ayrık mı? → böl ve yönet (merge sort). 2) Alt problemler örtüşüyor mu ve optimal alt yapı var mı? → DP. 3) Yerel en iyi seçim global optimumu bozmuyorsa (takas argümanı) → açgözlü, en hızlısı. 4) Hiçbiri yoksa ve arama uzayı budanabiliyorsa → geri izleme; NP-zor problemlerde yaklaşık ya da sezgisel yöntemler.",
+   "secenekler": [
+    "Ayrık alt problemler → böl-yönet; örtüşen + optimal alt yapı → DP; takas argümanı varsa → açgözlü",
+    "Her zaman DP kullan",
+    "Her zaman açgözlü kullan",
+    "Önce geri izleme, sonra böl-yönet"
+   ],
+   "dogru": 0
+  }
+ ]
+}

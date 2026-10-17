@@ -1,0 +1,10 @@
+=== Ödev 6: Dairesel Kuyruk Doğrulama ===
+1. Basa sarma (wrap-around) basarili: dizi=['E', 'F', 'C', 'D'], bas=2
+2. Dolu kuyruğa ekleme IndexError ile engellendi.
+3. FIFO sirasi korundu: ['C', 'D', 'E', 'F']
+4. Boş kuyruktan çıkarma IndexError fırlattı.
+
+--- Maliyet Karşılaştırması: Dairesel Kuyruk vs list.pop(0) ---
+n        Dairesel Toplam    Dairesel / n    pop(0) Kaydırma   
+100      200                2.00            4950              
+1000     2000               2.00            499500            

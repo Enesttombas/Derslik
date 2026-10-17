@@ -1,0 +1,47 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Modülleri içe aktar",
+    "aciklama": "Dosya yolu yönetimi için Path, görüntü giriş-çıkışı için cv2 ve rastgele dağılım üretimi için numpy yüklenir. Tuz-biber gürültüsü rastgele piksellerin en düşük (0) ve en yüksek (255) parlaklığa çekilmesiyle oluşturulur. NumPy matris işlemleri bu bozulmayı döngü kurmadan hızlıca gerçekleştirmeyi sağlar.",
+    "sinav": "Tanım: Tuz ve biber (salt-and-pepper) gürültüsü, rastgele piksellerin siyah (0) veya beyaz (255) olmasıdır.\nSık hata: Tuz-biber gürültüsünü Gauss gürültüsüyle karıştırıp normal dağılım eklemeye çalışmak."
+  },
+  {
+    "satirlar": [
+      6,
+      9
+    ],
+    "baslik": "Dizinleri ayarla ve rastgele üreteç kur",
+    "aciklama": "klasor ve girdi dosya yolları tanımlanır ve np.random.default_rng(0) ile tohumu sabitlenmiş rastgele sayı üreteci kurulur. Sabit tohum, üretilen tuz ve biber piksellerinin konumlarının ve sayılarının her çalıştırmada tamamen aynı kalmasını sağlar. Bu determinizm bilimsel testlerin tutarlılığı için zorunludur.",
+    "sinav": "Tanım: `default_rng(0)` tohumu sabit tutarak tekrarlanabilir test koşulları sağlar.\nSık hata: Tohum belirtmeyip her çalıştırmada farklı pikselleri bozarak karşılaştırma tutarlılığını kaybetmek."
+  },
+  {
+    "satirlar": [
+      10,
+      12
+    ],
+    "baslik": "Temiz resimleri gri tonda oku",
+    "aciklama": "Döngü dağ ve sis test resimlerini girdi klasöründen IMREAD_GRAYSCALE modunda yükler. Her piksel 0 ile 255 arasında tek bir 8-bit yoğunluk değerine sahiptir. Bu temiz görüntüler tuz-biber gürültüsü eklenecek taban matrisi oluşturur.",
+    "sinav": "Tanım: Gri tonlama görüntüsü her pikselde tek kanallı parlaklık barındırır.\nSık hata: Görüntü matrisinin kopyasını almadan doğrudan referans üzerinden değiştirmek."
+  },
+  {
+    "satirlar": [
+      13,
+      17
+    ],
+    "baslik": "%10 tuz ve biber gürültüsü ekle",
+    "aciklama": "rng.random ile 0-1 arasında tekdüze dağılan zar matrisi üretilir. Zar değeri 0.05'ten küçük olan pikseller 0 yapılarak biber (%5), 0.95'ten büyük olan pikseller 255 yapılarak tuz (%5) eklenir. Böylece piksellerin toplamda %10'u aşırı uç değerlere çekilerek tipik darbe (impulse) gürültüsü simüle edilir.",
+    "sinav": "Tanım: Darbe gürültüsü (impulse noise): Piksellerin `%5`'i `0` (biber), `%5`'i `255` (tuz) yapılır.\nFormül: `gurultulu[zar < 0.05] = 0; gurultulu[zar > 0.95] = 255`.\nSık hata: Maskeleme yaparken orijinal piksellerin kopyasını almayıp kaynak veriyi bozmak."
+  },
+  {
+    "satirlar": [
+      19,
+      19
+    ],
+    "baslik": "Gürültülü dosyayı diske kaydet",
+    "aciklama": "cv2.imwrite fonksiyonu oluşturulan tuz-biber gürültülü görüntüyü girdi klasörüne PNG formatında kaydeder. Bu dosya medyan filtresinin tuz-biber gürültüsünü yok etme yeteneğini test etmek üzere girdi olarak kullanılacaktır. Kayıpsız PNG formatı 0 ve 255 olan darbe piksellerinin sıkıştırmadan ötürü yumuşamasını engeller.",
+    "sinav": "Tanım: `cv2.imwrite` matris verisini görüntü formatında diske yazar.\nSık hata: Kaydetme yolundaki dosya uzantısını yanlış verip hatalı kodlama yapmak."
+  }
+]

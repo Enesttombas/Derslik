@@ -1,0 +1,164 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "Modül Başlığı ve Kullanım Kılavuzu",
+    "aciklama": "Bu modül tek bağlı liste veri yapısını ve temel işaretçi algoritmalarını tanıtır. Düğümler arası tek yönlü bağlantılar, yerinde ters çevirme ve adım sayacı analizi incelenir. Dosyanın doğrudan nasıl çalıştırılacağı docstring içinde verilmiştir.",
+    "sinav": "Tanım: Tek bağlı liste yapısını ve metot karmaşıklıklarını belgeleyen modül başlığıdır.\nÖrnek: Dosya başında üç tırnak ile yazılan açıklayıcı docstring metni.\nSık hata: Docstring bloğunu kodların arasına veya sonuna yazıp modül yapısını bozmak."
+  },
+  {
+    "satirlar": [10, 13],
+    "baslik": "Düğüm Sınıfı ve İşaretçi Tanımı",
+    "aciklama": "`Dugum` sınıfı tek bağlı listenin temel yapı taşıdır. Her düğüm bir `deger` verisini ve sonraki düğümü gösteren `sonraki` referansını taşır. Varsayılan olarak sonraki gösterici `None` değerini alır.",
+    "sinav": "Tanım: Veriyi ve bir sonraki bellek hücresinin adresini tutan temel düğüm yapısıdır.\nÖrnek: Dugum(10) ifadesi verisi 10, sonraki adresi None olan düğüm oluşturur.\nSık hata: Sonraki işaretçisini ilklendirmeyip tanımsız referans hatası almak."
+  },
+  {
+    "satirlar": [16, 21],
+    "baslik": "Tek Bağlı Liste Kurucu Metodu",
+    "aciklama": "`TekBagliListe` sınıfı listenin başlangıç durumunu tanımlar. `self.bas` ilk düğümü, `self.son` son düğümü gösterirken `self.boy` eleman adedini tutar. `self.adim` sayacı her düğüm ziyaretinde artırılarak O(1) ve O(n) karmaşıklık farkını ölçer.",
+    "sinav": "Tanım: Listenin baş ve son işaretçileri ile eleman ve adım sayaçlarını başlatan kurucudur.\nÖrnek: Boş listede bas ve son işaretçileri None, boy ve adım 0 olur.\nSık hata: Son işaretçisini tutmayıp her sona eklemede listeyi baştan sona taramak zorunda kalmak."
+  },
+  {
+    "satirlar": [23, 29],
+    "baslik": "Başa Eleman Ekleme İşlemi",
+    "aciklama": "`basa_ekle` metodu listenin en başına yeni bir düğüm ekler. Yeni düğümün `sonraki` referansı eski `self.bas` düğümüne bağlanır. Liste boşsa hem baş hem son bu düğümü gösterir; kaydırma gerektirmediği için işlem O(1) zamanda biter.",
+    "sinav": "Tanım: Listenin ilk konumuna yeni düğüm yerleştirip baş işaretçisini güncelleyen metottur.\nFormül: T(n) = O(1)\nÖrnek: [20] listesine başa ekle 10 çağrısı [10, 20] yapar.\nSık hata: Boş listeye başa ekleme yaparken son işaretçisini güncellemeyi unutmak."
+  },
+  {
+    "satirlar": [31, 35],
+    "baslik": "Sona Ekleme Boş Liste Durumu",
+    "aciklama": "`sona_ekle` metodu yeni bir düğüm tahsis eder. Eğer liste henüz boşsa yani `self.bas is None` durumundaysa hem baş hem son işaretçileri yeni düğüme atanır. Bu dallanma listenin ilk eleman alımını güvenli şekilde yönetir.",
+    "sinav": "Tanım: Boş bir tek bağlı listeye ilk elemanın yerleştirilmesini sağlayan kenar durum denetimidir.\nÖrnek: Boş listeye 5 eklenince hem bas hem son 5 düğümüne işaret eder.\nSık hata: Boş listenin son işaretçisinin None olduğunu unutup None.sonraki ataması yapmaya çalışmak."
+  },
+  {
+    "satirlar": [36, 40],
+    "baslik": "Sona Ekleme Düğüm Bağlama Adımı",
+    "aciklama": "Liste doluysa yeni düğüm mevcut `self.son.sonraki` referansına bağlanır ve `self.son` güncellenir. Son işaretçisi doğrudan elde tutulduğu için dizi taramasına gerek kalmaz. Bu tasarım sayesinde sona ekleme O(1) sabit sürede tamamlanır.",
+    "sinav": "Tanım: Son işaretçisini kullanarak listenin kuyruğuna doğrudan düğüm ekleme adımıdır.\nFormül: T(n) = O(1)\nÖrnek: [10] listesine 20 eklendiğinde son göstericisi 20 olur.\nSık hata: Son işaretçisini güncellemeden sadece aradaki bağı kurup kuyruk takibini yitirmek."
+  },
+  {
+    "satirlar": [42, 45],
+    "baslik": "Doğrusal Arama Döngü Başlangıcı",
+    "aciklama": "`ara` metodu listenin başından başlayarak hedef veriyi arar. `while simdiki is not None:` döngüsü boyunca her düğüm geçişinde `self.adim` sayacı bir artırılır. Bu sayaç aramanın veri boyutuna göre maliyetini belgeler.",
+    "sinav": "Tanım: Tek bağlı listede belirli bir değeri bulmak için baştan sona yapılan doğrusal aramadır.\nFormül: En kötü durum T(n) = O(n)\nÖrnek: 100 elemanlı listede son elemanı aramak 100 adım sürer.\nSık hata: Döngü koşulunu simdiki.sonraki üzerinden kurup son düğümü incelemeden atlamak."
+  },
+  {
+    "satirlar": [46, 49],
+    "baslik": "Arama Değer Kontrolü ve Sonuç",
+    "aciklama": "Mevcut düğümün `deger` alanı aranan `x` değerine eşitse bulunan düğüm nesnesi geriye döndürülür. Liste sonuna gelinip değer bulunamazsa `None` döndürülür. İşlem doğrusal zamanlı O(n) karmaşıklığına sahiptir.",
+    "sinav": "Tanım: Düğüm içeriğini aranan anahtarla eşleştirip referansı döndüren sonlandırma adımıdır.\nÖrnek: Değer bulunursa Dugum nesnesi, bulunamazsa None döndürülür.\nSık hata: Eleman bulunamadığında None yerine hata fırlatarak arama sözleşmesini ihlal etmek."
+  },
+  {
+    "satirlar": [51, 54],
+    "baslik": "Silme Öncesi Boşluk ve İşaretçi Hazırlığı",
+    "aciklama": "`sil` metodu liste boşken çağrılırsa `ValueError` fırlatır. Boş değilse iki işaretçi tekniği için `onceki = None` ve `simdiki = self.bas` değişkenleri kurulur. Bu hazırlık tek bağlı listede önceki düğümü takip etmenin zorunlu yoludur.",
+    "sinav": "Tanım: Tek bağlı listeden eleman çıkarırken önceki referansı saklamak için gereken çift işaretçi kurulumudur.\nÖrnek: Boş listede silme girişimi ValueError fırlatır.\nSık hata: Tek bağlı listede geriye dönüş bağı olmadığını unutup tek bir işaretçiyle silmeye çalışmak."
+  },
+  {
+    "satirlar": [55, 58],
+    "baslik": "Silinecek Değeri Bulma Taraması",
+    "aciklama": "Döngü boyunca her düğüm incelenirken `self.adim` sayacı artırılır. İncelenen düğümün değeri silinmek istenen `deger` ile eşleştiğinde silme bloğu tetiklenir. Eşleşme olana kadar düğümler sırayla geçilir.",
+    "sinav": "Tanım: Listede silinecek hedefin konumunu belirlemek için yapılan tarama döngüsüdür.\nÖrnek: 3. sıradaki elemanı silmek için ilk iki düğüm incelenerek geçilir.\nSık hata: Silinecek eleman bulunduktan sonra döngüden çıkmayı unutup gereksiz ilerlemek."
+  },
+  {
+    "satirlar": [59, 62],
+    "baslik": "Listenin İlk Düğümünü Silme",
+    "aciklama": "Silinecek düğüm başta bulunuyorsa (`onceki is None`), `self.bas` bir sonraki düğüme kaydırılır. Eğer listedeki tek eleman silinmişse `self.son` da `None` yapılarak liste temizlenir. Bu adım baş düğümün silinmesini O(1) maliyetle çözer.",
+    "sinav": "Tanım: Tek bağlı listenin kafa düğümünü güvenli bir şekilde devreden çıkarma işlemidir.\nÖrnek: [10, 20] listesinden 10 silinince yeni baş düğüm 20 olur.\nSık hata: Tek elemanlı listede başı silerken son işaretçisini None yapmayı unutmak."
+  },
+  {
+    "satirlar": [63, 68],
+    "baslik": "Ara veya Son Düğümü Silme",
+    "aciklama": "Silinecek düğüm aradaysa `onceki.sonraki` göstericisi `simdiki.sonraki` düğümüne bağlanarak aradaki düğüm atlanır. Çıkarılan düğüm son düğümse `self.son` göstericisi `onceki` düğüme çekilir. Boyut bir azaltılarak fonksiyondan çıkılır.",
+    "sinav": "Tanım: Önceki düğümün bağını güncelleyerek hedef düğümü zincirden koparma işlemidir.\nÖrnek: [1, 2, 3] listesinde 2 silindiğinde 1 doğrudan 3 düğümüne bağlanır.\nSık hata: Son düğümü silerken son göstericisini güncellemeyip kopuk düğüme işaret bırakmak."
+  },
+  {
+    "satirlar": [69, 71],
+    "baslik": "İşaretçileri İlerletme ve Hata Fırlatma",
+    "aciklama": "Eşleşme sağlanamazsa `onceki` ve `simdiki` işaretçileri birer adım ileri kaydırılır. Liste sonuna kadar aranan eleman bulunamazsa `ValueError` fırlatılır. Böylece bulunamayan değerler için kontrollü hata üretilir.",
+    "sinav": "Tanım: Düğüm eşleşmediğinde zincirde ilerleme ve bulunamama durumunda istisna bildirme adımıdır.\nÖrnek: Olmayan 99 değeri arandığında ValueError fırlatılması.\nSık hata: Eleman bulunamadığında hata vermeyip programın hatalı durumla devam etmesine izin vermek."
+  },
+  {
+    "satirlar": [73, 76],
+    "baslik": "Yerinde Ters Çevirme Hazırlığı",
+    "aciklama": "`ters_cevir` metodu ek bellek kullanmadan yerinde çalışır. Üç işaretçi tekniği için `onceki = None` ve `simdiki = self.bas` kurulur. Mevcut baş düğüm ters çevrildiğinde listenin sonu olacağı için `self.son = self.bas` yapılır.",
+    "sinav": "Tanım: Ek bellek ayırmadan listenin yönünü değiştirmek için işaretçilerin ilk konumlandırılmasıdır.\nÖrnek: [1, 2] listesi için eski baş 1 düğümü yeni son düğüm haline getirilir.\nSık hata: Ters çevirme öncesinde son işaretçisini eski başa eşitlemeyi unutmak."
+  },
+  {
+    "satirlar": [77, 83],
+    "baslik": "Üç İşaretçiyle Yerinde Ters Çevirme",
+    "aciklama": "Her adımda `sonraki_dugum` geçici olarak saklanır ve `simdiki.sonraki = onceki` yapılarak bağ tersine döndürülür. İşaretçiler `onceki = simdiki` ve `simdiki = sonraki_dugum` ile ilerletilir. Döngü sonunda `self.bas = onceki` atanır; bu işlem O(n) sürede tamamlanır.",
+    "sinav": "Tanım: Üç işaretçi kullanarak tek bağlı listenin tüm yön göstericilerini O(1) ek bellekle tersine çevirme algoritmasıdır.\nFormül: Zaman T(n) = O(n), Ek Alan S(n) = O(1)\nÖrnek: [10, 20] bağı tersine çevrilince 20 -> 10 haline gelir.\nSık hata: Bağ yönünü değiştirmeden önce sonraki düğüm referansını kaybetmek."
+  },
+  {
+    "satirlar": [85, 88],
+    "baslik": "Listeye Çevirme Döngü Başlangıcı",
+    "aciklama": "`listeye_cevir` metodu bağlı listedeki tüm değerleri standart bir Python listesinde toplar. Boş bir sonuç listesi açılır ve baştan başlanarak tüm düğümler taranır. Bu metot test ve hata ayıklamayı son derece kolaylaştırır.",
+    "sinav": "Tanım: Bağlı liste içeriğini doğrulamak amacıyla standart Python dizi formatına aktaran dönüştürücüdür.\nÖrnek: Dugum(1)->Dugum(2) yapısını [1, 2] listesine dönüştürmek.\nSık hata: Dönüştürme sırasında döngüyü yanlış kurup sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [89, 92],
+    "baslik": "Elemanları Toplama ve İlerleme",
+    "aciklama": "Döngü içerisinde her düğümün `deger` alanı sonuç listesine eklenir. `simdiki` işaretçisi bir sonraki düğüme geçirilir ve `self.adim` artırılır. Liste sonuna ulaşıldığında toplanan dizi döndürülür; karmaşıklığı O(n) düzeyindedir.",
+    "sinav": "Tanım: Düğüm verilerini diziye ekleyip bir sonraki düğüme geçerek listeyi tamamlayan adımdır.\nFormül: T(n) = O(n)\nÖrnek: Baştan sona tüm n elemanın listeye aktarılması.\nSık hata: İşaretçiyi ilerletmeyi unutup aynı düğümün değerini sonsuz kez eklemek."
+  },
+  {
+    "satirlar": [95, 98],
+    "baslik": "Boş Liste Ters Çevirme Testi",
+    "aciklama": "`main` fonksiyonunda ilk olarak tamamen boş bir liste oluşturulur ve `ters_cevir` çağrılır. Çıktının boş liste kaldığı `assert` ile denetlenir. Bu kontrol algoritmanın boş liste kenar durumundaki kararlılığını kanıtlar.",
+    "sinav": "Tanım: Boş veri yapılarında algoritmaların çökmeden doğru sonuç üretmesini güvenceye alan testtir.\nÖrnek: Boş listede ters_cevir() çalıştırılınca sonucun [] kalması.\nSık hata: Boş liste durumunda None referans hatası alıp programın çökmesine yol açmak."
+  },
+  {
+    "satirlar": [100, 105],
+    "baslik": "Tek Elemanlı Liste Kenar Durumları",
+    "aciklama": "Tek elemanlı bir liste oluşturulup başa ekleme ve silme test edilir. Silme sonrasında hem baş hem son göstericilerinin `None` olduğu doğrulanır. Tek düğümün silinmesi kritik bir sınır durumdur ve eksiksiz çalışmalıdır.",
+    "sinav": "Tanım: Tek elemanlı bağlı listenin ekleme ve çıkarma uç durumlarını sınayan test adımıdır.\nÖrnek: Tek eleman silindiğinde listenin baş ve sonunun None kalması.\nSık hata: Tek eleman silindiğinde son işaretçisini None yapmayıp bellekte asılı bırakmak."
+  },
+  {
+    "satirlar": [107, 110],
+    "baslik": "Çoklu Eleman Ekleme ve Listeleme",
+    "aciklama": "10, 20, 30 ve 40 sayıları `sona_ekle` çağrılarıyla listeye dahil edilir. Listenin içeriği `listeye_cevir` ile ekrana yazdırılarak ilk hali kontrol edilir. Bu adım çok elemanlı normal kullanım senaryosunu oluşturur.",
+    "sinav": "Tanım: Listenin sıralı eleman kabul etme ve yazdırma yeteneğini test eden normal durum kurulumudur.\nÖrnek: 10, 20, 30, 40 elemanlarının sırayla sona eklenmesi.\nSık hata: Sona ekleme yaparken elemanların ters sırada dizilmesine neden olmak."
+  },
+  {
+    "satirlar": [111, 115],
+    "baslik": "Baş ve Son Düğüm Silme Doğrulaması",
+    "aciklama": "Önce baş düğüm olan 10, ardından son düğüm olan 40 listeden silinir. Kalan elemanların `[20, 30]` olduğu iddia kontrolü ile teyit edilir. Böylece hem baş hem kuyruk silme mekanizmalarının doğruluğu tescillenir.",
+    "sinav": "Tanım: Listenin uç noktalarındaki düğümlerin silinmesini ve işaretçi tutarlılığını onaylayan testtir.\nÖrnek: [10, 20, 30, 40] listesinden 10 ve 40 çıkarılınca [20, 30] kalması.\nSık hata: Son eleman silinirken son referansını önceki düğüme bağlamayı unutmak."
+  },
+  {
+    "satirlar": [116, 120],
+    "baslik": "Ters Çevirme ve Arama İddiaları",
+    "aciklama": "Kalan `[20, 30]` listesi yerinde ters çevrilerek `[30, 20]` haline getirilir. Ardından `ara` metoduyla var olan 30 ve var olmayan 999 elemanları sorgulanır. `assert` denetimleri beklenen sonuçları tam olarak doğrular.",
+    "sinav": "Tanım: Yerinde ters çevirme ve doğrusal arama metotlarının birlikte doğrulandığı test bloğudur.\nÖrnek: Ters çevrilen listede 30 elemanının bulunup 999 elemanının bulunamaması.\nSık hata: Ters çevrilen listede düğüm bağlantılarının kopup aramanın döngüde kalması."
+  },
+  {
+    "satirlar": [122, 126],
+    "baslik": "Olmayan Değeri Silme Hata Testi",
+    "aciklama": "Listede bulunmayan 999 değeri `sil` metodu ile çıkarılmak istenir. `try-except` bloğu beklenen `ValueError` istisnasını yakalayarak sistemin güvenliğini belgeler. Hata üretilmezse `assert False` ile test başarısız kılınır.",
+    "sinav": "Tanım: Olmayan verileri silme taleplerinde sistemin kontrollü istisna fırlatmasını sınayan testtir.\nÖrnek: Listede olmayan 999 silinmek istendiğinde ValueError yakalanması.\nSık hata: Bulunamayan elemanlarda sessizce hiçbir işlem yapmayıp durumu gizlemek."
+  },
+  {
+    "satirlar": [128, 130],
+    "baslik": "Adım Karşılaştırma Tablosu Başlığı",
+    "aciklama": "N=100 ve N=1000 eleman boyutları için işlem adımlarını kıyaslayan formatlı tablonun başlığı yazdırılır. Sütunlar O(1) sona ekleme, O(n) arama ve O(n) ters çevirme metriklerini düzenli şekilde sunar.",
+    "sinav": "Tanım: Bağlı liste operasyonlarının deneysel adım sayılarını karşılaştıran konsol tablosu formatıdır.\nÖrnek: N, Sona Ekle O(1), Ara O(n), Ters Çevir O(n) sütunları.\nSık hata: Tablo çıktısını düzensiz ve okunaksız yazarak verilerin kıyaslanmasını zorlaştırmak."
+  },
+  {
+    "satirlar": [131, 137],
+    "baslik": "Ölçekleme Testi ve Ekleme Adımları",
+    "aciklama": "N=100 ve N=1000 boyutlarında yeni listeler oluşturularak döngü içinde sona ekleme yapılır. Her eklemede `self.adim` artışı izlenir ve toplam ekleme adımı toplanır. Son işaretçisi sayesinde eleman başına ortalama ekleme adımı tam 1.0 olarak ölçülür.",
+    "sinav": "Tanım: Büyüyen N değerlerinde son işaretçisiyle sona eklemenin O(1) maliyetini deneysel olarak kanıtlayan döngüdür.\nFormül: Ortalama ekleme adımı = Toplam_Adım / N = 1.0\nÖrnek: 1000 eleman için eleman başı adımın 1.0 çıkması.\nSık hata: Son işaretçisi olmadan sona ekleme yapıp adımların karesel büyümesine yol açmak."
+  },
+  {
+    "satirlar": [138, 144],
+    "baslik": "Doğrusal İşlemlerin Adım Ölçümü ve Çıktı",
+    "aciklama": "En sondaki `n-1` elemanı aranarak arama adımı ölçülür ve tam N adım sürdüğü görülür. Ardından liste ters çevrilerek ters çevirme adım sayısı kaydedilir. Elde edilen tüm deneysel değerler formatlı bir satır olarak konsola basılır.",
+    "sinav": "Tanım: Arama ve ters çevirme operasyonlarının O(n) doğrusal karmaşıklığını deneysel olarak doğrulayan ölçüm bloğudur.\nFormül: Arama adımı = N, Ters çevirme adımı = N\nÖrnek: N=1000 için arama 1000, ters çevirme 1000 adım sürer.\nSık hata: Arama adımının son eleman için N değil de N/2 olduğunu varsaymak."
+  },
+  {
+    "satirlar": [147, 148],
+    "baslik": "Program Başlatıcı Giriş Noktası",
+    "aciklama": "Bu blok Python dosyasının bağımsız bir betik olarak doğrudan çalıştırılıp çalıştırılmadığını kontrol eder. Doğrudan çağrılarda `main` fonksiyonunu yürüterek testleri tamamlar. Modüler kullanımda istenmeyen otomatik çalıştırmaları önler.",
+    "sinav": "Tanım: Betiğin doğrudan komut satırından çağrıldığını belirleyen standart Python giriş bloğudur.\nÖrnek: python bagli_liste_tek.py komutuyla main() fonksiyonunun tetiklenmesi.\nSık hata: Bu kontrolü ihmal edip dosya içe aktarıldığında tüm testlerin kendiliğinden çalışması."
+  }
+]

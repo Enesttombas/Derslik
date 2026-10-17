@@ -1,0 +1,101 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Kütüphaneleri içe aktar",
+    "aciklama": "Pathlib dosya yollarını yönetir, cv2 görüntü giriş ve çıkışlarını sağlar, numpy ise vektörel matris sıralamasını üstlenir. Bu modüller harici kütüphane fonksiyonu kullanmadan saf NumPy ile 5x5 medyan filtresi geliştirmek için gereklidir. Vektörel katman sıralaması piksel piksel Python döngülerinden çok daha hızlıdır.",
+    "sinav": "Tanım: Medyan filtresi sıralama işlemine dayandığı için doğrusal olmayan uzamsal filtreler sınıfındadır.\nSık hata: Medyan hesabında döngüyle sıralama yapıp büyük resimlerde aşırı yavaşlık yaşamak."
+  },
+  {
+    "satirlar": [
+      6,
+      10
+    ],
+    "baslik": "Sabitleri ve yarıçapı tanımla",
+    "aciklama": "klasor ve girdi yolları belirlenir, BOYUT = 5 ve YARI = 2 olarak sabitlenir. YARI değeri 5x5 pencerenin merkez pikselden her bir yöne kaç piksel uzandığını (5 // 2 = 2) tanımlar. Bu değer sınır piksellerinde kenar genişletme miktarını belirlemek için kullanılır.",
+    "sinav": "Tanım: Filtre yarıçapı `YARI = BOYUT // 2` olarak hesaplanır; `5x5` filtre için yarıçap 2 pikseldir.\nSık hata: Çift sayılı pencere boyutu seçip simetrik merkez piksel bulamamak."
+  },
+  {
+    "satirlar": [
+      12,
+      14
+    ],
+    "baslik": "PSNR başarım metriği",
+    "aciklama": "psnr fonksiyonu iki görüntü arasındaki Ortalama Karesel Hatayı (MSE) float64 hassasiyetinde hesaplar. 255^2 değerinin MSE'ye oranının logaritması alınarak desibel cinsinden sinyal-gürültü kalitesi bulunur. Bu metrik fonksiyonsuz medyan filtresinin temizleme gücünü sayısal olarak doğrular.",
+    "sinav": "Formül: `PSNR = 10 * np.log10(255**2 / MSE)`.\nTanım: `MSE` azaldıkça PSNR artar; yüksek PSNR görüntünün orijinaline çok yakın olduğunu belirtir.\nSık hata: Çıkarma işleminde uint8 taşması nedeniyle hatalı MSE üretmek."
+  },
+  {
+    "satirlar": [
+      17,
+      19
+    ],
+    "baslik": "medyan_filtre fonksiyonu ve boyutlar",
+    "aciklama": "medyan_filtre fonksiyonu tek kanallı gri görüntü matrisini alır ve h, w ile satır-sütun boyutlarını çıkarır. Fonksiyon hazır OpenCV çağrısı yapmadan 25 katmanlı vektörel kabarcık sıralamasıyla medyanı bulur. Bu yapı Python'da saf matris seviyesinde paralel medyan hesabını mümkün kılar.",
+    "sinav": "Tanım: 2B görüntü matrisinin şekli `(h, w)` yükseklik ve genişliği verir.\nSık hata: Fonksiyona 3 kanallı renkli matris verip 2B dilimleme hataları almak."
+  },
+  {
+    "satirlar": [
+      20,
+      24
+    ],
+    "baslik": "Kenarları en yakın pikselle genişlet (clamp padding)",
+    "aciklama": "Görüntü sınırlarında 5x5 pencerenin dışarı taşmaması için satırlar ve sütunlar kenarlardan 2 piksel genişletilir. min(max(i, 0), h - 1) ifadesi sınır dışındaki koordinatları doğrudan en yakın kenar pikseline sabitler (clamp/replicate padding). genis matrisi bu indekslerle dilimlenerek sınır etkileri giderilmiş çalışma alanı oluşturulur.",
+    "sinav": "Tanım: Kenar pikselini kopyalayarak genişletme (clamp / replicate border padding), sınır dışına taşan indeksleri `[0, h-1]` aralığına sınırlar.\nSık hata: Kenarlara sabit sıfır dolgusu yapıp kenar piksellerinde biber gürültüsü etkisi yaratmak."
+  },
+  {
+    "satirlar": [
+      25,
+      30
+    ],
+    "baslik": "25 adet kaydırılmış komşuluk katmanı topla",
+    "aciklama": "İç içe dy ve dx döngüleri 5x5 penceredeki 25 farklı bağıl konumu tarar. Genişletilmiş matristen kesilen h x w boyutundaki her bir dilim katmanlar listesine eklenir. Böylece her pikselin 5x5 komşuluğundaki 25 değeri, 25 adet paralel 2B matris katmanı olarak bir araya getirilmiş olur.",
+    "sinav": "Tanım: Katman yaklaşımı, tüm piksellerin 5x5 komşularını 25 adet matris dilimi olarak hizalar ve döngüsüz işlem sağlar.\nSık hata: Dilimleme yaparken `genis[dy:dy+h, dx:dx+w]` indekslerinde boyut kayması yaşamak."
+  },
+  {
+    "satirlar": [
+      31,
+      35
+    ],
+    "baslik": "Vektörel kabarcık sıralaması dış döngüsü",
+    "aciklama": "n = 25 elemanlı katman listesi kabarcık sıralaması (bubble sort) algoritmasıyla küçükten büyüğe sıralanır. Dış döngü tur sayısını yönetir ve her turda en büyük elemanların sona doğru yerleşmesini sağlar. Bu sıralama işlemi tüm pikseller için tek tek değil, tüm görüntü matrisleri üzerinde aynı anda (SIMD benzeri) yürütülür.",
+    "sinav": "Tanım: Kabarcık sıralaması (Bubble Sort), komşu elemanları karşılaştırıp yer değiştirerek çalışan `O(N^2)` sıralama algoritmasıdır.\nÖrnek: `n = 25` katman için dış döngü 24 tur çalışır.\nSık hata: Katmanları sıralarken piksel bazında döngüye girip performansı düşürmek."
+  },
+  {
+    "satirlar": [
+      36,
+      39
+    ],
+    "baslik": "Paralel minimum/maksimum takası",
+    "aciklama": "np.minimum ve np.maximum fonksiyonları komşu iki katmanın karşılıklı piksellerini karşılaştırır. Küçük değerler öndeki katmana, büyük değerler ise arkadaki katmana atanarak takas tamamlanır. Bu vektörel karşılaştırma sayesinde görüntünün her pikselindeki 25 değer aynı anda sıralanmış olur.",
+    "sinav": "Formül: `kucuk = np.minimum(A, B)`, `buyuk = np.maximum(A, B)`.\nTanım: Bu takas mekanizması sıralama ağları (sorting networks) prensibine benzer şekilde donanım dostudur.\nSık hata: Takas sırasında ara değişken kullanmayıp matris verilerini birbirinin üzerine yazmak."
+  },
+  {
+    "satirlar": [
+      40,
+      41
+    ],
+    "baslik": "Ortanca katmanı (medyan) döndür",
+    "aciklama": "Sıralama tamamlandıktan sonra 25 katmanın tam ortasındaki indeks olan n // 2 (12. indeks, 13. eleman) alınır. Bu katmandaki her piksel değeri kendi 5x5 penceresinin medyan değerini temsil eder. Uç değerler olan 0 ve 255'ler elendiği için gürültü tamamen kaybolur.",
+    "sinav": "Formül: `medyan = katmanlar[25 // 2] = katmanlar[12]` (sıralı 25 değerin tam ortasındaki 13. değer).\nTanım: Medyan uç değerlerden (outliers) etkilenmeyen en güçlü sağlam (robust) istatistiksel ölçüttür.\nSık hata: İndekslemeyi 1'den başlatıp 13. indeksi almaya çalışarak ofset hatası yapmak."
+  },
+  {
+    "satirlar": [
+      44,
+      47
+    ],
+    "baslik": "Girdi dosyalarını yükle",
+    "aciklama": "Ana döngü dağ ve sis test dosyaları için temiz referans ve tuz-biber gürültülü görselleri diske erişerek okur. cv2.imread ile gri seviyede yüklenen matrisler saf Python medyan filtresi algoritmasına gönderilir. Temiz görüntü PSNR doğrulamasında referans noktasıdır.",
+    "sinav": "Tanım: Referans görüntü gürültüsüz orijinal durumu temsil eder.\nSık hata: Girdi dosyalarının yolunu dinamik çözmeyip betiğin farklı klasörden çağrılmasında patlamak."
+  },
+  {
+    "satirlar": [
+      48,
+      51
+    ],
+    "baslik": "Medyan filtreyi çalıştır, kaydet ve PSNR'ı göster",
+    "aciklama": "medyan_filtre fonksiyonu çalıştırılarak sonuç matrisi elde edilir ve cikti klasörüne kaydedilir. psnr fonksiyonu ile filtrelenmiş görüntünün sinyal-gürültü oranı hesaplanarak ekrana yazdırılır. Elde edilen sonuçlar cv2.medianBlur fonksiyonunun ürettiği değerlerle piksel düzeyinde birebir örtüşür.",
+    "sinav": "Örnek: `dag: 14.55 dB -> 45.82 dB`, `sis: 14.66 dB -> 36.12 dB`.\nTanım: Saf NumPy vektörel medyan filtresi hazır kütüphane fonksiyonuyla tamamen eşdeğer doğruluk üretir.\nSık hata: Çıktı formatını uint8 yapmayı unutup kaydetme hatası almak."
+  }
+]

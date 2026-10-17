@@ -1,0 +1,103 @@
+{
+  "surum": 1,
+  "kartlar": [
+    {
+      "id": "359-yigin-parantez-kod-oku",
+      "tur": "kod-oku",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [44, 54],
+      "etiketler": ["yigin", "parantez", "lifo"],
+      "soru": "`parantez_dengeli_mi` kapanış parantezi görünce yığından çıkardığını `eslesme[kr]` ile karşılaştırıyor. Bu blok yığını hangi amaçla kullanıyor?",
+      "secenekler": [
+        "Açık parantezleri sırayla biriktirir; kapanış gelince en son açılanla eşleşip eşleşmediğine bakar.",
+        "Metindeki tüm karakterleri ters sırada saklayıp metni tersine çevirir.",
+        "Her parantez türünün kaç kez geçtiğini sayar.",
+        "Kapanış parantezlerini biriktirip sonda toplu karşılaştırır."
+      ],
+      "dogru": 0,
+      "aciklama": "Yığın LIFO olduğu için tepedeki eleman her zaman en son açılan parantezdir. Kapanış parantezi bu elemanla eşleşmezse iç içe geçme sırası bozulmuştur. Döngü sonunda yığının boş olması, açık kalan parantez olmadığını gösterir.",
+      "sinav": "Tanım: Dengeli parantez denetimi yığınla O(n) sürede yapılır. Sık hata: yalnız sayaç tutmak '{[(])}' gibi sırası bozuk ifadeyi yakalayamaz."
+    },
+    {
+      "id": "359-yigin-sonek-cikti",
+      "tur": "cikti-tahmin",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [57, 75],
+      "etiketler": ["yigin", "sonek", "postfix"],
+      "soru": "`sonek_hesapla('5 1 2 + 4 * + 3 -')` ne döndürür?",
+      "secenekler": ["14.0", "16.0", "9.0", "IndexError fırlatır"],
+      "dogru": 0,
+      "aciklama": "Adım adım: 1 2 + → 3; 3 4 * → 12; 5 12 + → 17; 17 3 - → 14. Operatör görünce önce b, sonra a çıkarılır; bu yüzden çıkarmada a - b işlenir.",
+      "sinav": "Sonek ifadede operatör, kendinden önceki iki operandı kullanır. Sık hata: çıkarma ve bölmede operand sırasını ters almak.",
+      "kanit": "sonek_hesapla('5 1 2 + 4 * + 3 -') -> 14.0 (Python 3, kod çalıştırıldı)"
+    },
+    {
+      "id": "359-yigin-cik-hata-bul",
+      "tur": "hata-bul",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [22, 27],
+      "etiketler": ["yigin", "lifo", "karmasiklik"],
+      "soru": "Aşağıdaki `cik` metodu yığın gibi davranmıyor. Hatalı satıra dokun.",
+      "kod": "def cik(self):\n    if not self.elemanlar:\n        raise IndexError(\"Yığın boş, eleman çıkarılamaz\")\n    self.islem += 1\n    return self.elemanlar.pop(0)",
+      "hataSatir": 5,
+      "aciklama": "`pop(0)` listenin başındaki elemanı çıkarır; bu LIFO değil FIFO davranışıdır. Ayrıca listede baştan silme kalan tüm elemanları kaydırdığı için O(n) olur. Doğrusu `pop()` ile sondan çıkarmaktır (O(1))."
+    },
+    {
+      "id": "359-yigin-olcek-cikti",
+      "tur": "cikti-tahmin",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [106, 116],
+      "etiketler": ["yigin", "olcekleme", "o(1)"],
+      "soru": "Ölçeklenme testinde her boyut için n eleman it, sonra n eleman cik yapılıyor. n=1000 için 'Toplam İşlem' sütunu ne yazar?",
+      "secenekler": ["2000", "1000", "1000000", "1001"],
+      "dogru": 0,
+      "aciklama": "Her it ve her cik işlem sayacını bir artırır: n + n = 2n. İşlem/eleman oranı 100 için de 1000 için de 2,00 çıkar; yani operasyon başına maliyet n'den bağımsızdır (O(1)).",
+      "sinav": "Ölçüm gösterir: toplam O(n), tek operasyon O(1). Sık hata: toplam işlemi n² sanmak.",
+      "kanit": "n=100 -> 200 işlem (2.00/eleman); n=1000 -> 2000 işlem (2.00/eleman)"
+    },
+    {
+      "id": "359-yigin-fifo-sinav",
+      "tur": "sinav",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [10, 41],
+      "etiketler": ["yigin", "lifo", "tanim"],
+      "soru": "Doğru mu yanlış mı: `Yigin` sınıfı ilk giren ilk çıkar (FIFO) ilkesiyle çalışır.",
+      "dogruMu": false,
+      "aciklama": "Yığın son giren ilk çıkar (LIFO) çalışır: `it` sona ekler, `cik` sondan alır. FIFO kuyruk yapısının ilkesidir."
+    },
+    {
+      "id": "359-yigin-odev-sira",
+      "tur": "odev",
+      "ders": "EBLG359",
+      "hafta": 3,
+      "odev": "ds5",
+      "dosya": "yigin_stack.py",
+      "satirlar": [78, 116],
+      "etiketler": ["yigin", "dogrulama"],
+      "soru": "`main` içindeki doğrulama adımlarını koddaki sıraya diz.",
+      "adimlar": [
+        "LIFO sırasını doğrula: 10, 20, 30 ekle; 30, 20, 10 çıkar.",
+        "Boş yığından çıkarmanın IndexError verdiğini yakala.",
+        "Parantez denetimini dengeli ve dengesiz metinle sına.",
+        "Sonek ifadeyi hesapla ('3 4 + 2 *' = 14.0).",
+        "n=100 ve n=1000 için işlem sayısını ölçüp işlem/eleman oranını yazdır."
+      ],
+      "aciklama": "Önce temel davranış (LIFO ve boş hata), sonra uygulamalar (parantez, sonek), en son ölçeklenme ölçümü gelir."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Kütüphaneleri içe aktar",
+    "aciklama": "Dosya yolu yönetimi için Path, görüntü okuma-yazma için cv2 ve rastgele gürültü matrisi üretmek için numpy modülleri yüklenir. Bu kütüphaneler filtreleme ödevleri için kontrollü sentetik gürültülü test görüntüleri üretmek üzere gereklidir. NumPy'nin rastgele sayı üreteçleri tekrarlanabilir deney ortamı sağlar.",
+    "sinav": "Tanım: `numpy.random.default_rng` modern, istatistiksel olarak güvenilir rastgele sayı üretecidir.\nSık hata: Eski `np.random.seed()` fonksiyonunu kullanıp çoklu iş parçacıklarında çakışma yaşamak."
+  },
+  {
+    "satirlar": [
+      6,
+      8
+    ],
+    "baslik": "Dizinleri bağla ve rastgele tohum belirle",
+    "aciklama": "klasor ve girdi yolları dosya sisteminde doğru dizinleri gösterecek şekilde tanımlanır. np.random.default_rng(0) çağrısı sabit bir tohum (seed=0) ile rastgele sayı üretecini başlatır. Sabit tohum kullanılması betik her çalıştırıldığında tam olarak aynı gürültü deseninin üretilmesini ve deneylerin tekrarlanabilirliğini garanti eder.",
+    "sinav": "Tanım: Sabit tohum (`seed=0`), üretilen sözde rastgele sayıların deterministik ve tekrarlanabilir olmasını sağlar.\nSık hata: Tohum belirlemeyip her çalıştırmada farklı gürültü ve dolayısıyla farklı PSNR sonuçları almak."
+  },
+  {
+    "satirlar": [
+      10,
+      11
+    ],
+    "baslik": "Temiz görüntüleri gri seviyede oku",
+    "aciklama": "Döngü dağ ve sis görüntülerini sırayla okumak üzere dosya adları listesi üzerinde ilerler. cv2.imread fonksiyonu IMREAD_GRAYSCALE seçeneğiyle görüntüleri 8-bit yoğunluk matrisi olarak yükler. Bu temiz referans görseller üzerine eklenecek yapay gürültünün temel zeminini oluşturur.",
+    "sinav": "Tanım: Gri seviye görüntü her piksel için tek bir yoğunluk değeri barındırır.\nSık hata: Girdi görüntüsü bulunamadığında oluşan `NoneType` hatasını kontrol etmemek."
+  },
+  {
+    "satirlar": [
+      13,
+      15
+    ],
+    "baslik": "Gauss gürültüsü üret ve görüntüye ekle",
+    "aciklama": "rng.normal(0, 20, gri.shape) ortalaması 0 ve standart sapması 20 olan normal dağılımlı gürültü dizisi üretir. Bu gürültü temiz görüntü matrisine eklenir ve np.clip fonksiyonu ile 0-255 piksel aralığına kırpılır. astype(np.uint8) dönüşümü ile değerler standart piksel formatına getirilir.",
+    "sinav": "Formül: Gauss gürültüsü: `I_gurultulu = clip(I + N(mu=0, sigma^2=400), 0, 255)`.\nTanım: Gauss gürültüsü sensör ısınması ve düşük ışık koşullarından kaynaklanan elektronik gürültüyü modeller.\nSık hata: `clip` kullanmadan doğrudan `uint8`'e çevirip negatif değerlerin 255'e taşmasına neden olmak."
+  },
+  {
+    "satirlar": [
+      17,
+      17
+    ],
+    "baslik": "Gürültülü test görselini diske kaydet",
+    "aciklama": "cv2.imwrite fonksiyonu üretilen Gauss gürültülü görseli girdi klasörüne PNG uzantısıyla yazar. Kaydedilen bu dosya ortalama filtreleme ödevinde filtrenin gürültü giderme başarısını ölçmek için girdi olarak kullanılacaktır. Kayıpsız PNG formatı oluşturulan yapay gürültü piksellerinin sıkıştırmadan ötürü bozulmasını engeller.",
+    "sinav": "Tanım: `cv2.imwrite` matris verisini görüntü dosyasına dönüştürür; PNG kayıpsız sıkıştırma sağlar.\nSık hata: Gürültülü resmi JPEG formatında kaydedip JPEG blok yapaylıklarının gürültüye karışmasına sebep olmak."
+  }
+]

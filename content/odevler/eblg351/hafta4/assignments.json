@@ -1,0 +1,289 @@
+[
+  {
+    "id": "h4-1",
+    "week": 4,
+    "no": 1,
+    "title": "Prewitt X Gradyan Operatörü",
+    "brief": "5x5 Gauss yumuşatma sonrası 3x3 Prewitt X çekirdeği ile yatay türevi hesaplayarak dikey kenarları tespit et.",
+    "done": true,
+    "file": "hafta4/4.1-prewitt-x/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Prewitt X)",
+        "file": "hafta4/4.1-prewitt-x/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "Kamera görüntüsünü gri seviyede oku ve 5x5 Gauss (sigma=1.0) ile gürültüyü bastır.",
+      "Prewitt X çekirdeğini [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]] cv2.filter2D ile konvolüsyonla uygula.",
+      "İşaretli float32 türevi negatifleri koruyacak şekilde 0-255 aralığına normalize et (sıfır türev ~128 orta gri).",
+      "Girdi, yumuşatılmış ve Prewitt X çıktılarını 1x3 panel halinde kaydet."
+    ],
+    "runCommand": "python hafta4/4.1-prewitt-x/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.1-prewitt-x",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.1-prewitt-x/cikti/panel_prewitt_x.png",
+        "alt": "Prewitt X karşılaştırma paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.1-prewitt-x/cikti/kamera_prewitt_gx.png",
+        "alt": "Prewitt Gx dikey kenar türevi"
+      }
+    ]
+  },
+  {
+    "id": "h4-2",
+    "week": 4,
+    "no": 2,
+    "title": "Prewitt Y Gradyan Operatörü",
+    "brief": "5x5 Gauss yumuşatma sonrası 3x3 Prewitt Y çekirdeği ile dikey türevi hesaplayarak yatay kenarları tespit et.",
+    "done": true,
+    "file": "hafta4/4.2-prewitt-y/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Prewitt Y)",
+        "file": "hafta4/4.2-prewitt-y/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "Kamera görüntüsünü gri seviyede oku ve 5x5 Gauss filtresi ile yumuşat.",
+      "Prewitt Y çekirdeğini [[-1, -1, -1], [0, 0, 0], [1, 1, 1]] cv2.filter2D ile konvolüsyonla uygula.",
+      "İşaretli dikey türevi 0-255 aralığına gererek yatay kenarları (omuz çizgisi, masa kenarı) öne çıkar.",
+      "Girdi, yumuşatılmış ve Prewitt Y çıktılarını 1x3 panel halinde kaydet."
+    ],
+    "runCommand": "python hafta4/4.2-prewitt-y/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.2-prewitt-y",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.2-prewitt-y/cikti/panel_prewitt_y.png",
+        "alt": "Prewitt Y karşılaştırma paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.2-prewitt-y/cikti/kamera_prewitt_gy.png",
+        "alt": "Prewitt Gy yatay kenar türevi"
+      }
+    ]
+  },
+  {
+    "id": "h4-3",
+    "week": 4,
+    "no": 3,
+    "title": "3×3 Sobel Gradyan Operatörü",
+    "brief": "Merkez ağırlıklı 3x3 Sobel operatörü ile yatay/dikey türevleri ve hipotenüs gradyan büyüklüğünü hesaplayıp %20 eşikle ikili kenar haritası üret.",
+    "done": true,
+    "file": "hafta4/4.3-sobel/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Sobel)",
+        "file": "hafta4/4.3-sobel/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "5x5 Gauss yumuşatma sonrası cv2.Sobel ile Gx ve Gy gradyan matrislerini hesapla.",
+      "Hipotenüs formülü `mag = np.hypot(gx, gy)` ile yönden bağımsız gradyan büyüklüğünü çıkar.",
+      "Tepe büyüklüğün %20'sini aşan pikselleri 255 (beyaz) yaparak ikili kenar haritası oluştur.",
+      "Girdi, yumuşatılmış, Gx, Gy, büyüklük ve ikili kenardan oluşan 2x3 paneli cikti klasörüne kaydet."
+    ],
+    "runCommand": "python hafta4/4.3-sobel/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.3-sobel",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.3-sobel/cikti/panel_sobel.png",
+        "alt": "Sobel 2x3 görsel paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.3-sobel/cikti/kamera_sobel_hypot.png",
+        "alt": "Sobel gradyan büyüklüğü"
+      }
+    ]
+  },
+  {
+    "id": "h4-4",
+    "week": 4,
+    "no": 4,
+    "title": "Prewitt ve Sobel Karşılaştırması",
+    "brief": "Prewitt ve Sobel operatörlerini aynı görüntü üzerinde karşılaştır, 1x5 görsel paneli ve 1 sayfalık teknik PDF raporunu üret.",
+    "done": true,
+    "file": "hafta4/4.4-prewitt-sobel-karsilastirma/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Karşılaştırma)",
+        "file": "hafta4/4.4-prewitt-sobel-karsilastirma/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "Kamera görüntüsünde hem Prewitt hem de Sobel için gradyan büyüklükleri ve %20 eşikli ikili haritaları hesapla.",
+      "İki yöntemin sonuçlarını yan yana sunan 1x5 karşılaştırma panosunu oluştur.",
+      "Kuramsal farkları, katsayı etkilerini ve gözlemleri içeren karsilastirma.md ve karsilastirma.pdf belgelerini üret.",
+      "PyMuPDF ile üretilen PDF raporunun tam 1 sayfa olduğunu programatik olarak doğrula."
+    ],
+    "runCommand": "python hafta4/4.4-prewitt-sobel-karsilastirma/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.4-prewitt-sobel-karsilastirma",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.4-prewitt-sobel-karsilastirma/cikti/karsilastirma_prewitt_sobel.png",
+        "alt": "Prewitt ve Sobel karşılaştırma paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.4-prewitt-sobel-karsilastirma/cikti/kamera_prewitt_hypot.png",
+        "alt": "Prewitt gradyan büyüklüğü"
+      }
+    ]
+  },
+  {
+    "id": "h4-5",
+    "week": 4,
+    "no": 5,
+    "title": "3×3 Laplacian Kenar Tespiti",
+    "brief": "İkinci mertebe türev operatörü olan 3x3 Laplacian'ı Gauss'lu ve Gauss'suz uygula; 8-komşuluklu sıfır geçişi (zero-crossing) ile ikili kenar haritasını üret.",
+    "done": true,
+    "file": "hafta4/4.5-laplacian/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Laplacian)",
+        "file": "hafta4/4.5-laplacian/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "Gauss yumuşatması olmadan doğrudan 3x3 Laplacian uygulayarak ikinci türevin gürültü duyarlılığını gözlemle.",
+      "5x5 Gauss yumuşatma ardından Laplacian uygulayarak sahte sıfır geçişlerini temizle.",
+      "8-komşulukta işaret değişimi ve %5 dinamik eğim eşiği arayan sıfır geçişi algoritmasıyla ikili kenarları çıkar.",
+      "Gauss'lu ve Gauss'suz işaretli, mutlak ve ikili haritaları 2x3 panel halinde kaydet ve raporları üret."
+    ],
+    "runCommand": "python hafta4/4.5-laplacian/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.5-laplacian",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.5-laplacian/cikti/panel_laplacian.png",
+        "alt": "Laplacian 2x3 analiz paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.5-laplacian/cikti/kamera_laplacian_gauss_mutlak.png",
+        "alt": "Laplacian Gauss mutlak değer"
+      }
+    ]
+  },
+  {
+    "id": "h4-6",
+    "week": 4,
+    "no": 6,
+    "title": "7×7 Analitik LoG (Laplacian of Gaussian)",
+    "brief": "Gauss yumuşatma ve Laplacian türevini tek çekirdekte birleştiren 7x7 analitik LoG filtresi ile sıfır geçişi kenar haritası üret.",
+    "done": true,
+    "file": "hafta4/4.6-log/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (LoG)",
+        "file": "hafta4/4.6-log/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "Sürekli LoG formülüyle 7x7 analitik çekirdek üret; ortalamasını sıfıra çek ve mutlak toplamını 1'e normalize et.",
+      "Çekirdeği görüntüye cv2.filter2D ile uygulayarak işaretli 2. türev haritasını elde et.",
+      "8-komşuluklu sıfır geçişi fonksiyonuyla kapalı konturlardan oluşan ikili kenar haritasını üret.",
+      "Girdi, işaretli, mutlak ve sıfır geçiş çıktılarını 1x4 panelde kaydet ve karşılaştırma raporlarını derle."
+    ],
+    "runCommand": "python hafta4/4.6-log/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.6-log",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.6-log/cikti/panel_log.png",
+        "alt": "LoG 1x4 analiz paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.6-log/cikti/kamera_log_mutlak.png",
+        "alt": "LoG mutlak gradyan"
+      }
+    ]
+  },
+  {
+    "id": "h4-7",
+    "week": 4,
+    "no": 7,
+    "title": "Canny ve Tüm Yöntemlerin Karşılaştırılması",
+    "brief": "OpenCV Canny kenar tespitini uygula; 9 yöntemin 3 test görüntüsündeki çalışma süresi, Precision, Recall ve F1 skorlarını ölçerek CSV ve toplu panel üret.",
+    "done": true,
+    "file": "hafta4/4.7-canny/cozum.py",
+    "variants": [
+      {
+        "label": "Ödev Çözümü (Canny ve Ölçümler)",
+        "file": "hafta4/4.7-canny/cozum.py"
+      },
+      {
+        "label": "Kenar Algoritmaları (ortak)",
+        "file": "hafta4/kenarlar.py"
+      },
+      {
+        "label": "Tümünü Çalıştır (ortak)",
+        "file": "hafta4/calistir.py"
+      }
+    ],
+    "steps": [
+      "OpenCV cv2.Canny fonksiyonunu 50/100 histerezis eşikleri ve L2 gradyan normu ile çalıştır.",
+      "9 farklı varyantı (Prewitt, Sobel, Laplacian, LoG, Canny) 3 test görüntüsünde 20 tekrarlı medyan süreyle ölç.",
+      "Sentetik görüntülerde 1 piksel konum toleransıyla Precision, Recall ve F1 doğruluk metriklerini hesapla.",
+      "27 satırlık ölçüm tablosunu hafta4/cikti/olcumler.csv'ye yaz ve 12 hücreli büyük karşılaştırma panosunu kaydet."
+    ],
+    "runCommand": "python hafta4/4.7-canny/cozum.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta4/4.7-canny",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta4/4.7-canny/cikti/karsilastirma_tum_yontemler.png",
+        "alt": "Tüm kenar yöntemlerinin karşılaştırma paneli"
+      },
+      {
+        "src": "/odevler/eblg351/hafta4/4.7-canny/cikti/kamera_canny_gauss.png",
+        "alt": "Canny kenar tespiti sonucu"
+      }
+    ]
+  }
+]

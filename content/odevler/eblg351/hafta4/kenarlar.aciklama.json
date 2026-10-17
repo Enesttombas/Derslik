@@ -1,0 +1,803 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "kenarlar.py modül amacı ve kapsamı",
+    "aciklama": "Modül docstring'i Hafta 4 kenar tespit kütüphanesinin amacını tanıtır. Modül Prewitt, Sobel, Laplacian, LoG ve Canny gibi ortak kenar operatörlerini, filtre çekirdeklerini ve F1 doğruluk ölçüm metriklerini tek merkezde toplar.",
+    "sinav": "Tanım: Ortak kütüphane yaklaşımı kenar operatörlerinin standart parametrelerle test edilmesini ve kod tekrarının önlenmesini sağlar.\nSık hata: Her ödevde filtreleri farklı sınır koşullarıyla yazıp karşılaştırmaları geçersiz kılmak."
+  },
+  {
+    "satirlar": [
+      7,
+      10
+    ],
+    "baslik": "Kütüphaneleri içe aktar (typing, cv2, numpy)",
+    "aciklama": "Tuple tür ipuçları için, cv2 optimize görüntü işleme ve konvolüsyon fonksiyonları için, numpy ise vektörel matris matematiği ve tensör dilimleme için içe aktarılır.",
+    "sinav": "Tanım: `Tuple` fonksiyonların birden çok matris dönmesini tip güvenliğiyle belgeler.\nSık hata: Matris türlerini belirtmeyip yanlış veri tipi dönüşümleri yapmak."
+  },
+  {
+    "satirlar": [
+      12,
+      16
+    ],
+    "baslik": "gauss_yumusat fonksiyon imzası ve girdi",
+    "aciklama": "gauss_yumusat fonksiyonu 2 boyutlu gri seviye görüntüyü (uint8 veya float32) alır ve 5x5 Gauss çekirdeği ile yumuşatılmış matris döndürür. Fonksiyon türev öncesi gürültü bastırma görevi üstlenir.",
+    "sinav": "Tanım: Gauss filtresi `5x5` boyutu ve `sigma=1.0` ile merkez piksele en yüksek, uzaklaştıkça azalan çan eğrisi ağırlığı verir.\nSık hata: Aşırı büyük sigma seçip kenarları silmek veya aşırı küçük sigma ile gürültüyü geçirmek."
+  },
+  {
+    "satirlar": [
+      18,
+      20
+    ],
+    "baslik": "gauss_yumusat dönüş tipi docstring'i",
+    "aciklama": "Docstring fonksiyonun gürültüsü bastırılmış yumuşatılmış görüntü matrisi döndürdüğünü açıklar. Matris girişle aynı satır-sütun boyutunu ve veri türünü korur.",
+    "sinav": "Tanım: Gauss yumuşatma görüntünün boyutunu değiştirmez; yalnızca piksel frekans spektrumundaki yüksek bileşenleri zayıflatır.\nSık hata: Filtrenin matris boyutunu küçülteceğini sanmak."
+  },
+  {
+    "satirlar": [
+      21,
+      25
+    ],
+    "baslik": "gauss_yumusat gerekçesi (gürültü duyarlılığı)",
+    "aciklama": "Docstring türev tabanlı kenar bulucuların (özellikle 2. türevin) yüksek frekanslı gürültüye aşırı hassas olduğunu vurgular. Hafif Gauss ön filtreleme (sigma=1.0), kenarları aşırı kaybetmeden sahte kenar oluşumunu engeller.",
+    "sinav": "Tanım: Sayısal türev frekans uzayında `omega` ile çarpma demektir; bu nedenle yüksek frekanslı gürültüyü katlayarak büyütür.\nSık hata: Gürültülü görüntüde yumuşatma yapmadan türev alıp kenarları gürültü içinde kaybetmek."
+  },
+  {
+    "satirlar": [
+      26,
+      26
+    ],
+    "baslik": "cv2.GaussianBlur ile yansıtmalı filtreleme",
+    "aciklama": "cv2.GaussianBlur fonksiyonu 5x5 çekirdek, sigma=1.0 ve BORDER_REFLECT_101 kenar yansıtma kuralı ile uygulanarak sonuç doğrudan döndürülür.",
+    "sinav": "Tanım: `BORDER_REFLECT_101` kenar sınırlarında yapay gradyan sıçramalarını önleyen standart yansıtma kuralıdır.\nSık hata: Sınır piksellerinde sıfır dolgusu yapıp yapay kenar üretmek."
+  },
+  {
+    "satirlar": [
+      29,
+      32
+    ],
+    "baslik": "prewitt fonksiyon imzası ve docstring",
+    "aciklama": "prewitt fonksiyonu Prewitt 1. türev operatörleri ile X ve Y gradyanlarını ve gradyan büyüklüğünü hesaplar. yumusat parametresi isteğe bağlı Gauss ön işlemini kontrol eder.",
+    "sinav": "Tanım: Prewitt operatörü ayrık türevi komşu satır/sütunların ortalamasıyla birleştiren 1. mertebe gradyan operatörüdür.\nSık hata: Prewitt'in yalnızca tek yönde türev aldığını sanmak."
+  },
+  {
+    "satirlar": [
+      34,
+      37
+    ],
+    "baslik": "prewitt girdi parametreleri",
+    "aciklama": "Docstring girdi gri matrisini ve yumusat boole bayrağını tanımlar. yumusat=True varsayılan olarak gürültüye karşı koruma sağlar.",
+    "sinav": "Tanım: Varsayılan parametreler fonksiyonun güvenli ve kararlı kullanımını destekler.\nSık hata: Parametreleri ters sırada vermek."
+  },
+  {
+    "satirlar": [
+      38,
+      43
+    ],
+    "baslik": "prewitt dönüş değerleri (gx, gy, hypot)",
+    "aciklama": "Docstring dönüş demetini detaylandırır: gx yatay türev (işaretli float32), gy dikey türev (işaretli float32) ve hypot gradyan büyüklüğü sqrt(gx^2 + gy^2).",
+    "sinav": "Formül: Gradyan büyüklüğü: `hypot = sqrt(gx^2 + gy^2)`.\nTanım: Gradyan yönü `theta = arctan2(gy, gx)` ile kenara dik açıyı verir.\nSık hata: Büyüklüğü mutlak değer toplamı `|gx| + |gy|` ile karıştırmak."
+  },
+  {
+    "satirlar": [
+      44,
+      47
+    ],
+    "baslik": "prewitt algoritma mantığı ve yön duyarlılığı",
+    "aciklama": "Docstring Prewitt'in komşu piksellerin basit farkı ile kenar yönünü ve şiddetini ölçtüğünü belirtir. X çekirdeği düşey kenarları, Y çekirdeği yatay kenarları vurgular.",
+    "sinav": "Tanım: X türevi yatay yoğunluk değişimini ölçtüğü için düşey (dikey) kenarlara duyarlıdır.\nSık hata: Çekirdek ekseni ile kenar yönünün dikliğini unutmak."
+  },
+  {
+    "satirlar": [
+      48,
+      50
+    ],
+    "baslik": "Koşullu yumuşatma ve float32 dönüşümü",
+    "aciklama": "yumusat True ise gauss_yumusat uygulanır, aksi halde ham görüntü korunur. astype(np.float32) negatif türev değerlerinin kesilmesini önlemek için matrisi float32 türüne çevirir.",
+    "sinav": "Tanım: `float32` veri tipi işaretli türev değerlerini (`-255` ile `+255`) taşma olmadan saklar.\nSık hata: `uint8` türünde çıkarma yapıp negatiflerin 0'a kesilmesine yol açmak."
+  },
+  {
+    "satirlar": [
+      51,
+      53
+    ],
+    "baslik": "Prewitt kx ve ky çekirdek matrisleri",
+    "aciklama": "kx çekirdeği sol sütun -1, sağ sütun +1 matrisiyle yatay türevi; ky çekirdeği üst satır -1, alt satır +1 matrisiyle dikey türevi temsil eder.",
+    "sinav": "Formül: `kx = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]]`, `ky = [[-1, -1, -1], [0, 0, 0], [1, 1, 1]]`.\nSık hata: Çekirdek işaretlerini ters çevirip gradyan vektörünü zıt yöne yönlendirmek."
+  },
+  {
+    "satirlar": [
+      54,
+      56
+    ],
+    "baslik": "cv2.filter2D ile konvolüsyon ve np.hypot",
+    "aciklama": "cv2.filter2D ile kx ve ky çekirdekleri konvolüsyonla uygulanarak gx ve gy üretilir. np.hypot(gx, gy) ile her pikselin öklid gradyan büyüklüğü float32 olarak hesaplanır.",
+    "sinav": "Tanım: `np.hypot(gx, gy)` taşma olmadan `sqrt(gx^2 + gy^2)` hipotenüsünü sayısal kararlılıkla hesaplar.\nSık hata: `sqrt(gx**2 + gy**2)` yazarken float32 kare taşması yaşamak."
+  },
+  {
+    "satirlar": [
+      58,
+      58
+    ],
+    "baslik": "Prewitt gradyan demetini döndür",
+    "aciklama": "Hesaplanan gx yatay türev, gy dikey türev ve hypot gradyan büyüklüğü matrisleri üçlü demet olarak çağırıcıya döndürülür.",
+    "sinav": "Tanım: Gradyan bileşenleri ve büyüklük ayrı ayrı kenar analizi için gereklidir.\nSık hata: Yalnızca büyüklüğü dönüp yön bilgilerini atmak."
+  },
+  {
+    "satirlar": [
+      61,
+      64
+    ],
+    "baslik": "sobel fonksiyon imzası ve docstring",
+    "aciklama": "sobel fonksiyonu 3x3 Sobel operatörü ile X, Y gradyanları ve büyüklük matrisini üretir. Prewitt'e göre merkez piksele ağırlık vererek yerel yumuşatma sağlar.",
+    "sinav": "Tanım: Sobel operatörü `[-1, 0, 1]` türev filtresi ile `[1, 2, 1]` Gauss yumuşatma filtresinin dış çarpımıdır (separable filter).\nFormül: `Sobel_x = [1, 2, 1]^T * [-1, 0, 1]`.\nSık hata: Sobel'in ayrılabilir (separable) bir filtre olduğunu bilmemek."
+  },
+  {
+    "satirlar": [
+      66,
+      69
+    ],
+    "baslik": "sobel girdi parametreleri",
+    "aciklama": "Docstring gri görüntü matrisini ve yumusat ön koşulunu açıklar. Gauss yumuşatması Sobel'in kendi iç yumuşatmasıyla birleştiğinde mükemmel gürültü direnci sunar.",
+    "sinav": "Tanım: Giriş görüntüsünün tek kanallı gri olması zorunludur.\nSık hata: Renkli matris verip kanal bazlı boyut uyuşmazlığı almak."
+  },
+  {
+    "satirlar": [
+      70,
+      75
+    ],
+    "baslik": "sobel dönüş değerleri (gx, gy, hypot)",
+    "aciklama": "Docstring dönüş değerlerini sıralar: işaretli gx, gy ve float32 hypot büyüklük matrisi. Dönüş yapısı Prewitt ile tamamen aynıdır.",
+    "sinav": "Tanım: Tek tip dönüş formatı fonksiyonların polimorfik olarak birbirinin yerine kullanılabilmesini sağlar.\nSık hata: Fonksiyonlar arasında farklı dönüş sırası kullanmak."
+  },
+  {
+    "satirlar": [
+      76,
+      80
+    ],
+    "baslik": "sobel gerekçesi (merkez ağırlıklı yumuşatma)",
+    "aciklama": "Docstring Sobel'in merkez piksele 2 ağırlığı vererek yerel Gauss benzeri yumuşatma etkisi sunduğunu ve bu sayede gürültüye karşı Prewitt'ten daha dirençli olduğunu açıklar.",
+    "sinav": "Tanım: Merkez katsayısının 2 olması köşegen piksellerin ağırlığını dengeleyerek yönsel izotropiyi artırır.\nSık hata: Sobel ve Prewitt arasında fark olmadığını düşünmek."
+  },
+  {
+    "satirlar": [
+      81,
+      83
+    ],
+    "baslik": "Koşullu yumuşatma ve float32 dönüşümü",
+    "aciklama": "yumusat bayrağına göre ön Gauss filtresi uygulanır ve matris float32 formatına dönüştürülerek OpenCV Sobel çağrısına hazırlanır.",
+    "sinav": "Tanım: `CV_32F` ara hesaplamalarda kesme hatasını önler.\nSık hata: uint8 ile Sobel çağırıp negatif türevleri kaybetmek."
+  },
+  {
+    "satirlar": [
+      84,
+      86
+    ],
+    "baslik": "cv2.Sobel ile yatay türev Gx",
+    "aciklama": "cv2.Sobel fonksiyonu dx=1, dy=0, ksize=3 parametreleriyle yatay türevi hesaplar. Çıktı türü CV_32F ve kenar modu BORDER_REFLECT_101 olarak seçilir.",
+    "sinav": "Tanım: `cv2.Sobel(..., 1, 0, ksize=3)` x ekseninde 1. mertebe türev alır.\nSık hata: dx ve dy parametrelerini ters verip eksenleri karıştırmak."
+  },
+  {
+    "satirlar": [
+      87,
+      89
+    ],
+    "baslik": "cv2.Sobel ile dikey türev Gy",
+    "aciklama": "cv2.Sobel fonksiyonu dx=0, dy=1, ksize=3 parametreleriyle dikey türevi hesaplar. Bu çağrı yatay kenarları öne çıkaran dikey gradyanı üretir.",
+    "sinav": "Tanım: `cv2.Sobel(..., 0, 1, ksize=3)` y ekseninde 1. mertebe türev alır.\nSık hata: ksize parametresini çift sayı vermek (ksize tek sayı olmak zorundadır)."
+  },
+  {
+    "satirlar": [
+      90,
+      92
+    ],
+    "baslik": "Hipotenüs büyüklüğü ve dönüş",
+    "aciklama": "np.hypot(gx, gy) ile gradyan büyüklüğü hesaplanır ve gx, gy, hypot üçlüsü döndürülür.",
+    "sinav": "Formül: `hypot = np.hypot(gx, gy)`.\nTanım: Gradyan büyüklüğü doğrultudan bağımsız toplam kenar yoğunluğudur.\nSık hata: Float dönüşümünü yapmadan int kesmesi uygulamak."
+  },
+  {
+    "satirlar": [
+      95,
+      98
+    ],
+    "baslik": "laplacian fonksiyon imzası ve docstring",
+    "aciklama": "laplacian fonksiyonu 4-komşuluklu 3x3 Laplacian 2. türev filtresi uygular. İşaretli 2. türev matrisini float32 formatında döndürür.",
+    "sinav": "Tanım: Laplacian skaler izotropik operatördür: `nabla^2 f = d^2f/dx^2 + d^2f/dy^2`.\nFormül: 4-komşuluklu çekirdek: `[[0, 1, 0], [1, -4, 1], [0, 1, 0]]`.\nSık hata: Laplacian'ın yön bilgisi verdiğini sanmak (izotropiktir, yön bilgisi taşımaz)."
+  },
+  {
+    "satirlar": [
+      99,
+      104
+    ],
+    "baslik": "laplacian girdi ve sonuç parametreleri",
+    "aciklama": "Docstring gri matrisi, yumusat bayrağını ve dönüşte elde edilen işaretli float32 2. türev matrisini tanımlar.",
+    "sinav": "Tanım: İkinci türev işaretli olmalıdır; negatif ve pozitif tepkiler sıfır geçişi için zorunludur.\nSık hata: Laplacian çıktısını doğrudan uint8'e çevirip negatifleri silmek."
+  },
+  {
+    "satirlar": [
+      105,
+      109
+    ],
+    "baslik": "laplacian gerekçesi ve sıfır geçiş mantığı",
+    "aciklama": "Docstring Laplacian'ın yön bağımsız (izotropik) olduğunu ve yoğunluk değişimlerinde sıfır geçişi (zero-crossing) noktaları oluşturarak kenar merkezlerini belirlediğini açıklar.",
+    "sinav": "Tanım: 1. türevin tepe noktası 2. türevin sıfırdan geçtiği (zero-crossing) büküm noktasına denk gelir.\nSık hata: Kenarın sıfır noktası yerine aşırı uç noktalarda olduğunu varsaymak."
+  },
+  {
+    "satirlar": [
+      110,
+      112
+    ],
+    "baslik": "Koşullu yumuşatma ve float32 dönüşümü",
+    "aciklama": "yumusat True ise gauss_yumusat uygulanır, ardından float32 dönüşümü yapılarak konvolüsyon adımına hazırlanılır.",
+    "sinav": "Tanım: İkinci türev gürültüyü birinci türevden çok daha fazla büyütür; Gauss yumuşatma olmaksızın kullanılamaz.\nSık hata: Yumuşatma yapmadan ham görüntüye Laplacian uygulamak."
+  },
+  {
+    "satirlar": [
+      113,
+      114
+    ],
+    "baslik": "3x3 Laplacian çekirdeği ve cv2.filter2D",
+    "aciklama": "k = [[0, 1, 0], [1, -4, 1], [0, 1, 0]] çekirdeği tanımlanır ve cv2.filter2D ile BORDER_REFLECT_101 sınır moduyla uygulanarak sonuç döndürülür.",
+    "sinav": "Formül: Çekirdek elemanları toplamı sıfırdır: `0 + 1 + 0 + 1 - 4 + 1 + 0 + 1 + 0 = 0`.\nTanım: Eleman toplamı sıfır olan filtreler düzgün alanlarda sıfır tepki verir.\nSık hata: Çekirdek katsayıları toplamı sıfır olmayan çekirdek kullanıp düz alanlarda yapay parlaklık almak."
+  },
+  {
+    "satirlar": [
+      117,
+      119
+    ],
+    "baslik": "log_cekirdegi fonksiyon imzası ve docstring",
+    "aciklama": "log_cekirdegi fonksiyonu 7x7 boyutunda ve sigma=1.0 parametreli analitik LoG (Laplacian of Gaussian) çekirdeği üretir.",
+    "sinav": "Tanım: LoG (Marr-Hildreth), Gauss fonksiyonunun analitik 2. türevidir.\nSık hata: Ayrık LoG çekirdeği yerine önce Gauss sonra Laplacian uygulayıp yuvarlama hatası biriktirmek."
+  },
+  {
+    "satirlar": [
+      120,
+      123
+    ],
+    "baslik": "Analitik LoG matematiksel formülü",
+    "aciklama": "Docstring sürekli LoG formülünü belgeler: LoG(x, y) = ((r^2 - 2*sigma^2) / sigma^4) * exp(-r^2 / (2*sigma^2)), burada r^2 = x^2 + y^2.",
+    "sinav": "Formül: `LoG(x, y) = -1/(pi*sigma^4) * (1 - r^2/(2*sigma^2)) * exp(-r^2/(2*sigma^2))`.\nTanım: Bu fonksiyon merkezde negatif bir çukur ve etrafında pozitif bir dairesel halka oluşturur (Meksika Şapkası).\nSık hata: Formüldeki `r^2` terimini unutmak."
+  },
+  {
+    "satirlar": [
+      124,
+      127
+    ],
+    "baslik": "log_cekirdegi sonuç tanımı",
+    "aciklama": "Docstring ortalaması 0'a çekilmiş ve mutlak toplamı 1'e normalize edilmiş 7x7 float32 çekirdek döndürüldüğünü belirtir. Merkez piksel negatiftir.",
+    "sinav": "Tanım: Çekirdek toplamının tam sıfır olması düz zeminlerde sıfır tepki üretmek için matematiksel zorunluluktur.\nSık hata: Ayrık örneklemede toplamın tam sıfır çıkmayacağını unutup ortalama çıkarma adımını atlamak."
+  },
+  {
+    "satirlar": [
+      128,
+      132
+    ],
+    "baslik": "log_cekirdegi gerekçesi ve tek konvolüsyon avantajı",
+    "aciklama": "Docstring Gauss yumuşatma ile Laplacian türevini tek bir analitik konvolüsyon çekirdeğinde birleştirdiğini açıklar. İki aşamalı filtrelemeyi tek adıma indirir.",
+    "sinav": "Tanım: Lineer sistemlerde konvolüsyonun birleşme özelliği sayesinde: `Laplacian * (Gauss * I) = (Laplacian * Gauss) * I = LoG * I`.\nSık hata: İki ayrı konvolüsyonun tek konvolüsyondan daha hızlı olacağını sanmak."
+  },
+  {
+    "satirlar": [
+      133,
+      138
+    ],
+    "baslik": "Meshgrid koordinatları ve sigma üsleri",
+    "aciklama": "np.meshgrid ile [-3, 3] aralığında 7x7 ızgara koordinatları x ve y oluşturulur. r2 = x^2 + y^2 hesaplanır ve sigma=1.0 için sigma2 ve sigma4 üsleri türetilir.",
+    "sinav": "Tanım: `np.meshgrid(np.arange(-3, 4), np.arange(-3, 4))` 7x7 ızgara koordinat matrislerini kurar.\nÖrnek: Merkezde `(x, y) = (0, 0)` iken `r2 = 0` olur.\nSık hata: Izgara aralığını asimetrik tanımlayıp çekirdeğin merkezini kaydırmak."
+  },
+  {
+    "satirlar": [
+      139,
+      142
+    ],
+    "baslik": "Analitik LoG hesabı ve ortalama çıkarma",
+    "aciklama": "Formül float64 duyarlılığıyla k matrisine hesaplanır. Ayrık örnekleme sonucu oluşan küçük sapmayı gidermek için k = k - k.mean() ile ortalama sıfırlanır.",
+    "sinav": "Tanım: `k = k - k.mean()` işlemi çekirdeğin tüm elemanlarının toplamını kesinlikle 0.0 yapar.\nSık hata: Ayrıklaştırma hatasını gidermeden filtresi uygulayıp görüntüyü genel olarak parlatmak veya karartmak."
+  },
+  {
+    "satirlar": [
+      143,
+      147
+    ],
+    "baslik": "Mutlak normalizasyon ve float32 dönüşümü",
+    "aciklama": "mutlak_toplam = np.sum(np.abs(k)) hesaplanır ve çekirdek mutlak_toplam ile bölünerek ölçeklenir. Sonuç float32 türüne dönüştürülerek döndürülür.",
+    "sinav": "Tanım: Mutlak toplama bölmek filtrenin kazancını (gain) 1 seviyesinde normalize eder.\nSık hata: Normalizasyonda sıfıra bölme kontrolü yapmamak."
+  },
+  {
+    "satirlar": [
+      150,
+      154
+    ],
+    "baslik": "log_filtresi fonksiyon imzası ve girdi",
+    "aciklama": "log_filtresi fonksiyonu gri görüntü matrisini alır ve 7x7 LoG çekirdeği ile 2B konvolüsyon uygulayarak işaretli float32 2. türev yanıtını üretir.",
+    "sinav": "Tanım: LoG filtresi doğrudan tek bir 7x7 konvolüsyon çağrısı ile çalışır.\nSık hata: LoG fonksiyonuna harici Gauss uygulayıp çift yumuşatma nedeniyle kenarları aşırı eritmek."
+  },
+  {
+    "satirlar": [
+      156,
+      158
+    ],
+    "baslik": "log_filtresi sonuç açıklaması",
+    "aciklama": "Docstring fonksiyonun işaretli float32 türünde 2. türev matrisi döndürdüğünü açıklar. Bu matris sıfır geçişi bulucuya girdi oluşturur.",
+    "sinav": "Tanım: İşaretli 2. türev yanıtı sıfır etrafında dalgalanan iki kutuplu (bipolar) sinyaldir.\nSık hata: Çıktıyı uint8'e dönüştürüp negatif bilgileri silmek."
+  },
+  {
+    "satirlar": [
+      159,
+      162
+    ],
+    "baslik": "log_filtresi gerekçesi (harici Gauss gereksizliği)",
+    "aciklama": "Docstring LoG çekirdeğinin Gauss yumuşatmayı matematiksel yapısında zaten barındırdığını ve bu nedenle ikinci bir harici Gauss yumuşatması gerektirmediğini belirtir.",
+    "sinav": "Tanım: LoG analitik olarak türetildiği için yumuşatma ve türev tek adımda kaynaşmıştır.\nSık hata: Gereksiz yere ek yumuşatma filtresi çağırıp hesaplama yükü bindirmek."
+  },
+  {
+    "satirlar": [
+      163,
+      166
+    ],
+    "baslik": "float32 dönüşümü ve cv2.filter2D konvolüsyonu",
+    "aciklama": "Görüntü float32'ye çevrilir ve cv2.filter2D fonksiyonu ile log_cekirdegi() uygulanır. BORDER_REFLECT_101 kenar sınırlarını yansıtarak korur.",
+    "sinav": "Tanım: `cv2.filter2D(..., CV_32F, log_cekirdegi(), borderType=cv2.BORDER_REFLECT_101)` 2B ayrık LoG konvolüsyonudur.\nSık hata: Hedef veri türünü CV_8U seçmek."
+  },
+  {
+    "satirlar": [
+      169,
+      174
+    ],
+    "baslik": "canny fonksiyon imzası ve girdi parametreleri",
+    "aciklama": "canny fonksiyonu OpenCV Canny kenar tespitini uygular. gri matrisini ve isteğe bağlı yumusat bayrağını kabul ederek ikili uint8 kenar haritası döner.",
+    "sinav": "Tanım: Canny kenar bulucu çok aşamalı yapısıyla görüntü işleme standartlarında referans algoritmadır.\nSık hata: Canny'nin ara çıktılarının (gradyan açısı, NMS) doğrudan OpenCV fonksiyonuyla gizlendiğini unutmak."
+  },
+  {
+    "satirlar": [
+      176,
+      178
+    ],
+    "baslik": "canny dönüş değeri",
+    "aciklama": "Docstring fonksiyonun 0 veya 255 değerlerinden oluşan tek piksel inceliğinde ikili uint8 kenar haritası döndürdüğünü açıklar.",
+    "sinav": "Tanım: Canny çıktısı NMS (Non-Maximum Suppression) sayesinde 1 piksel kalınlığında inceltilmiş kenarlardan oluşur.\nSık hata: Canny çıktısına ek inceltme (skeletonization) uygulamaya çalışmak."
+  },
+  {
+    "satirlar": [
+      179,
+      183
+    ],
+    "baslik": "canny gerekçesi ve çok adımlı mimarisi",
+    "aciklama": "Docstring Canny'nin çok adımlı sürecini açıklar: Gradyan hesaplama, yerel olmayan maksimumların bastırılması (NMS ile 1 piksel inceltme) ve histerezis eşikleme (alt=50, üst=100).",
+    "sinav": "Tanım: Histerezis eşiklemesinde `üst` eşiği aşan pikseller kesin kenar, `alt` ve `üst` arasındaki pikseller ise kesin kenara bağlıysa kenar kabul edilir.\nSık hata: Histerezisin tek eşiklemeyle aynı olduğunu sanmak."
+  },
+  {
+    "satirlar": [
+      184,
+      186
+    ],
+    "baslik": "Ön yumuşatma ve veri türü doğrulaması",
+    "aciklama": "yumusat True ise gauss_yumusat uygulanır. Girdi uint8 değilse np.clip ile 0-255 aralığına kırpılarak uint8 türüne dönüştürülür çünkü cv2.Canny uint8 girdi şart koşar.",
+    "sinav": "Tanım: `cv2.Canny` yalnızca 8-bit tek kanallı `uint8` giriş görüntülerini kabul eder.\nSık hata: `float32` matrisi doğrudan `cv2.Canny` fonksiyonuna verip çökmesine yol açmak."
+  },
+  {
+    "satirlar": [
+      187,
+      188
+    ],
+    "baslik": "cv2.Canny çağrısı ve L2gradient normu",
+    "aciklama": "cv2.Canny(islenmis, 50, 100, apertureSize=3, L2gradient=True) çağrılır ve ikili kenar haritası döndürülür. L2gradient=True öklid normunu kullanarak daha hassas gradyan büyüklüğü sağlar.",
+    "sinav": "Tanım: `L2gradient=True` büyüklüğü `sqrt(gx^2 + gy^2)` ile hesaplar; `False` ise `|gx| + |gy|` L1 yaklaşımını kullanır.\nÖrnek: Eşikler `50` ve `100` olarak belirlenmiştir.\nSık hata: `L2gradient=False` yaparak köşegen kenarlarda açısal hata üretmek."
+  },
+  {
+    "satirlar": [
+      191,
+      196
+    ],
+    "baslik": "gradyan_ikili fonksiyon imzası ve girdi",
+    "aciklama": "gradyan_ikili fonksiyonu float32 gradyan büyüklük matrisini ve eşik oranını (varsayılan 0.2) alarak ikili kenar görüntüsü üretir.",
+    "sinav": "Tanım: Dinamik eşikleme, sabit eşik yerine görüntünün kendi maksimum gradyanına oranla (`esik = maks * oran`) eşik belirler.\nSık hata: Farklı aydınlatmadaki görüntülerde sabit eşik kullanarak kenarları kaybetmek."
+  },
+  {
+    "satirlar": [
+      198,
+      201
+    ],
+    "baslik": "gradyan_ikili dönüş değeri ve sıfır kenar garantisi",
+    "aciklama": "Docstring fonksiyonun 0 veya 255 değerli uint8 matrisi döndürdüğünü, görüntü düz ve kenarsız ise sıfır kenar döndürdüğünü belgeler.",
+    "sinav": "Tanım: Kenar haritaları standart ikili formatta (`0` arka plan, `255` kenar) olmalıdır.\nSık hata: İkili maskeyi 0 ve 1 olarak bırakıp görselleştirme anında simsiyah görmek."
+  },
+  {
+    "satirlar": [
+      202,
+      204
+    ],
+    "baslik": "Maksimum gradyan kontrolü ve düz zemin elemesi",
+    "aciklama": "maks = float(hypot.max()) hesaplanır. Eğer maksimum değer 1e-6'dan küçük veya eşitse görüntü tamamen düz kabul edilir ve sıfırlardan oluşan boş matris döndürülür.",
+    "sinav": "Tanım: `maks <= 1e-6` sayısal kararlılık kontrolü sıfıra bölme ve boş zemin hatalarını önler.\nSık hata: Düz görüntülerde gürültüyü maksimum sanıp tüm görüntüyü kenarla doldurmak."
+  },
+  {
+    "satirlar": [
+      205,
+      206
+    ],
+    "baslik": "Eşikleme formülü ve uint8 ikili kenar üretimi",
+    "aciklama": "esik = maks * esik_orani hesaplanır ve hypot >= esik koşulunu sağlayan pikseller 255 ile çarpılarak uint8 matris olarak döndürülür.",
+    "sinav": "Formül: `I_ikili = (hypot >= maks * esik_orani).astype(np.uint8) * 255`.\nÖrnek: `esik_orani = 0.2` tepe büyüklüğün %20'sini aşan pikselleri seçer.\nSık hata: Karşılaştırma sonucunu uint8'e dönüştürmeden çarpmak."
+  },
+  {
+    "satirlar": [
+      209,
+      214
+    ],
+    "baslik": "sifir_gecis fonksiyon imzası ve girdi",
+    "aciklama": "sifir_gecis fonksiyonu 2. türev haritasında (Laplacian veya LoG) 8-komşuluklu sıfır geçişlerini bulur. turev2 ve esik_orani (varsayılan 0.05) parametrelerini kabul eder.",
+    "sinav": "Tanım: Sıfır geçişi (Zero-Crossing), 2. türevin pozitiften negatife geçtiği yerel büküm noktalarını yakalar.\nSık hata: 2. türevi gradyan gibi büyüklük eşiklemesine sokmak."
+  },
+  {
+    "satirlar": [
+      216,
+      218
+    ],
+    "baslik": "sifir_gecis dönüş değeri",
+    "aciklama": "Docstring fonksiyonun 0 veya 255 değerli uint8 kenar haritası döndürdüğünü açıklar. Geçiş noktaları 255 beyaz piksel olarak işaretlenir.",
+    "sinav": "Tanım: Sıfır geçiş haritası 2. türev operatörlerinin nihai ikili kenar sonucudur.\nSık hata: Dönüş matrisini boole formatında bırakmak."
+  },
+  {
+    "satirlar": [
+      219,
+      224
+    ],
+    "baslik": "sifir_gecis algoritma mantığı ve zıtlaşma",
+    "aciklama": "Docstring mantığı özetler: İkinci türev kenar geçişinde işaret değiştirir. Piksel pozitifken 8 komşusundan biri negatifse ve fark dinamik eşiği aşıyorsa o piksel kenar kabul edilir.",
+    "sinav": "Tanım: Zıt işaretli komşuluk ve eğim eşiği: `center > 0 and neigh < 0 and (center - neigh) >= esik`.\nSık hata: Eğim eşiği koymadan tüm zayıf gürültü geçişlerini kenar kabul edip ekranı gürültüyle kaplamak."
+  },
+  {
+    "satirlar": [
+      225,
+      228
+    ],
+    "baslik": "Mutlak maksimum ve düz alan kontrolü",
+    "aciklama": "maks_abs = float(np.max(np.abs(turev2))) hesaplanır. Değer 1e-6'dan küçükse görüntü düz kabul edilir ve sıfır kenarlı matris döndürülür.",
+    "sinav": "Tanım: Dinamik eşik tepe mutlak 2. türev büyüklüğüne göre ölçeklenir.\nSık hata: Mutlak değer almadan negatifleri göz ardı etmek."
+  },
+  {
+    "satirlar": [
+      229,
+      232
+    ],
+    "baslik": "Dinamik eşik ve yansıtmalı dolgu (padding)",
+    "aciklama": "esik = maks_abs * esik_orani hesaplanır. np.pad(turev2, 1, mode='reflect') ile matris 1 piksel ayna yansımasıyla çevrelenir; bu sayede 8 komşuluk kenarlarda sınır dışına taşmaz.",
+    "sinav": "Tanım: `np.pad(..., 1, mode='reflect')` sınır piksellerinin 8 komşuluğunu taşma hatası olmadan dilimlemeyi sağlar.\nSık hata: Dolgu yapmayıp kenar piksellerini tarama dışı bırakmak."
+  },
+  {
+    "satirlar": [
+      233,
+      235
+    ],
+    "baslik": "Merkez dilimi ve zc_mask başlangıcı",
+    "aciklama": "center = pad[1:-1, 1:-1] ile orijinal matris dilimi alınır ve zc_mask boole matrisi sıfırlarla başlatılır. Bu maske tüm komşuluk yönlerindeki geçişleri biriktirir.",
+    "sinav": "Tanım: Vektörel dilimleme döngüsüz olarak tüm piksellerin merkez değerini aynı anda karşılaştırır.\nSık hata: Piksel piksel iç içe iki döngü kurup Python seviyesinde yavaş çalışmak."
+  },
+  {
+    "satirlar": [
+      236,
+      241
+    ],
+    "baslik": "8-komşuluk kaydırma koordinatları (üst ve sol)",
+    "aciklama": "shifts listesi 8 komşuluk için (dy, dx) koordinat ötelemelerini tanımlar: sol-üst (-1, -1), üst (-1, 0), sağ-üst (-1, 1) ve sol (0, -1).",
+    "sinav": "Tanım: 8-komşuluk diyagonal komşuları da içererek kenar sürekliliğini garanti eder.\nSık hata: Yalnızca 4-komşuluğa bakıp 45 derece eğik kenarları kopuk tespit etmek."
+  },
+  {
+    "satirlar": [
+      242,
+      245
+    ],
+    "baslik": "8-komşuluk kaydırma koordinatları (sağ ve alt)",
+    "aciklama": "Listenin devamında sağ (0, 1), sol-alt (1, -1), alt (1, 0) ve sağ-alt (1, 1) komşulukları tanımlanır.",
+    "sinav": "Tanım: 8 yönlü tarama izotropik sıfır geçiş tespitini tamamlar.\nSık hata: Komşuluk kaydırma indekslerini matris boyutlarıyla uyumsuz dilimlemek."
+  },
+  {
+    "satirlar": [
+      247,
+      252
+    ],
+    "baslik": "Vektörel zıtlaşma ve eğim kontrolü",
+    "aciklama": "Döngü 8 komşuyu tarar; neigh dilimi alınır. cond = (center > 0) & (neigh < 0) & ((center - neigh) >= esik) koşulu zc_mask matrisine bitwise OR (|=) ile eklenir.",
+    "sinav": "Formül: `(center > 0) & (neigh < 0) & ((center - neigh) >= esik)` sert işaret değişimi ve yeterli gradyan eğimini şart koşar.\nSık hata: `|` yerine mantıksal `or` kullanıp dizi bazlı hata almak."
+  },
+  {
+    "satirlar": [
+      253,
+      255
+    ],
+    "baslik": "İkili kenar matrisini oluştur ve döndür",
+    "aciklama": "sonuc matrisi uint8 sıfırlarla oluşturulur, zc_mask True olan pikseller 255 yapılır ve ikili kenar haritası döndürülür.",
+    "sinav": "Tanım: `sonuc[zc_mask] = 255` boole maskesini standart 8-bit ikili kenar görüntüsüne çevirir.\nSık hata: Maskeyi doğrudan döndürüp uint8 bekleyen OpenCV fonksiyonlarında hata almak."
+  },
+  {
+    "satirlar": [
+      258,
+      262
+    ],
+    "baslik": "isaretli_goruntu_uint8 fonksiyonu ve docstring",
+    "aciklama": "isaretli_goruntu_uint8 fonksiyonu işaretli float32 türev matrisini negatifleri kaybetmeden [0, 255] aralığına normalize eder. Negatifler koyu, sıfır orta gri (~128) ve pozitifler parlak görünür.",
+    "sinav": "Tanım: NORM_MINMAX normalizasyonu ile `0` türev seviyesi yaklaşık `128` orta gri seviyesine hizalanır.\nSık hata: İşaretli türevin mutlak değerini alıp negatif yön bilgisini yok etmek."
+  },
+  {
+    "satirlar": [
+      263,
+      263
+    ],
+    "baslik": "cv2.normalize çağrısı ile uint8 dönüşümü",
+    "aciklama": "cv2.normalize(dizi, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U) çağrısı ile türev matrisi doğrudan 8-bit görüntüye gerilerek döndürülür.",
+    "sinav": "Tanım: `dtype=cv2.CV_8U` normalizasyon sonucunu doğrudan 8-bit işaretsiz tamsayı formatına dönüştürür.\nSık hata: Hedef türü belirtmeyip float çıktıyı imwrite'a vermek."
+  },
+  {
+    "satirlar": [
+      266,
+      268
+    ],
+    "baslik": "mutlak_uint8 fonksiyonu ve mutlak değer",
+    "aciklama": "mutlak_uint8 fonksiyonu işaretli dizinin np.abs() ile mutlak değerini alır. Bu işlem yön işaretini kaldırarak kenarın sadece büyüklüğüne odaklanır.",
+    "sinav": "Tanım: `np.abs(dizi)` negatif türev genliklerini pozitif yaparak kenar gücünü temsil eder.\nSık hata: Mutlak değer almadan önce negatifleri sıfıra kesmek."
+  },
+  {
+    "satirlar": [
+      269,
+      272
+    ],
+    "baslik": "Normalizasyon, kırpma ve uint8 dönüşümü",
+    "aciklama": "Maksimum değer 1e-6'dan büyükse dizi (mutlak / maks) * 255 ile ölçeklenir, np.clip ile [0, 255] aralığına sıkıştırılır ve uint8 olarak döndürülür.",
+    "sinav": "Formül: `I_mutlak = clip((abs(I) / max(abs(I))) * 255, 0, 255).astype(uint8)`.\nSık hata: Maksimuma bölmeden önce float dönüşümü yapmayıp tamsayı bölme hatası almak."
+  },
+  {
+    "satirlar": [
+      275,
+      278
+    ],
+    "baslik": "kenar_skoru fonksiyon imzası ve docstring",
+    "aciklama": "kenar_skoru fonksiyonu tahmin edilen ikili kenar ile referans yer gerçeğini (ground truth) karşılaştırır ve 1 piksel toleransla Precision, Recall ve F1 skorlarını döner.",
+    "sinav": "Tanım: Kenar tespitinde piksel seviyesinde 1 piksel esneme toleransı (tolerance margin) bilimsel literatür standardıdır.\nSık hata: Katı birebir piksel örtüşmesi arayıp küçük yerel kaymalarda sıfır puan vermek."
+  },
+  {
+    "satirlar": [
+      280,
+      284
+    ],
+    "baslik": "kenar_skoru girdi parametreleri",
+    "aciklama": "Docstring girdi tahmin matrisini, referans ikili haritayı ve tolerans (varsayılan 1 piksel) yarıçapını açıklar.",
+    "sinav": "Tanım: `tolerans=1` pikselin etrafındaki 3x3 alanda eşleşme arar.\nSık hata: Toleransı piksel cinsinden çok büyük verip tüm kenarları doğru saymak."
+  },
+  {
+    "satirlar": [
+      285,
+      287
+    ],
+    "baslik": "kenar_skoru dönüş değerleri (P, R, F1)",
+    "aciklama": "Docstring fonksiyonun (precision, recall, f1) üçlü float demeti döndürdüğünü açıklar. Skorlar 0.0 ile 1.0 aralığındadır.",
+    "sinav": "Tanım: `F1` skoru kesinlik (precision) ve duyarlılığın (recall) dengeli başarısını tek sayıda özetler.\nSık hata: Sadece Precision veya sadece Recall'a bakarak karar vermek."
+  },
+  {
+    "satirlar": [
+      288,
+      293
+    ],
+    "baslik": "kenar_skoru tolerans ve uç durum kuralları",
+    "aciklama": "Docstring 1 piksel tolerans için morfolojik genişletme (dilation) kullanıldığını, ikisi de boşsa (1, 1, 1), biri boş diğeri doluysa (0, 0, 0) kabul edildiğini açıklar.",
+    "sinav": "Tanım: Uç durum denetimi kenarsız boş görüntülerde sıfıra bölme hatasını önler.\nSık hata: Boş görüntülerde `0/0` tanımsızlığı nedeniyle programın çökmesi."
+  },
+  {
+    "satirlar": [
+      294,
+      298
+    ],
+    "baslik": "İkili maskeler ve sıfır olmayan piksel sayıları",
+    "aciklama": "tahmin_bin ve referans_bin boole maskelerine dönüştürülür ve np.count_nonzero ile her iki haritadaki toplam kenar piksel adetleri sayılır.",
+    "sinav": "Tanım: `np.count_nonzero` dizideki sıfırdan farklı piksel sayısını optimize sayar.\nSık hata: Piksel sayısını hesaplarken matris boyutunu toplam piksel sanmak."
+  },
+  {
+    "satirlar": [
+      299,
+      303
+    ],
+    "baslik": "Boş kenar uç durum kontrolleri",
+    "aciklama": "Her iki harita da boşsa (0 piksel) kusursuz kabul edilerek (1.0, 1.0, 1.0) dönülür; biri boş diğeri doluysa (0.0, 0.0, 0.0) dönülerek uç durumlar çözümlenir.",
+    "sinav": "Tanım: İki görüntünün de kenarsız olması doğru bir tespittir ve F1=1.0 verilmelidir.\nSık hata: Boş görüntülere 0.0 puan verip algoritmayı cezalandırmak."
+  },
+  {
+    "satirlar": [
+      304,
+      306
+    ],
+    "baslik": "Morfolojik genişletme yapısal elemanı",
+    "aciklama": "ksize = 2 * tolerans + 1 hesaplanır (tolerans=1 için 3x3) ve cv2.getStructuringElement ile dikdörtgen çekirdek oluşturulur.",
+    "sinav": "Formül: `ksize = 2 * tolerans + 1`; `tolerans=1` için 3x3 çekirdek oluşturulur.\nTanım: Yapısal eleman morfolojik genişletmenin etki alanını tanımlar.\nSık hata: Çekirdek boyutunu çift sayı seçip merkez pikselsiz genişletme yapmak."
+  },
+  {
+    "satirlar": [
+      307,
+      309
+    ],
+    "baslik": "cv2.dilate ile referans ve tahmin genişletme",
+    "aciklama": "cv2.dilate ile hem referans hem de tahmin kenarları 1 piksel genişletilir. ref_dil ve tah_dil matrisleri toleranslı eşleşme bölgelerini oluşturur.",
+    "sinav": "Tanım: `cv2.dilate` kenar piksellerini 1 piksel etrafına yayarak konum toleransı sağlar.\nSık hata: Yalnızca bir tarafı genişletip Precision ve Recall arasında asimetri yaratmak."
+  },
+  {
+    "satirlar": [
+      310,
+      312
+    ],
+    "baslik": "Precision (Kesinlik) hesabı",
+    "aciklama": "tp_prec, tahmin edilen piksellerden genişletilmiş referans bölgesine düşenlerin sayısıdır. precision = tp_prec / tahmin_sayisi olarak hesaplanır.",
+    "sinav": "Formül: `Precision = (Tahmin & Dilate(Referans)) / Toplam_Tahmin`.\nTanım: Precision bulunan kenarların yüzde kaçının gerçek kenar olduğunu ölçer.\nSık hata: Yanlış kenarları (FP) hesaba katmamak."
+  },
+  {
+    "satirlar": [
+      313,
+      315
+    ],
+    "baslik": "Recall (Duyarlılık) hesabı",
+    "aciklama": "tp_rec, gerçek referans piksellerinden genişletilmiş tahmin bölgesine düşenlerin sayısıdır. recall = tp_rec / referans_sayisi olarak hesaplanır.",
+    "sinav": "Formül: `Recall = (Referans & Dilate(Tahmin)) / Toplam_Referans`.\nTanım: Recall gerçek kenarların yüzde kaçının tespit edilebildiğini ölçer.\nSık hata: Kaçırılan kenarları (FN) göz ardı etmek."
+  },
+  {
+    "satirlar": [
+      316,
+      321
+    ],
+    "baslik": "F1 Skoru hesabı ve sonuç dönüşü",
+    "aciklama": "precision + recall > 0 ise harmonik ortalama formülüyle F1 skoru hesaplanır, aksi halde 0.0 verilir. (precision, recall, f1) float olarak döndürülür.",
+    "sinav": "Formül: `F1 = (2 * P * R) / (P + R)`.\nTanım: F1 skoru hem sahte kenarları hem de kaçırılan kenarları aynı anda cezalandırır.\nSık hata: P ve R toplamı 0 olduğunda bölme sıfır hatası almak."
+  },
+  {
+    "satirlar": [
+      324,
+      327
+    ],
+    "baslik": "sentetik_veri_uret fonksiyon imzası ve docstring",
+    "aciklama": "sentetik_veri_uret fonksiyonu başarım ölçümü için bilinen zemin gerçeklikli (ground truth) sentetik test görüntüleri üretir.",
+    "sinav": "Tanım: Sentetik veriler kenar operatörlerinin analitik doğruluklarını ölçmek için standart laboratuvar ortamıdır.\nSık hata: Sentetik veri yerine rastgele fotoğraflar kullanıp kesin referansı kaybetmek."
+  },
+  {
+    "satirlar": [
+      328,
+      332
+    ],
+    "baslik": "sentetik_veri_uret dönüş demeti docstring'i",
+    "aciklama": "Docstring dönüş üçlüsünü açıklar: temiz sentetik gri görüntü, referans kenar haritası ve Gauss gürültüsü (sigma=10) eklenmiş gürültülü varyant.",
+    "sinav": "Tanım: Üçlü set algoritmaların hem temiz hem gürültülü şartlarda F1 puanını kıyaslamayı sağlar.\nSık hata: Gürültülü görüntü için farklı geometriler kullanıp referansı uyumsuz kılmak."
+  },
+  {
+    "satirlar": [
+      333,
+      335
+    ],
+    "baslik": "Tuval boyutu ve arka plan gri tonu",
+    "aciklama": "boyut = (512, 512) belirlenir ve np.full(boyut, 50, dtype=np.uint8) ile 50 yoğunluğunda koyu gri arka plan tuvali tahsis edilir.",
+    "sinav": "Tanım: 50 arka plan parlaklığı çizilecek şekillerle yüksek kontrast farkı sağlar.\nSık hata: Arka planı 0 yapıp siyah kenarlıklarla karıştırmak."
+  },
+  {
+    "satirlar": [
+      336,
+      338
+    ],
+    "baslik": "Sentetik daire nesnesini çiz",
+    "aciklama": "cv2.circle fonksiyonu ile merkezi (160, 160), yarıçapı 80 ve parlaklık dolgusu 200 olan dolu daire çizilir.",
+    "sinav": "Tanım: `cv2.circle(..., thickness=-1)` dolu şekil çizer; dairesel kenarlar tüm yönlerde sürekli eğri sunar.\nSık hata: thickness parametresini pozitif verip içi boş çember çizmek."
+  },
+  {
+    "satirlar": [
+      339,
+      342
+    ],
+    "baslik": "Sentetik dikdörtgen ve kalın çizgi çiz",
+    "aciklama": "cv2.rectangle ile (280, 80) -> (440, 240) dolgu 150 dikdörtgeni ve cv2.line ile (80, 360) -> (440, 420) kalınlık 6 dolgu 230 çizgisi eklenir.",
+    "sinav": "Tanım: Dikdörtgen dik köşeleri, eğik çizgi ise 45 derece dışı açısal kenarları test eder.\nSık hata: Şekilleri üst üste bindirip karmaşık kesişimler yaratmak."
+  },
+  {
+    "satirlar": [
+      343,
+      348
+    ],
+    "baslik": "Referans kenar haritası: Daire ve dikdörtgen",
+    "aciklama": "referans matrisi sıfırlarla açılır. cv2.circle ve cv2.rectangle thickness=1 ile çizilerek nesnelerin kesin 1 piksel sınırları referans haritasına işlenir.",
+    "sinav": "Tanım: `thickness=1` geometrik nesnelerin tam 1 piksel genişliğindeki matematiksel sınırlarını üretir.\nSık hata: Referans kenarları kalın çizip F1 skorunu saptırmak."
+  },
+  {
+    "satirlar": [
+      349,
+      352
+    ],
+    "baslik": "Kalın çizginin sınır maskesi",
+    "aciklama": "cizgi_maskesi matrisine 6 piksel kalınlığındaki çizgi 255 parlaklıkla çizilir. Morfolojik gradyan ile kalın çizginin dış konturları çıkarılacaktır.",
+    "sinav": "Tanım: Kalın çizgilerin kenarı çizginin içi değil, iki yanındaki dış sınır hatlarıdır.\nSık hata: Çizginin merkez hattını kenar referansı sanmak."
+  },
+  {
+    "satirlar": [
+      353,
+      356
+    ],
+    "baslik": "Morfolojik gradyan ve referans birleştirme",
+    "aciklama": "cv2.morphologyEx(..., MORPH_GRADIENT, 3x3) kalın çizginin iç ve dış kenar sınırlarını çıkarır. cv2.bitwise_or ile daire ve dikdörtgen referansına eklenir.",
+    "sinav": "Tanım: Morfolojik gradyan `Genişletme - Aşındırma` farkıyla şekil sınırlarını tam 1 piksel kalınlıkta çıkarır.\nSık hata: Çizgi kenarlarını referansa eklemeyi unutup Recall'u düşürmek."
+  },
+  {
+    "satirlar": [
+      357,
+      362
+    ],
+    "baslik": "Gauss gürültüsü ekleme ve dönüş",
+    "aciklama": "default_rng(42) ile sigma=10 normal gürültü üretilir, sentetik matrisine eklenir, clip ile [0, 255] aralığına sınırlandırılır ve üçlü demet döndürülür.",
+    "sinav": "Tanım: `seed=42` gürültü deseninin her test çalıştırmasında tamamen özdeş kalmasını garanti eder.\nSık hata: `clip` yapmadan uint8'e çevirip negatif taşma gürültüsü üretmek."
+  },
+  {
+    "satirlar": [
+      365,
+      367
+    ],
+    "baslik": "panel_olustur fonksiyon imzası ve docstring",
+    "aciklama": "panel_olustur fonksiyonu görsel matrislerini ve başlık metinlerini grid panel halinde birleştirir. Tüm görsellerin üzerine koyu başlık şeridi çizer.",
+    "sinav": "Tanım: Standart görselleştirme fonksiyonu tüm haftalık ödev panellerinin tutarlı mizanpajda üretilmesini sağlar.\nSık hata: Her ödevde farklı panel çizici fonksiyonlar yazmak."
+  },
+  {
+    "satirlar": [
+      368,
+      372
+    ],
+    "baslik": "Panel boyut hesapları ve tuval tahsisi",
+    "aciklama": "Izgara satır ve sütun boyutları çözümlenir, her hücreye 30 piksellik banner eklenir ve np.full ile 245 açık gri renkli 3 kanallı tuval oluşturulur.",
+    "sinav": "Formül: `panel_h = satir * (h + 30)`, `panel_w = sutun * w`.\nTanım: 245 açık gri arka plan hücreler arasında temiz ayırıcı boşluk bırakır.\nSık hata: Tuval yüksekliğini başlık bandı olmadan hesaplayıp pikselleri taşırarak kaybetmek."
+  },
+  {
+    "satirlar": [
+      373,
+      378
+    ],
+    "baslik": "Hücre koordinatları döngüsü",
+    "aciklama": "Döngü görselleri ve başlıkları zip ile tarar; r ve c ızgara indekslerini, y0 ve x0 piksel koordinatlarını hesaplar.",
+    "sinav": "Tanım: `idx // sutun` ve `idx % sutun` 1B indeksleri 2B ızgara satır ve sütununa eşler.\nSık hata: Satır ve sütun indislerini ters hesaplamak."
+  },
+  {
+    "satirlar": [
+      379,
+      382
+    ],
+    "baslik": "Başlık arka plan dikdörtgeni çizimi",
+    "aciklama": "cv2.rectangle fonksiyonu ile hücrenin üstüne 30 piksel yüksekliğinde, (40, 40, 40) koyu gri renkli dolu dikdörtgen çizilir.",
+    "sinav": "Tanım: Koyu başlık bandı beyaz yazıların her türlü görsel üzerinde net okunmasını sağlar.\nSık hata: Dikdörtgen kalınlığını pozitif verip içini doldurmamak."
+  },
+  {
+    "satirlar": [
+      383,
+      387
+    ],
+    "baslik": "cv2.putText ile başlık çizimi (konum ve font)",
+    "aciklama": "cv2.putText başlık metnini (x0 + 10, y0 + 20) konumuna, FONT_HERSHEY_SIMPLEX yazı tipiyle ve 0.55 ölçeğinde çizer.",
+    "sinav": "Tanım: `(x0 + 10, y0 + 20)` koordinatı metnin sol alt taban çizgisini (baseline) belirler.\nSık hata: Y koordinatını bandın dışına taşırıp yazıyı görünmez kılmak."
+  },
+  {
+    "satirlar": [
+      388,
+      392
+    ],
+    "baslik": "Başlık rengi, kalınlık ve anti-aliasing",
+    "aciklama": "Metin rengi (255, 255, 255) beyaz, kalınlık 1 ve çizim modu cv2.LINE_AA olarak verilerek pürüzsüz yazı elde edilir.",
+    "sinav": "Tanım: `cv2.LINE_AA` çizgi kenarlarında yumuşatma uygulayarak yazı netliğini artırır.\nSık hata: `LINE_AA` kullanmayıp pikselleşmiş tırtıklı metin çizmek."
+  },
+  {
+    "satirlar": [
+      393,
+      397
+    ],
+    "baslik": "Gri görseli BGR'ye çevir ve hücreye kopyala",
+    "aciklama": "Tek kanallı görsel cv2.cvtColor ile BGR formatına dönüştürülür ve panel tuvalinin ilgili hücre alanına dilimlenerek kopyalanır.",
+    "sinav": "Tanım: `panel[y0 + banner_h : y0 + hucre_h, x0 : x0 + w] = img_bgr` NumPy matris kopyalamasıdır.\nSık hata: Dilimleme aralığını görsel boyutundan farklı verip boyut uyumsuzluğu hatası almak."
+  },
+  {
+    "satirlar": [
+      399,
+      399
+    ],
+    "baslik": "Nihai paneli döndür",
+    "aciklama": "Tüm görseller yerleştirildikten sonra oluşturulan birleşik panel matrisi döndürülür.",
+    "sinav": "Tanım: Döndürülen panel doğrudan `cv2.imwrite` ile PNG olarak kaydedilebilir.\nSık hata: Fonksiyon içinde paneli döndürmeyi unutmak."
+  }
+]

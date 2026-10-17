@@ -1,0 +1,170 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "İkili Arama Ağacı Tanıtım Bloğu",
+    "aciklama": "Bu modül ikili arama ağacı (BST) veri yapısını döngüsel ekleme ve arama yöntemleriyle gerçekleştirir. Düğümler sol alt ağaçta küçük, sağ alt ağaçta büyük anahtarlar barındıracak şekilde organize edilir. Rastgele veride O(log n) olan arama verimi, sıralı veride dejenere olarak O(n) seviyesine geriler.",
+    "sinav": "Tanım: İkili arama ağacı, her düğümün solundaki tüm anahtarların kendisinden küçük, sağındakilerin büyük olduğu ikili ağaçtır.\nFormül: Dengeli ağaçta arama O(log n), dejenere ağaçta O(n) zaman alır.\nÖrnek: Kök 10 ise 5 sola, 15 sağa yerleştirilir.\nSık hata: İkili arama ağacının her zaman kendiliğinden dengeli kalacağını varsaymak."
+  },
+  {
+    "satirlar": [9, 9],
+    "baslik": "Rastgele Sayı Kütüphanesi İçe Aktarımı",
+    "aciklama": "Standart `random` modülü test verilerinin karıştırılması amacıyla projeye dahil edilir. Deterministik sonuçlar üretmek için sabit çekirdekli rastgele sayı üreteci tercih edilir. Böylece test ortamı her çalıştırmada tutarlı sonuçlar üretir.",
+    "sinav": "Tanım: Standart sözde rastgele üreteçler algoritma başarımını tarafsız girdi dizileriyle sınamak için kullanılır.\nÖrnek: `random.Random(7)` ile karıştırılan liste her çalıştırmada aynı permütasyonu verir.\nSık hata: Testlerde rastgeleliği kontrolsüz bırakıp hata ayıklamayı zorlaştırmak."
+  },
+  {
+    "satirlar": [12, 16],
+    "baslik": "İkili Arama Ağacı Düğüm Yapısı",
+    "aciklama": "`IADugum` sınıfı ağacın her bir elemanını temsil eden temel bellek düğümüdür. Her düğüm bir `anahtar` değeri ile `sol` ve `sag` çocuk işaretçilerini bünyesinde barındırır. Başlangıçta çocuk işaretçileri `None` atanarak yaprak düğüm davranışı modellenir.",
+    "sinav": "Tanım: Ağaç düğümü, kullanıcı verisini ve dallanma işaretçilerini bir arada tutan nesnedir.\nFormül: Düğüm = (anahtar, sol_işaretçi, sağ_işaretçi).\nÖrnek: `IADugum(10)` kök olarak atanıp çocukları sonradan bağlanabilir.\nSık hata: Çocuk işaretçilerini başlatmayıp tanımsız referans hataları üretmek."
+  },
+  {
+    "satirlar": [19, 22],
+    "baslik": "Ağaç Sınıfı ve Adım Sayacı",
+    "aciklama": "`IkiliAramaAgaci` sınıfı kök düğümü ve işlem maliyetini takip eden sayacı yönetir. Yapıcı metotta `self.kok` başlangıçta `None` olarak ayarlanır ve `self.adim` sıfırlanır. Bu sayaç sayesinde ekleme ve arama işlemlerindeki karşılaştırma adımları ampirik olarak sayılır.",
+    "sinav": "Tanım: Ağaç kapsayıcı sınıfı ağacın kökünü ve işlem metotlarını tek bir çatı altında toplar.\nFormül: Boş ağaçta kok = None ve adim = 0 durumundadır.\nÖrnek: Ağaç örneği oluşturulduğunda kök boştur ve ilk eklemeyi bekler.\nSık hata: Ağaç genelinde tek bir sayaç tutarken farklı testler arasında sayacı sıfırlamayı unutmak."
+  },
+  {
+    "satirlar": [24, 29],
+    "baslik": "Kök Düğüme Ekleme Mantığı",
+    "aciklama": "`ekle` metodu yeni bir `IADugum` nesnesi oluşturarak ekleme sürecini başlatır. Eğer ağaç henüz boşsa yeni düğüm doğrudan `self.kok` olarak atanır ve işlem sonlanır. İlk eleman eklenirken sayaç bir artırılarak O(1) maliyet kaydedilir.",
+    "sinav": "Tanım: Boş ağaca ilk elemanın eklenmesi kök referansının atanması işlemidir.\nFormül: Boş ağaç kontrolü `self.kok is None` ile yapılır ve maliyet O(1) olur.\nÖrnek: Boş ağaca 50 eklendiğinde `self.kok = IADugum(50)` yapılır.\nSık hata: Boş ağaç durumunu ayrıca ele almayıp `None` üzerinden çocuk erişimi yapmaya kalkışmak."
+  },
+  {
+    "satirlar": [30, 34],
+    "baslik": "Sol Dala İlerleme ve Arama",
+    "aciklama": "Döngü mevcut düğümden başlayarak eklenecek anahtarın konumunu arar. Karşılaştırma yapıldıkça `self.adim` sayacı düzenli olarak bir artırılır. Yeni anahtar mevcut düğümün anahtarından küçükse sol dala yönelme kararı verilir.",
+    "sinav": "Tanım: BST ekleme kuralı gereği küçük anahtarlar daima sol alt ağaca yönlendirilir.\nFormül: `anahtar < mevcut.anahtar` ise sol alt ağaca bakılır.\nÖrnek: 30 anahtarı 50'den küçük olduğu için sol alt dala geçilir.\nSık hata: Ekleme sırasında karşılaştırma adımlarını saymayıp algoritmanın karmaşıklığını gizlemek."
+  },
+  {
+    "satirlar": [35, 39],
+    "baslik": "Sol Çocuk Ekleme veya İlerleme",
+    "aciklama": "Sol çocuk boş ise yeni düğüm sol çocuk olarak bağlanır ve döngüden çıkılır. Sol çocuk doluysa inceleme işaretçisi sol çocuğa kaydırılarak aşağı iniş sürdürülür. Böylece özyineleme çağrı yığını yükü olmadan O(h) sürede yerleşim tamamlanır.",
+    "sinav": "Tanım: Yaprak pozisyonuna ulaşıldığında yeni düğüm ilgili işaretçiye atanır.\nFormül: `mevcut.sol = yeni` ile yeni yaprak bağlanır.\nÖrnek: Sol işaretçi `None` olduğunda yeni düğüm oraya yerleşir.\nSık hata: İşaretçi boşken ilerlemeye çalışıp `AttributeError` almak."
+  },
+  {
+    "satirlar": [40, 44],
+    "baslik": "Sağ Dala Ekleme ve Yineleme",
+    "aciklama": "Anahtar mevcut düğümden büyükse sağ daldaki boşluk denetlenerek yeni düğüm sağa eklenir. Şayet sağ çocuk mevcutsa işaretçi sağa ilerletilir. Anahtar zaten ağaçta varsa hiçbir işlem yapılmadan döngü sonlandırılarak çoklama engellenir.",
+    "sinav": "Tanım: Büyük anahtarlar sağ dala yerleştirilir; eşit anahtarlar ise standart BST'de yinelenmez.\nFormül: `anahtar > mevcut.anahtar` koşulu sağ dalı işaret eder.\nÖrnek: 70 anahtarı 50'den büyük olduğundan sağ dala eklenir.\nSık hata: Ağaçta var olan yinelenen elemanları kontrolsüzce ekleyip ağaç tutarlılığını bozmak."
+  },
+  {
+    "satirlar": [46, 49],
+    "baslik": "Döngüsel Arama Başlatma Mantığı",
+    "aciklama": "`ara` metodu verilen anahtarı kökten başlayarak döngü ile arar. Her düğüm ziyaretinde `self.adim` sayacı bir artırılarak arama maliyeti izlenir. Döngüsel yaklaşım Python'da özyineleme derinliği sınırına takılmadan O(h) sürede arama sağlar.",
+    "sinav": "Tanım: Döngüsel arama (iterative search), çağrı yığını tüketmeden ağaçta anahtar sorgular.\nFormül: En kötü durumda arama adımı ağaç yüksekliği h kadardır.\nÖrnek: 200 elemanlı sıralı ağaçta 200 aranırken döngü 200 adım atar.\nSık hata: Döngü yerine derin özyineleme kullanıp `RecursionError` sınırına takılmak."
+  },
+  {
+    "satirlar": [50, 53],
+    "baslik": "Arama Eşleşmesi ve Dal Seçimi",
+    "aciklama": "Aranan anahtar mevcut düğümün anahtarına eşitse `True` değeri döndürülür. Eşit değilse anahtarın büyüklüğüne göre tek satırda sol veya sağ çocuk işaretçisine geçilir. Düğüm `None` olduğunda anahtar bulunamamış sayılarak `False` döner.",
+    "sinav": "Tanım: BST arama mantığı her adımda arama uzayını bir alt ağaca indirger.\nFormül: `anahtar == mevcut.anahtar` ise arama başarılıdır.\nÖrnek: Kök 50 iken 50 aranırsa ilk adımda `True` döner.\nSık hata: Düğüm `None` olduğunda döngüyü sonlandırmayı unutup sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [55, 60],
+    "baslik": "Ağaç Yüksekliği Hesaplama Metodu",
+    "aciklama": "`yukseklik` metodu ağacın kökünden en derin yaprağına kadar olan seviye sayısını hesaplar. Boş düğüm için 0, dolu düğüm için sol ve sağ alt ağaçların maksimumunun 1 fazlası alınır. Bu özyinelemeli metot ağacın dengelilik düzeyini doğrudan ölçer.",
+    "sinav": "Tanım: İkili ağacın yüksekliği, kökten yaprağa giden en uzun yoldaki düğüm sayısıdır.\nFormül: Yükseklik = 1 + max(sol_yükseklik, sağ_yükseklik).\nÖrnek: Tek düğümlü ağacın yüksekliği 1'dir.\nSık hata: Boş ağacın yüksekliğini 1 sayıp tüm ağaç seviyelerini kaydırmak."
+  },
+  {
+    "satirlar": [61, 65],
+    "baslik": "Ortanca Dolaşım İlklendirme Bloğu",
+    "aciklama": "`ortanca_dolasim` metodu inorder gezinti yaparak sıralı bir liste oluşturur. Varsayılan parametre ile liste ilklendirilir ve kök düğümden başlayarak gezinti tetiklenir. Bu yöntem BST içindeki anahtarları küçükten büyüğe sıralı almak için kullanılır.",
+    "sinav": "Tanım: Ortanca dolaşım (in-order traversal), sol alt ağaç, kök ve sağ alt ağaç sırasını izler.\nFormül: Sol -> Kök -> Sağ ziyaret sırası uygulanır.\nÖrnek: [3, 1, 4] ikili arama ağacı dolaşımda [1, 3, 4] sırasını verir.\nSık hata: Dolaşım sonucunu biriktiren listeyi her çağrıda sıfırlamayıp eski verilerle karıştırmak."
+  },
+  {
+    "satirlar": [66, 70],
+    "baslik": "Ortanca Dolaşım Özyineleme Adımları",
+    "aciklama": "Düğüm boş değilse önce sol çocuk özyinelemeli olarak taranır. Ardından mevcut düğümün anahtarı sonuç listesine eklenir ve en son sağ çocuk ziyaret edilir. BST tanımı gereği bu sıra daima kesin olarak sıralı bir liste üretir.",
+    "sinav": "Tanım: İnorder dolaşım ikili arama ağacındaki elemanları matematiksel olarak sıralar.\nFormül: n düğümlü ağaçta dolaşım O(n) zaman karmaşıklığındadır.\nÖrnek: [2, 1, 3] ağacı dolaşıldığında [1, 2, 3] listesi elde edilir.\nSık hata: Kökü sol çocuktan önce ekleyip preorder (öncelikli) dolaşım sırasına kaymak."
+  },
+  {
+    "satirlar": [71, 74],
+    "baslik": "En Küçük Anahtar Kontrolü",
+    "aciklama": "`en_kucuk` metodu ağaçtaki asgari değeri bulmak üzere en sol dala yönelir. Eğer ağaç tamamen boşsa `ValueError` istisnası fırlatılarak hata bildirilir. Bu koruma boş veri yapılarında tanımsız işlemler yapılmasını önler.",
+    "sinav": "Tanım: BST'de en küçük anahtar daima ağacın en solundaki uç düğümde yer alır.\nFormül: En sol düğüm: `mevcut.sol is None` olana kadar sol işaretçiyi takip etmek.\nÖrnek: [20, 10, 30] ağacında en küçük anahtar 10'dur.\nSık hata: Boş ağaçta kontrol yapmayıp `AttributeError` ile programı çökertmek."
+  },
+  {
+    "satirlar": [75, 79],
+    "baslik": "En Sol Düğüme İlerleme",
+    "aciklama": "Sol çocuk `None` olana kadar sola doğru ilerlenir ve her adımda `self.adim` artırılır. Döngü bittiğinde ulaşılan düğümün anahtarı ağacın en küçük değeri olarak döndürülür. Dengeli ağaçta bu arama O(log n), dejenere ağaçta O(n) sürer.",
+    "sinav": "Tanım: Sol dal boyunca yapılan iniş ağacın minimum anahtarına ulaşmayı garanti eder.\nFormül: En küçük eleman bulma karmaşıklığı O(h) kadardır.\nÖrnek: 1'den 200'e sıralı eklenmiş ağaçta en küçük eleman kökte (1. adımda) bulunur.\nSık hata: En küçük elemanı ararken sağ çocuklara da sapıp gereksiz adımlar atmak."
+  },
+  {
+    "satirlar": [80, 83],
+    "baslik": "En Büyük Anahtar Kontrolü",
+    "aciklama": "`en_buyuk` metodu ağacın azami değerini bulmak için sağ dalı incelemeye başlar. Boş ağaç durumunda anlamlı bir değer olamayacağından `ValueError` fırlatılır. Böylece kenar durumlar güvenli şekilde yönetilir.",
+    "sinav": "Tanım: BST'de en büyük anahtar daima ağacın en sağındaki uç düğümde saklanır.\nFormül: En sağ düğüm: `mevcut.sag is None` olana kadar sağa ilerlemek.\nÖrnek: [20, 10, 30] ağacında en büyük anahtar 30'dur.\nSık hata: Boş ağaç sorgusunda `None` döndürüp çağıran tarafta tip hatasına yol açmak."
+  },
+  {
+    "satirlar": [84, 88],
+    "baslik": "En Sağ Düğüme İlerleme",
+    "aciklama": "Sağ çocuk `None` olana dek sağa doğru gidilir ve sayaç birer birer artırılır. Ulaşılan son düğümün anahtarı ağacın en büyük değeri olarak döndürülür. Bu işlem de ağaç yüksekliğine bağlı olarak O(h) sürede sonuçlanır.",
+    "sinav": "Tanım: Sağ dal boyunca en uca kadar ilerleme maksimum anahtarı verir.\nFormül: En büyük eleman erişim karmaşıklığı O(h) mertebesindedir.\nÖrnek: 1'den 200'e sıralı ağaçta 200'e ulaşmak 199 adım sürer.\nSık hata: En büyük elemanı bulmak için tüm ağacı O(n) sürede gezmek."
+  },
+  {
+    "satirlar": [90, 95],
+    "baslik": "Test Verisi ve Karıştırma",
+    "aciklama": "`main` fonksiyonunda 1'den 200'e kadar ardışık sayılardan oluşan bir test dizisi hazırlanır. `random.Random(7)` ile bu listenin kopyası karıştırılarak rastgele ekleme sırası oluşturulur. Bu hazırlık dengeli ve dejenere ağaç davranışını karşılaştırmayı amaçlar.",
+    "sinav": "Tanım: Rastgele permütasyon, BST'nin ortalama durumda dengeli O(log n) olmasını sağlar.\nFormül: `veri = list(range(1, 201))` ve `rng.shuffle(karisik)`.\nÖrnek: 200 elemanlı dizi karıştırılarak ağaca eklenmeye hazır hale getirilir.\nSık hata: Sıralı veriyi karıştırmadan ekleyip ağacın tek taraflı uzamasını engelleyememek."
+  },
+  {
+    "satirlar": [96, 101],
+    "baslik": "Dengeli ve Sıralı Ağaç Kurulumu",
+    "aciklama": "Biri karıştırılmış diğeri sıralı verileri içeren iki ayrı `IkiliAramaAgaci` nesnesi oluşturulur. Karışık veriler dengeli bir ağaç oluştururken sıralı veriler bağlı liste benzeri dejenere ağaç üretir. İki yapı arasındaki yapısal uçurum bu eklemelerle şekillenir.",
+    "sinav": "Tanım: Sıralı veri ikili arama ağacına eklendiğinde ağaç sağa eğik bir bağlı listeye dönüşür.\nFormül: Sıralı eklemede yükseklik h = n olur.\nÖrnek: 1, 2, 3 sırasıyla eklendiğinde her düğüm bir öncekinin sağ çocuğu olur.\nSık hata: Ağaç yapısının verinin geliş sırasından bağımsız olduğunu varsaymak."
+  },
+  {
+    "satirlar": [102, 105],
+    "baslik": "Sıralama ve Uç Değer Doğrulamaları",
+    "aciklama": "Her iki ağacın `ortanca_dolasim` sonuçlarının orijinal sıralı veriye eşit olduğu `assert` ile teyit edilir. Ayrıca her iki ağacın en küçük (1) ve en büyük (200) değerleri sınanır. Bu kontroller veri yerleşim sırası ne olursa olsun BST özelliğinin korunduğunu gösterir.",
+    "sinav": "Tanım: İnorder dolaşım, ağacın şeklinden bağımsız olarak anahtarları artan sırada üretir.\nFormül: `agac.ortanca_dolasim() == sorted(veri)` eşitliği sağlanmalıdır.\nÖrnek: Hem dengeli hem dejenere ağaç [1, 2, ..., 200] çıktısı verir.\nSık hata: Dejenere ağacın sıralı dolaşım özelliğini kaybedeceğini zannetmek."
+  },
+  {
+    "satirlar": [107, 110],
+    "baslik": "Ağaç Yüksekliklerinin Karşılaştırılması",
+    "aciklama": "Sıralı ağacın yüksekliğinin tam olarak 200 olduğu `assert` ile kanıtlanır. Karışık eklenen dengeli ağacın yüksekliğinin ise 20'nin çok altında kaldığı doğrulanır. Bu ölçüm O(n) ile O(log n) asimptotik farkını somut olarak sergiler.",
+    "sinav": "Tanım: Dejenere ağaç yüksekliği n iken, dengeli ağaç yüksekliği yaklaşık log2(n) seviyesindedir.\nFormül: Dengeli: h ~ 1.44 * log2(n), Dejenere: h = n.\nÖrnek: N = 200 için dengeli ağaç yüksekliği 18 iken sıralı ağaçta 200'dür.\nSık hata: İkili ağacın her durumda logaritmik yükseklikte kalacağını varsaymak."
+  },
+  {
+    "satirlar": [111, 115],
+    "baslik": "Arama Performansı ve Adım Sayısı Denetimi",
+    "aciklama": "Her iki ağaçta da 200 anahtarı aranır ve sayaçlar kaydedilir. Dengeli ağaçta aramanın dejenere ağaca göre çok daha az adımda bittiği `assert` ile doğrulanır. Böylece arama maliyetindeki devasa verim artışı kanıtlanır.",
+    "sinav": "Tanım: Dengeli ağaçta arama adımı O(log n) iken dejenere ağaçta O(n) adım sürer.\nFormül: `adim_dengeli < adim_sirali` koşulu doğrulanır.\nÖrnek: 200 anahtarı dengeli ağaçta 6 adımda bulunurken sıralı ağaçta 200 adım gerektirir.\nSık hata: Ağaçta arama hızının sadece eleman sayısına bağlı olduğunu zannetmek."
+  },
+  {
+    "satirlar": [116, 121],
+    "baslik": "Boş Ağaç İstisna Denetimi",
+    "aciklama": "Boş bir ağaç oluşturularak `en_kucuk` metodu çağrılır ve beklenen `ValueError` sınanır. Hata başarıyla yakalanırsa test geçer, istisna fırlatılmazsa `assert False` ile başarısız olunur. Bu test uç durum güvenliğini garantiler.",
+    "sinav": "Tanım: Boş veri yapılarında tanımsız işlemler kontrollü istisnalarla ele alınmalıdır.\nFormül: Boş ağaçta minimum eleman `raise ValueError` fırlatmalıdır.\nÖrnek: Elemanı olmayan BST üzerinde sorgu yapıldığında ValueError oluşur.\nSık hata: Boş ağaç testlerini atlayarak kodun beklenmedik hatalar üretmesine izin vermek."
+  },
+  {
+    "satirlar": [123, 128],
+    "baslik": "Genel Rapor ve Hızlanma Çıktısı",
+    "aciklama": "Toplam düğüm sayısı, iki ağacın yükseklikleri ve arama adımları ekrana yazdırılır. Arama adım sayıları oranlanarak dengeli yapının sağladığı hızlanma katı raporlanır. Bu özet tablo öncesi kritik metrikleri kullanıcıya sunar.",
+    "sinav": "Tanım: Hızlanma oranı (speedup), yavaş algoritma adımının hızlı algoritmaya oranıdır.\nFormül: Hızlanma = adim_sirali / adim_dengeli.\nÖrnek: 200 / 6 hesaplanarak yaklaşık 33.33 kat hızlanma elde edilir.\nSık hata: Başarım oranını hesaplarken pay ve paydayı ters yazmak."
+  },
+  {
+    "satirlar": [129, 134],
+    "baslik": "Ölçekleme Tablosu Başlık Bloğu",
+    "aciklama": "Farklı girdi büyüklüklerinde iki yaklaşımı karşılaştıran tablonun başlık satırları biçimlendirilir. N = 50, 100, 200 gibi artan boyutlar için döngü açılarak veri büyümesinin etkisi izlenir. Başlık sütunları yükseklik ve arama adımlarını netleştirir.",
+    "sinav": "Tanım: Ölçekleme tablosu, problemin boyutu büyüdükçe algoritmaların büyüme hızını gösterir.\nFormül: Farklı N değerleri için dengeli ve dejenere metrikler karşılaştırılır.\nÖrnek: N = 50, 100, 200 değerleri döngüyle taranır.\nSık hata: Tek bir örnekle yetinip farklı problem ölçeklerini göz ardı etmek."
+  },
+  {
+    "satirlar": [135, 139],
+    "baslik": "Ölçekleme Test Verileri Kurulumu",
+    "aciklama": "Her N boyutu için sıralı ve karışık listeler üretilerek iki ayrı ağaç nesnesine eklenir. Her döngü adımında yeni ağaçlar kurularak temiz test ortamı sağlanır. Böylece önceki adımlardan kalan verilerin testleri etkilemesi önlenir.",
+    "sinav": "Tanım: Bağımsız test ortamı oluşturmak için her iterasyonda yeni veri yapıları ilklendirilir.\nFormül: N elemanlı `test_sirali` ve `test_karisik` dizileri kurulur.\nÖrnek: N = 100 için 100 elemanlı iki ağaç sıfırdan oluşturulur.\nSık hata: Döngü içinde aynı ağaç nesnesini tekrar kullanarak boyutları birbirine katmak."
+  },
+  {
+    "satirlar": [140, 143],
+    "baslik": "Arama Ölçümü ve Tablo Satırı",
+    "aciklama": "Her iki ağaçta sayaclar sıfırlanarak en büyük eleman (N) aranır ve harcanan adımlar kaydedilir. Elde edilen yükseklikler ve arama adım sayıları hizalı biçimde ekrana basılır. Bu deneysel veriler O(log n) ile O(n) arasındaki uçurumu net biçimde sergiler.",
+    "sinav": "Tanım: En kötü durum arama maliyeti ağacın en derin düğümünü arayarak test edilir.\nFormül: Tablo satırı: N, dengeli yükseklik, sıralı yükseklik, dengeli adım, sıralı adım.\nÖrnek: N = 200 için dengeli aramada 7 adım, sıralı aramada 200 adım harcanır.\nSık hata: Arama yapmadan önce adim sayacını sıfırlamayı unutup ekleme maliyetini de eklemek."
+  },
+  {
+    "satirlar": [146, 147],
+    "baslik": "Ana Program Başlatıcı Bloğu",
+    "aciklama": "Modülün doğrudan yürütüldüğünü kontrol eden `__name__ == '__main__'` yapısı kurulur. Koşul sağlandığında `main()` fonksiyonu çağrılarak tüm testler ve raporlama çalıştırılır. Dosyanın başka bir betikten kütüphane olarak çağrılması durumunda testler tetiklenmez.",
+    "sinav": "Tanım: Modüler programlamada ana yürütme bloğu betiğin import edilmesini doğrudan çalıştırılmasından ayırır.\nÖrnek: `python ikili_arama_agaci.py` komutuyla `main()` devreye girer.\nSık hata: Bu kontrolü ihmal edip test kodlarının kütüphane kullanımında istenmeden çalışmasına yol açmak."
+  }
+]

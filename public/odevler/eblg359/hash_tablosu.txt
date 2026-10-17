@@ -1,0 +1,15 @@
+=== Ödev 8: Hash Tablosu (Zincirleme) Doğrulama ===
+1. 20 anahtar eklendi, yeniden hashleme sayisi: 3
+   Kova sayisi: 32, Yuk orani: 0.625
+2. Kova dagilimi: [0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 2, 1, 0, 2, 0, 1, 1, 0, 0, 0, 1, 1, 0, 2, 0, 2, 0, 1, 1, 1]
+3. Tum anahtarlar bulundu. Arama basina karsilastirma: 1.30
+   Teorik sinir (1 + alpha) = 1.62 civarinda kaldi.
+4. Olmayan anahtar için None döndürüldüğü doğrulandı.
+5. Anahtar silme işlemi doğrulandı.
+
+--- Hash Tablosu Başarım Özeti ---
+Metrik                    Değer     
+Toplam Eleman             19        
+Kova Sayısı               32        
+Yük Oranı (alpha)         0.594     
+Ortalama Arama Maliyeti   1.30      

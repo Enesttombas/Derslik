@@ -1,0 +1,38 @@
+[
+  {
+    "satirlar": [
+      1,
+      6
+    ],
+    "baslik": "Modülleri yükle ve yolları tanımla",
+    "aciklama": "Pathlib dosya konumlarını çözmek, cv2 ise görüntü I/O ve medyan filtreleme işlemlerini yürütmek üzere içe aktarılır. klasor ve girdi değişkenleri çalışma alanındaki göreli dosya dizinlerini belirler. Bu yapı betiğin yerel dosya sisteminde sorunsuz çalışmasını sağlar.",
+    "sinav": "Tanım: `Path(__file__).parent` ile betiğin bulunduğu klasör mutlak olarak çözümlenir.\nSık hata: Kütüphanelerin eksik import edilmesiyle fonksiyon çağrılarında hata almak."
+  },
+  {
+    "satirlar": [
+      8,
+      10
+    ],
+    "baslik": "Temiz ve gürültülü görselleri oku",
+    "aciklama": "Döngü dağ ve sis görüntüleri için temiz referans dosyasını ve tuz-biber gürültülü dosyayı gri seviyede okur. cv2.IMREAD_GRAYSCALE bayrağı her resmi 8-bit yoğunluk matrisine dönüştürür. Temiz resim filtreleme sonrasında PSNR hesaplanırken referans olarak kullanılır.",
+    "sinav": "Tanım: Gri tonlama okuması medyan filtrenin tek kanal üzerinde çalışmasını sağlar.\nSık hata: Dosya adında tuz_biber yerine gurultulu dosyasını okuyup yanlış gürültü türünü filtrelemek."
+  },
+  {
+    "satirlar": [
+      12,
+      12
+    ],
+    "baslik": "cv2.medianBlur ile 5x5 medyan filtre uygula",
+    "aciklama": "cv2.medianBlur(gurultulu, 5) çağrısı her pikselin 5x5 komşuluğundaki 25 değeri sıralar ve tam ortadaki 13. değeri (medyanı) seçer. Tuz (255) ve biber (0) pikselleri aşırı uç değerler olduğu için sıralamanın en başına veya en sonuna düşer ve asla medyan olarak seçilmez. Bu doğrusal olmayan filtreleme tekniği kenarları bulanıklaştırmadan darbe gürültüsünü tamamen yok eder.",
+    "sinav": "Tanım: Medyan filtresi doğrusal olmayan (non-linear) bir filtredir; tuz-biber gürültüsünü kenarları koruyarak temizler.\nÖrnek: `5x5` penceredeki 25 değerin ortanca elemanı seçilir.\nSık hata: Medyan pencere boyutunun tek sayı (3, 5, 7 vb.) olması gerektiğini unutmak."
+  },
+  {
+    "satirlar": [
+      14,
+      15
+    ],
+    "baslik": "Sonucu kaydet ve PSNR artışını yazdır",
+    "aciklama": "Filtrelenmiş görsel cikti klasörüne kaydedilir ve cv2.PSNR ile filtrenin başarım oranı ölçülür. Dağ görüntüsünde PSNR 14.55 dB'den 45.82 dB'ye çıkarak 31 dB'lik olağanüstü bir gürültü temizleme başarısı gösterir. Ortalama filtreye kıyasla medyan filtre darbe gürültüsünde ezici bir üstünlük sağlar.",
+    "sinav": "Örnek: `dag: PSNR 14.55 dB -> 45.82 dB` (gürültü neredeyse tamamen yok edilmiştir).\nTanım: Ortalama filtre tuz-biber gürültüsünü lekeye dönüştürürken, medyan filtre tamamen siler.\nSık hata: Medyan filtrenin hesaplama karmaşıklığının ortalama filtreye göre daha yüksek olduğunu göz ardı etmek."
+  }
+]

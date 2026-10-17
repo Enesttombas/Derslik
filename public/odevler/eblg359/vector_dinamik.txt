@@ -1,0 +1,9 @@
+Toplam eklenen eleman sayisi (N): 1024
+İlk 5 kapasite değişimi (indeks, eski, yeni): [(1, 1, 2), (2, 2, 4), (4, 4, 8), (8, 8, 16), (16, 16, 32)]
+Son kapasite: 1024, Toplam kopyalama: 1023
+
+--- Kapasite Artırma Stratejileri Karşılaştırması ---
+N        2x Büyüme (Amortize O(1))    +1 Saf Büyüme (O(n^2))   Kazanç    
+64       63                           2016                     32.0      x
+256      255                          32640                    128.0     x
+1024     1023                         523776                   512.0     x

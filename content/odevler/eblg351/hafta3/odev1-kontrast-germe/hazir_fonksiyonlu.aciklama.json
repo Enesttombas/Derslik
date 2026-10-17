@@ -1,0 +1,38 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Kütüphaneleri içe aktar ve dizini belirle",
+    "aciklama": "Pathlib modülü dosya yollarını işletim sisteminden bağımsız olarak yönetir, OpenCV kütüphanesi ise görüntü okuma, normalize etme ve kaydetme işlemlerini üstlenir. Klasör değişkeni betiğin bulunduğu dizini tutarak girdi ve çıktı dosyalarına göreli ve güvenli erişim sağlar. Bu yapı kodun farklı konumlardan çalıştırıldığında dosya yolu hataları almasını önler.",
+    "sinav": "Tanım: `Path(__file__).parent` betiğin yerel dizinini verir; dosya yolu yönetiminde taşınabilirlik sağlar.\nSık hata: Göreli yolları çalışma dizinine göre verip betiği başka klasörden çağırınca dosya bulamamak."
+  },
+  {
+    "satirlar": [
+      7,
+      8
+    ],
+    "baslik": "Görüntüleri gri tonlamada oku",
+    "aciklama": "Döngü dağ ve sis test görüntülerini sırayla işlemek üzere ad listesi üzerinde döner. cv2.imread fonksiyonu IMREAD_GRAYSCALE bayrağı ile görüntüleri doğrudan tek kanallı 8-bit yoğunluk matrisine dönüştürür. Kontrast germe tek kanallı gri görüntülerde piksel yoğunluk aralığını genişleterek görsel belirginliği artırır.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` bayrağı renkli pikselleri `0.299*R + 0.587*G + 0.114*B` formülüyle tek parlaklık kanalına dönüştürür.\nSık hata: Renkli 3 kanallı matrise doğrudan tek kanal min-max normalizasyonu uygulamaya çalışmak."
+  },
+  {
+    "satirlar": [
+      10,
+      11
+    ],
+    "baslik": "Aşırı değerleri bul ve normalize et",
+    "aciklama": "cv2.minMaxLoc fonksiyonu matristeki en küçük ve en büyük piksel değerlerini ve koordinatlarını hızla tespit eder. cv2.normalize fonksiyonu NORM_MINMAX kuralıyla görüntüdeki en düşük değeri 0'a, en yüksek değeri ise 255'e doğrusal olarak gerer. Bu işlem dar bir gri seviyesi bandına sıkışmış pikselleri tüm dinamik aralığa yayarak kontrastı maksimize eder.",
+    "sinav": "Formül: `cv2.NORM_MINMAX`: `I_cikis = (I - min) * (beta - alpha) / (max - min) + alpha`\nÖrnek: `[92, 249]` aralığındaki sis görüntüsü `[0, 255]` aralığına doğrusal ölçeklenir.\nSık hata: `min == max` olan tek renkli görüntüde sıfıra bölme hatasını hesaba katmamak."
+  },
+  {
+    "satirlar": [
+      13,
+      14
+    ],
+    "baslik": "Sonucu kaydet ve istatistikleri yazdır",
+    "aciklama": "cv2.imwrite fonksiyonu normalize edilmiş yeni matrisi kayıpsız PNG formatında cikti klasörüne yazar. Print fonksiyonu dönüşüm öncesi ve sonrası min ve max piksel değerlerini ekrana basarak normalizasyonun doğruluğunu belgeler. Bu kontrol sayesinde dinamik aralığın gerçekten tam olarak 0-255 aralığına ulaştığı doğrulanır.",
+    "sinav": "Tanım: `cv2.imwrite` görüntü matrislerini diske yazar; PNG formatı kayıpsız sıkıştırma sunduğu için piksel değerlerini korur.\nÖrnek: `sis: min=92 max=249 -> min=0 max=255`.\nSık hata: JPEG gibi kayıplı formatlar kullanarak piksellerin değerlerini bozmak."
+  }
+]

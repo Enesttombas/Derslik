@@ -1,0 +1,195 @@
+[
+  {
+    "id": "h3-1",
+    "week": 3,
+    "no": 1,
+    "title": "Min-Max Doğrusal Kontrast Germe",
+    "brief": "Gri tonlamalı görüntünün dar parlaklık aralığını [0, 255] tam dinamik aralığına doğrusal olarak genişlet.",
+    "done": true,
+    "file": "hafta3/odev1-kontrast-germe/hazir_fonksiyonlu.py",
+    "variants": [
+      {
+        "label": "Hazır fonksiyonlu (cv2.normalize)",
+        "file": "hafta3/odev1-kontrast-germe/hazir_fonksiyonlu.py"
+      },
+      {
+        "label": "Hazır fonksiyonsuz (Doğrusal formül)",
+        "file": "hafta3/odev1-kontrast-germe/hazir_fonksiyonsuz.py"
+      }
+    ],
+    "steps": [
+      "Gri görüntüyü `cv2.imread(..., cv2.IMREAD_GRAYSCALE)` ile oku.",
+      "Görüntüdeki minimum ve maksimum piksel yoğunluklarını tespit et.",
+      "Pikselleri `y = round((x - min) * 255 / (max - min))` formülüyle veya `cv2.normalize(..., NORM_MINMAX)` ile ölçekle.",
+      "Sonucu `uint8` türünde cikti klasörüne kaydet; sis görüntüsünde [92, 249] aralığı [0, 255]'e genişler."
+    ],
+    "runCommand": "python odev1-kontrast-germe/hazir_fonksiyonlu.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta3/odev1-kontrast-germe",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta3/odev1-kontrast-germe/cikti/dag_hazir_fonksiyonlu.png",
+        "alt": "Dağ görüntüsü kontrast germe sonucu (0-237 -> 0-255)"
+      },
+      {
+        "src": "/odevler/eblg351/hafta3/odev1-kontrast-germe/cikti/sis_hazir_fonksiyonlu.png",
+        "alt": "Sis görüntüsü kontrast germe sonucu (92-249 -> 0-255)"
+      }
+    ]
+  },
+  {
+    "id": "h3-2",
+    "week": 3,
+    "no": 2,
+    "title": "Global Histogram Eşitleme (CDF)",
+    "brief": "Görüntünün kümülatif dağılım fonksiyonunu (CDF) hesaplayarak piksel yoğunluklarını tüm gri skalaya dengeli dağıt.",
+    "done": true,
+    "file": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonlu.py",
+    "variants": [
+      {
+        "label": "Hazır fonksiyonlu (cv2.equalizeHist)",
+        "file": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonlu.py"
+      },
+      {
+        "label": "Hazır fonksiyonsuz (CDF & LUT)",
+        "file": "hafta3/odev2-histogram-esitleme/hazir_fonksiyonsuz.py"
+      }
+    ],
+    "steps": [
+      "Görüntüyü gri seviyede oku ve 256 elemanlı frekans histogramını çıkar.",
+      "Histogramın kümülatif toplamını (CDF) hesapla.",
+      "Sıfırdan büyük ilk CDF değerini (cdf_min) ofset alarak 256 elemanlı arama tablosu (LUT) oluştur.",
+      "Pikselleri tablo üzerinden eşle; sis görüntüsünde standart sapma 37.28'den 74.33'e fırlar."
+    ],
+    "runCommand": "python odev2-histogram-esitleme/hazir_fonksiyonlu.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta3/odev2-histogram-esitleme",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta3/odev2-histogram-esitleme/cikti/dag_hazir_fonksiyonlu.png",
+        "alt": "Dağ görüntüsü histogram eşitleme çıktısı"
+      },
+      {
+        "src": "/odevler/eblg351/hafta3/odev2-histogram-esitleme/cikti/sis_hazir_fonksiyonlu.png",
+        "alt": "Sis görüntüsü histogram eşitleme çıktısı (kontrast artışı)"
+      }
+    ]
+  },
+  {
+    "id": "h3-3",
+    "week": 3,
+    "no": 3,
+    "title": "CLAHE (Kontrast Sınırlı Uyarlamalı Histogram Eşitleme)",
+    "brief": "Görüntüyü 8x8 karolara bölerek yerel histogram eşitlemesi uygula; gürültüyü klip limitiyle sınırla ve blok sınırlarını çift doğrusal enterpolasyonla gider.",
+    "done": true,
+    "file": "hafta3/odev3-clahe/hazir_fonksiyonlu.py",
+    "variants": [
+      {
+        "label": "Hazır fonksiyonlu (cv2.createCLAHE)",
+        "file": "hafta3/odev3-clahe/hazir_fonksiyonlu.py"
+      },
+      {
+        "label": "Hazır fonksiyonsuz (Karo CDF & Bilineer)",
+        "file": "hafta3/odev3-clahe/hazir_fonksiyonsuz.py"
+      }
+    ],
+    "steps": [
+      "Görüntüyü 8x8 ızgara (karo) parçalarına ayır; gerekirse ayna yansımasıyla genişlet.",
+      "Her karonun histogramını hesapla, clipLimit (2.0) üzerindeki fazlalığı kesip tüm kutulara eşit dağıt.",
+      "Kırpılmış histogramdan her karo için yerel dönüşüm tablosu (CDF) üret.",
+      "Her pikselin parlaklığını çevreleyen 4 karonun tablosundan çift doğrusal (bilinear) enterpolasyon ile hesapla."
+    ],
+    "runCommand": "python odev3-clahe/hazir_fonksiyonlu.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta3/odev3-clahe",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta3/odev3-clahe/cikti/dag_hazir_fonksiyonlu.png",
+        "alt": "Dağ görüntüsü CLAHE çıktısı (8x8 karo, klip 2.0)"
+      },
+      {
+        "src": "/odevler/eblg351/hafta3/odev3-clahe/cikti/sis_hazir_fonksiyonlu.png",
+        "alt": "Sis görüntüsü CLAHE çıktısı (dengeli yerel kontrast)"
+      }
+    ]
+  },
+  {
+    "id": "h3-4",
+    "week": 3,
+    "no": 4,
+    "title": "3×3 Ortalama Filtresi (Kutu Konvolüsyonu)",
+    "brief": "Gauss gürültüsü eklenmiş görüntüye 3x3 ortalama çekirdeğiyle konvolüsyon uygulayarak gürültüyü bastır ve PSNR iyileşmesini ölç.",
+    "done": true,
+    "file": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonlu.py",
+    "variants": [
+      {
+        "label": "Hazır fonksiyonlu (cv2.blur 3x3)",
+        "file": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonlu.py"
+      },
+      {
+        "label": "Hazır fonksiyonsuz (3x3 Konvolüsyon)",
+        "file": "hafta3/odev4-ortalama-filtre/hazir_fonksiyonsuz.py"
+      },
+      {
+        "label": "Gürültü Ekle (Gauss σ=20)",
+        "file": "hafta3/odev4-ortalama-filtre/gurultu_ekle.py"
+      }
+    ],
+    "steps": [
+      "Temiz görüntüye ortalaması 0, standart sapması 20 olan Gauss gürültüsü ekle.",
+      "Görüntü kenarlarını 1 piksel ayna yansıması (BORDER_REFLECT_101) ile genişlet.",
+      "Her piksel için 3x3 komşuluk piksellerini 1/9 ağırlığıyla çarpıp topla.",
+      "Filtrelenmiş görüntünün PSNR değerini temiz referansla kıyasla (dag: 22.37 dB -> 31.70 dB)."
+    ],
+    "runCommand": "python odev4-ortalama-filtre/hazir_fonksiyonlu.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta3/odev4-ortalama-filtre",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta3/odev4-ortalama-filtre/cikti/dag_hazir_fonksiyonlu.png",
+        "alt": "Dağ görüntüsü 3x3 ortalama filtre çıktısı (PSNR 31.70 dB)"
+      },
+      {
+        "src": "/odevler/eblg351/hafta3/odev4-ortalama-filtre/cikti/sis_hazir_fonksiyonlu.png",
+        "alt": "Sis görüntüsü 3x3 ortalama filtre çıktısı (PSNR 31.00 dB)"
+      }
+    ]
+  },
+  {
+    "id": "h3-5",
+    "week": 3,
+    "no": 5,
+    "title": "5×5 Medyan Filtresi (Tuz-Biber Temizleme)",
+    "brief": "Piksellerin %10'una uygulanan tuz ve biber darbe gürültüsünü 5x5 medyan filtresiyle kenarları koruyarak tamamen temizle.",
+    "done": true,
+    "file": "hafta3/odev5-medyan-filtre/hazir_fonksiyonlu.py",
+    "variants": [
+      {
+        "label": "Hazır fonksiyonlu (cv2.medianBlur 5x5)",
+        "file": "hafta3/odev5-medyan-filtre/hazir_fonksiyonlu.py"
+      },
+      {
+        "label": "Hazır fonksiyonsuz (5x5 Medyan Filtre)",
+        "file": "hafta3/odev5-medyan-filtre/hazir_fonksiyonsuz.py"
+      },
+      {
+        "label": "Gürültü Ekle (Tuz-Biber %10)",
+        "file": "hafta3/odev5-medyan-filtre/gurultu_ekle.py"
+      }
+    ],
+    "steps": [
+      "Temiz görüntünün rastgele %5 pikselini 0 (biber), %5 pikselini 255 (tuz) yap.",
+      "Kenarları 2 piksel en yakın sınır pikseliyle genişlet (clamp/replicate padding).",
+      "5x5 penceredeki 25 komşu katmanı oluşturup vektörel kabarcık sıralamasıyla sırala.",
+      "Sıralı 25 değerin tam ortanca elemanını (13. değer) seçerek PSNR'ı 14.55 dB'den 45.82 dB'ye çıkar."
+    ],
+    "runCommand": "python odev5-medyan-filtre/hazir_fonksiyonlu.py",
+    "sourceUrl": "https://github.com/Enesttombas/goruntu-isleme/tree/72e9bb25bd38d80f550e3d8e58a477cdee24583f/hafta3/odev5-medyan-filtre",
+    "images": [
+      {
+        "src": "/odevler/eblg351/hafta3/odev5-medyan-filtre/cikti/dag_hazir_fonksiyonlu.png",
+        "alt": "Dağ görüntüsü 5x5 medyan filtre tuz-biber temizleme çıktısı (PSNR 45.82 dB)"
+      },
+      {
+        "src": "/odevler/eblg351/hafta3/odev5-medyan-filtre/cikti/sis_hazir_fonksiyonlu.png",
+        "alt": "Sis görüntüsü 5x5 medyan filtre çıktısı (PSNR 36.12 dB)"
+      }
+    ]
+  }
+]

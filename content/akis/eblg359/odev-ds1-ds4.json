@@ -1,0 +1,373 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-o-ds1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds1",
+   "dosya": "dizi_statik.py",
+   "satirlar": [
+    38,
+    48
+   ],
+   "etiketler": [
+    "statik-dizi",
+    "kaydirma"
+   ],
+   "soru": "`araya_ekle(i, x)` içindeki `for j in range(self.boy, i, -1)` neden sondan başa doğru çalışır?",
+   "secenekler": [
+    "Elemanları sağa kaydırırken üzerine yazmamak için sondan başlanır",
+    "Dizi tersine çevrilsin diye",
+    "Daha hızlı çalışsın diye",
+    "Python böyle gerektirdiği için"
+   ],
+   "dogru": 0,
+   "aciklama": "`veri[j] = veri[j-1]` ile her eleman bir sağa taşınır. Baştan başlasaydık `veri[i+1]`'e yazarken `veri[i+1]`'in eski değerini kaybederdik. Sondan başlayınca her hedef zaten boştur ya da taşınmış değerdir."
+  },
+  {
+   "id": "359-o-ds1-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds1",
+   "dosya": "dizi_statik.py",
+   "satirlar": [
+    99,
+    108
+   ],
+   "etiketler": [
+    "statik-dizi",
+    "islem-sayisi"
+   ],
+   "soru": "N=100 için sona 100 ekleme ve başa 100 ekleme toplam işlem sayıları ve oranı?",
+   "secenekler": [
+    "100, 5050, 50.5",
+    "100, 100, 1.0",
+    "100, 10000, 100.0",
+    "5050, 100, 0.02"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: N=100 → 100 / 5050 / 50.5; N=1000 → 1000 / 500500 / 500.5.",
+   "aciklama": "Başa ekleme k. adımda k eleman kaydırır + 1 yazma: toplam 0+1+…+99 + 100 = 4950 + 100 = 5050. Sona ekleme her seferinde 1 işlem. Oran yaklaşık (N+1)/2: kaydırma O(n) olduğu için toplam O(n²)."
+  },
+  {
+   "id": "359-o-ds1-3",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds1",
+   "dosya": "dizi_statik.py",
+   "satirlar": [
+    38,
+    48
+   ],
+   "etiketler": [
+    "statik-dizi",
+    "sinir-kontrolu"
+   ],
+   "kod": "def araya_ekle(self, i, x):\n    if not 0 <= i <= self.boy:\n        raise IndexError(\"Geçersiz indeks\")\n    for j in range(self.boy, i, -1):\n        self.veri[j] = self.veri[j - 1]\n    self.veri[i] = x\n    self.boy += 1",
+   "hataSatir": 2,
+   "soru": "Hatalı yere dokun: dizi doluyken ekleme yapılırsa ne olur?",
+   "aciklama": "Kapasite kontrolü (`if self.boy >= self.kapasite: raise IndexError`) eksik. Dolu dizide `veri[self.boy]` sınırı aşar ve ham IndexError ya da gerçek dizilerde bellek taşması olur. Orijinal kod ekleme öncesi kapasiteyi açıkça denetler."
+  },
+  {
+   "id": "359-o-ds1-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds1",
+   "dosya": "dizi_statik.py",
+   "satirlar": [
+    50,
+    60
+   ],
+   "etiketler": [
+    "statik-dizi",
+    "sil"
+   ],
+   "kod": "for j in range(i, self.boy - 1):\n    self.veri[j] = self.veri[j + 1]\nself.veri[self.boy - 1] = None",
+   "soru": "Dizinin en başındaki elemanı silmek, son elemanı silmekten asimptotik olarak daha pahalıdır.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Baştan silmede kalan n−1 eleman bir sola kayar: O(n). Sondan silmede döngü hiç dönmez: O(1). Bu fark, bağlı liste ve kuyruk gibi yapıların neden var olduğunu açıklar."
+  },
+  {
+   "id": "359-o-ds2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds2",
+   "dosya": "vector_dinamik.py",
+   "satirlar": [
+    27,
+    32
+   ],
+   "etiketler": [
+    "dinamik-dizi",
+    "iki-kat"
+   ],
+   "soru": "`sona_ekle` dizi dolunca neden kapasiteyi iki katına çıkarır?",
+   "secenekler": [
+    "Kopyalama maliyeti geometrik dağılır; ekleme başına amortize O(1) olur",
+    "Her ekleme tek bellek kullansın diye",
+    "Kapasiteyi 1 artırmak yasak olduğu için",
+    "Dizi her zaman 2'nin kuvveti olmak zorunda olduğu için"
+   ],
+   "dogru": 0,
+   "aciklama": "Kapasite 1,2,4,8… büyür; toplam kopyalama 1+2+4+…+n/2 < n. Yani n ekleme için toplam iş O(n), ekleme başına amortize O(1). +1 büyütme n(n−1)/2 kopya yapardı."
+  },
+  {
+   "id": "359-o-ds2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds2",
+   "dosya": "vector_dinamik.py",
+   "satirlar": [
+    53,
+    66
+   ],
+   "etiketler": [
+    "dinamik-dizi",
+    "kopyalama"
+   ],
+   "soru": "1024 eleman eklendiğinde `Son kapasite` ve `Toplam kopyalama`?",
+   "secenekler": [
+    "1024 ve 1023",
+    "1024 ve 2047",
+    "2048 ve 1023",
+    "1024 ve 523776"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: Son kapasite: 1024, Toplam kopyalama: 1023; ilk değişimler (1,1,2), (2,2,4), (4,4,8)…",
+   "aciklama": "Kopyalar 1+2+4+…+512 = 1023. Kapasite 1024'e ulaşınca 1025. eleman gelmediği için büyütme olmaz. Kod `kopya < 2n` iddiasını da `assert` ile doğrular."
+  },
+  {
+   "id": "359-o-ds2-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds2",
+   "dosya": "vector_dinamik.py",
+   "satirlar": [
+    83,
+    92
+   ],
+   "etiketler": [
+    "dinamik-dizi",
+    "kazanc"
+   ],
+   "soru": "N=256 için 2x büyüme kopyası ve +1 saf büyüme kopyası ile kazanç oranı?",
+   "secenekler": [
+    "255, 32640, 128.0x",
+    "256, 65536, 256.0x",
+    "511, 32640, 63.9x",
+    "255, 255, 1.0x"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: N=64 → 63/2016/32.0; N=256 → 255/32640/128.0; N=1024 → 1023/523776/512.0.",
+   "aciklama": "Saf büyüme n(n−1)/2 = 256·255/2 = 32640 kopya; 2x büyüme n−1 = 255. Oran n/2 ile büyür: 32, 128, 512. Bu, amortize analizin 'neden önemli' kanıtıdır."
+  },
+  {
+   "id": "359-o-ds2-4",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds2",
+   "dosya": "vector_dinamik.py",
+   "satirlar": [
+    18,
+    25
+   ],
+   "etiketler": [
+    "dinamik-dizi",
+    "yeniden-boyut"
+   ],
+   "kod": "def _yeniden_boyutlandir(self, yeni_kapasite):\n    yeni_veri = [None] * yeni_kapasite\n    self.veri = yeni_veri\n    self.kapasite = yeni_kapasite",
+   "hataSatir": 3,
+   "soru": "Hatalı yere dokun: büyütmeden sonra eski elemanlara ne olur?",
+   "aciklama": "Eski elemanlar yeni diziye kopyalanmıyor; `self.veri` boş diziyle değişiyor ve tüm veri kayboluyor. Orijinal kod yeni diziye `for i in range(self.boy): yeni_veri[i] = self.veri[i]` ile kopyalar (ve kopya sayısını tutar)."
+  },
+  {
+   "id": "359-o-ds3-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds3",
+   "dosya": "bagli_liste_tek.py",
+   "satirlar": [
+    73,
+    83
+   ],
+   "etiketler": [
+    "tek-bagli-liste",
+    "ters-cevirme"
+   ],
+   "soru": "`ters_cevir()` her adımda hangi üç işlemi yapar?",
+   "secenekler": [
+    "Sonrakini sakla, ok yönünü geriye çevir, ilerle (önceki ve şimdiki bir ileri)",
+    "Düğümleri yeni listeye kopyalar",
+    "Değerleri sıralar",
+    "Baş ve sonu yer değiştirir ama oklar aynı kalır"
+   ],
+   "dogru": 0,
+   "aciklama": "`sonraki_dugum = simdiki.sonraki` kaybolmasın diye saklanır; `simdiki.sonraki = onceki` oku geri çevirir; `onceki`, `simdiki` birer ileri gider. Ek bellek kullanmaz: yerinde O(n)."
+  },
+  {
+   "id": "359-o-ds3-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds3",
+   "dosya": "bagli_liste_tek.py",
+   "satirlar": [
+    107,
+    118
+   ],
+   "etiketler": [
+    "tek-bagli-liste",
+    "silme"
+   ],
+   "soru": "[10,20,30,40] listesinden 10 ve 40 silinip `ters_cevir()` yapılınca `listeye_cevir()` çıktısı?",
+   "secenekler": [
+    "[30, 20]",
+    "[20, 30]",
+    "[40, 30, 20, 10]",
+    "[10, 40]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: Başı silindi [20,30,40]; sonu silindi [20,30]; ters çevrildi [30,20].",
+   "aciklama": "10 ve 40 silinince [20, 30] kalır, ters çevirme [30, 20] yapar. Baş silmede `bas = bas.sonraki`; son silmede `son` önceki düğüme taşınır — kodun `son` işaretçisini güncellemesi bu yüzden gerekli."
+  },
+  {
+   "id": "359-o-ds3-3",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds3",
+   "dosya": "bagli_liste_tek.py",
+   "satirlar": [
+    59,
+    67
+   ],
+   "etiketler": [
+    "tek-bagli-liste",
+    "son-isaretci"
+   ],
+   "kod": "if simdiki.deger == deger:\n    if onceki is None:\n        self.bas = simdiki.sonraki\n    else:\n        onceki.sonraki = simdiki.sonraki\n    self.boy -= 1\n    return",
+   "hataSatir": 5,
+   "soru": "Hatalı yere dokun: son düğüm silinirse sonraki `sona_ekle` neden bozulur?",
+   "aciklama": "Son düğüm silinince `self.son` hâlâ silinmiş düğümü gösterir; sonraki `sona_ekle` bu kopuk düğüme ekler ve yeni eleman listede görünmez. Silinen düğüm sonsa `self.son = onceki` (ve liste boşaldıysa `son = None`) yapılmalı."
+  },
+  {
+   "id": "359-o-ds3-4",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds3",
+   "dosya": "bagli_liste_tek.py",
+   "satirlar": [
+    128,
+    144
+   ],
+   "etiketler": [
+    "tek-bagli-liste",
+    "adim-sayisi"
+   ],
+   "kod": "t_liste.ara(n - 1)      # son elemanı ara\nt_liste.ters_cevir()    # tüm listeyi ters çevir",
+   "soru": "N=1000 elemanlı listede son elemanı aramak ve listeyi ters çevirmek her biri 1000 adım tutar.",
+   "dogruMu": true,
+   "aciklama": "Doğru. İkisi de listeyi baştan sona bir kez gezer: O(n). Gerçek koşu: N=100 → 100/100, N=1000 → 1000/1000. Sona ekleme ise `son` işaretçisi sayesinde 1 adım (O(1))."
+  },
+  {
+   "id": "359-o-ds4-1",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds4",
+   "dosya": "bagli_liste_cift.py",
+   "satirlar": [
+    18,
+    24
+   ],
+   "etiketler": [
+    "cift-bagli-liste",
+    "nobetci"
+   ],
+   "soru": "Baş ve son nöbetçi düğümler neden var?",
+   "secenekler": [
+    "Boş liste ve uç düğümler için özel durum (None kontrolü) gerekmez; ekleme/silme hep aynı kodla yapılır",
+    "Listeyi sıralı tutar",
+    "Bellek tasarrufu sağlar",
+    "Aramayı O(1) yapar"
+   ],
+   "dogru": 0,
+   "aciklama": "Nöbetçiler gerçek veri taşımaz ama her gerçek düğümün hem önceki hem sonraki komşusu vardır. Böylece `araya_ekle` ve `dugumu_sil` baş/son/boş durumlar için dallanmadan çalışır."
+  },
+  {
+   "id": "359-o-ds4-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds4",
+   "dosya": "bagli_liste_cift.py",
+   "satirlar": [
+    81,
+    89
+   ],
+   "etiketler": [
+    "cift-bagli-liste",
+    "ekleme-sirasi"
+   ],
+   "soru": "basa_ekle(20), basa_ekle(10), sona_ekle(30), 20'nin ardına 25 eklenince baştan sona ve sondan başa sıra?",
+   "secenekler": [
+    "[10, 20, 25, 30] ve [30, 25, 20, 10]",
+    "[20, 10, 25, 30] ve [30, 25, 10, 20]",
+    "[10, 20, 30, 25] ve [25, 30, 20, 10]",
+    "[10, 25, 20, 30] ve [30, 20, 25, 10]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: Baştan sona [10, 20, 25, 30]; Sondan başa [30, 25, 20, 10].",
+   "aciklama": "20 başa → [20]; 10 başa → [10,20]; 30 sona → [10,20,30]; 20 düğümünün ardına 25 → [10,20,25,30]. Sondan başa okuma `onceki` oklarıyla aynı listeyi tersten verir."
+  },
+  {
+   "id": "359-o-ds4-3",
+   "tur": "hata-bul",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds4",
+   "dosya": "bagli_liste_cift.py",
+   "satirlar": [
+    43,
+    50
+   ],
+   "etiketler": [
+    "cift-bagli-liste",
+    "isaretci"
+   ],
+   "kod": "def dugumu_sil(self, dugum):\n    dugum.onceki.sonraki = dugum.sonraki\n    self.boy -= 1",
+   "hataSatir": 2,
+   "soru": "Hatalı yere dokun: silinen düğümden sonra geri yönde gezince ne olur?",
+   "aciklama": "Yalnız ileri ok güncelleniyor; `dugum.sonraki.onceki = dugum.onceki` eksik. Silinen düğüm hâlâ sonrakinin `onceki`'sinde durur, `sondan_basa_listele` silinmiş düğüme gider. Çift bağlı listede her değişiklik iki işaretçiyi birden onarmalıdır."
+  },
+  {
+   "id": "359-o-ds4-4",
+   "tur": "acikla",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds4",
+   "dosya": "bagli_liste_cift.py",
+   "satirlar": [
+    113,
+    129
+   ],
+   "etiketler": [
+    "cift-bagli-liste",
+    "silme-maliyeti"
+   ],
+   "soru": "Düğüm referansı elinizdeyken çift bağlı listede silme neden O(1), tek bağlı listede O(n)?",
+   "aciklama": "Çift bağlıda düğümün `onceki` işaretçisi hazırdır; iki komşu doğrudan bağlanır: 1 adım. Tek bağlıda önceki düğümün `sonraki`'sini değiştirmek için önceki bulunmalı, bu da baştan taramaktır (ortadaki düğüm için ~n/2 adım). Gerçek koşu: N=100 → 1 vs 50, N=1000 → 1 vs 500."
+  }
+ ]
+}

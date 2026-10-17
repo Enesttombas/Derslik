@@ -1,0 +1,827 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-n1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "etiketler": [
+    "shape",
+    "ndarray"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_COLOR)\nyukseklik, genislik, kanal = img.shape",
+   "soru": "`img.shape` bu görüntüde `(300, 400, 3)` çıkıyor. Üç sayı sırayla neyi verir?",
+   "secenekler": [
+    "yükseklik, genişlik, kanal sayısı",
+    "genişlik, yükseklik, kanal sayısı",
+    "kanal sayısı, yükseklik, genişlik",
+    "satır, sütun, bit derinliği"
+   ],
+   "dogru": 0,
+   "aciklama": "NumPy dizisi satır-sütun düzenindedir: önce satır sayısı (yükseklik), sonra sütun sayısı (genişlik), en sonda kanal. `cv2.resize` ise tersini ister: `(genişlik, yükseklik)`. İkisini karıştırmak sık görülen hatadır.",
+   "sinav": "Formül: img.shape = (yükseklik, genişlik, kanal); resize dsize = (genişlik, yükseklik)."
+  },
+  {
+   "id": "351-n1-2",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "etiketler": [
+    "imread",
+    "gri-okuma"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_COLOR)\nprint(img.shape)   # (300, 400, 3)",
+   "soru": "Bayrağı `IMREAD_GRAYSCALE` yaparsak `img.shape` ne olur?",
+   "degisiklik": {
+    "eski": "cv2.IMREAD_COLOR",
+    "yeni": "cv2.IMREAD_GRAYSCALE"
+   },
+   "secenekler": [
+    "(300, 400): kanal ekseni kalkar, cvtColor gerekmez",
+    "(300, 400, 1): tek kanal ekseni kalır",
+    "(400, 300): görüntü döner",
+    "Hata verir: bayrak yalnız imwrite'ta kullanılır"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 1 notları, Küçük Parametre Denemesi. Gri okunan görüntü iki boyutlu dizidir (yükseklik, genişlik).",
+   "aciklama": "`IMREAD_GRAYSCALE` dosyayı doğrudan tek kanallı okur; dizi 2 boyutlu olur. Renk bilgisine ihtiyaç yoksa hem bellek hem işlem kazandırır."
+  },
+  {
+   "id": "351-n1-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "etiketler": [
+    "cvtColor",
+    "gri-donusum",
+    "bgr"
+   ],
+   "kod": "px = np.array([[[255, 0, 0]]], np.uint8)   # B=255, G=0, R=0\nprint(cv2.cvtColor(px, cv2.COLOR_BGR2GRAY)[0, 0])",
+   "soru": "Saf mavi piksel griye çevrilince hangi değer yazdırılır?",
+   "secenekler": [
+    "29",
+    "76",
+    "150",
+    "85"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: mavi 29, yeşil 150, kırmızı 76 (BGR sırasıyla (255,0,0), (0,255,0), (0,0,255)).",
+   "aciklama": "Gri = 0.299·R + 0.587·G + 0.114·B. Mavinin katkısı en küçüktür: 0.114·255 ≈ 29. Üç kanalın düz ortalaması (85) yanlış beklentidir; göz yeşile en duyarlıdır, bu yüzden yeşil 150 ile en parlak griye döner.",
+   "sinav": "Formül: Y = 0.299R + 0.587G + 0.114B."
+  },
+  {
+   "id": "351-n1-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "etiketler": [
+    "bgr",
+    "renk-sirasi"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_COLOR)\ngri = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)\ncv2.imwrite(\"cikti.png\", gri)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: sonuçtaki parlaklıklar neden yanlış?",
+   "aciklama": "`cv2.imread` kanalları BGR sırasıyla verir. `COLOR_RGB2GRAY` kırmızı ağırlığını (0.299) mavi kanala, mavi ağırlığını kırmızıya uygular. Doğrusu `COLOR_BGR2GRAY`."
+  },
+  {
+   "id": "351-n1-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 1,
+   "etiketler": [
+    "gri-donusum",
+    "algi"
+   ],
+   "kod": "gri = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)",
+   "soru": "BGR→gri dönüşümü neden kanalların düz ortalaması değil de ağırlıklı toplamdır?",
+   "aciklama": "İnsan gözü yeşile en, maviye en az duyarlıdır. Ağırlıklı toplam (0.299R + 0.587G + 0.114B) algılanan parlaklığı korur; düz ortalama saf maviyi ve saf yeşili aynı griye koyar, oysa gözümüz yeşili çok daha parlak görür.",
+   "sinav": "Tanım: Algısal gri tonlama, kanalları göz duyarlılığına göre ağırlıklandırır.",
+   "secenekler": [
+    "Ağırlıklı toplam daha hızlı hesaplanır",
+    "Düz ortalama uint8'i taşırır",
+    "Göz yeşile en, maviye en az duyarlıdır; ağırlıklı toplam algılanan parlaklığı korur",
+    "OpenCV yalnız ağırlıklı toplamı destekler"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-n2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "etiketler": [
+    "roi",
+    "dilimleme"
+   ],
+   "kod": "roi = input_img[60:220, 120:280].copy()",
+   "soru": "Bu satır hangi bölgeyi alır?",
+   "secenekler": [
+    "y = 60–219 satırları, x = 120–279 sütunları (160×160)",
+    "x = 60–219, y = 120–279",
+    "Merkezden 60 ve 120 piksel yarıçaplı daire",
+    "Görüntünün 60. satırı ile 120. sütunu"
+   ],
+   "dogru": 0,
+   "aciklama": "NumPy dilimi `[y1:y2, x1:x2]` biçimindedir; bitiş dahil değildir. Satırlar 60..219, sütunlar 120..279 → 160×160 piksel. `.copy()` bağımsız bir dizi verir.",
+   "sinav": "Formül: ROI = img[y1:y2, x1:x2]; bitiş indeksi dahil değildir."
+  },
+  {
+   "id": "351-n2-2",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "etiketler": [
+    "roi",
+    "copy",
+    "view"
+   ],
+   "kod": "roi = img[2:5, 2:5].copy()\nroi[:] = 9\nprint(img[3, 3])",
+   "soru": "`.copy()` olmasaydı `img[3, 3]` ne olurdu?",
+   "degisiklik": {
+    "eski": "img[2:5, 2:5].copy()",
+    "yeni": "img[2:5, 2:5]"
+   },
+   "secenekler": [
+    "9: dilim orijinalin görünümüdür, değişiklik img'e yansır",
+    "0: dilim her zaman kopyadır",
+    "Hata verir: dilime atama yapılamaz",
+    "Belirsiz: rastgele bir değer"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: kopyasız dilimde img[3,3] = 9; `.copy()` ile 0 kalır.",
+   "aciklama": "NumPy dilimi bellekteki aynı veriye bakan bir görünümdür (view). `.copy()` ayrı bellek ayırır. ROI üzerinde çizim yaparken orijinali bozmamak için kopya alınır."
+  },
+  {
+   "id": "351-n2-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "etiketler": [
+    "resize",
+    "dsize"
+   ],
+   "kod": "roi = img[60:220, 120:280]              # (160, 160, 3)\nbuyuk = cv2.resize(roi, (400, 300))\nprint(buyuk.shape)",
+   "soru": "Yazdırılan şekil nedir?",
+   "secenekler": [
+    "(300, 400, 3)",
+    "(400, 300, 3)",
+    "(160, 160, 3)",
+    "(300, 400)"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (300, 400, 3).",
+   "aciklama": "`resize` `dsize = (genişlik, yükseklik)` ister, bu yüzden (400, 300) verince çıktı dizisi `(300, 400, 3)` olur; kanal sayısı korunur. Tuzak: `shape` (yükseklik, genişlik) sırasında yazar."
+  },
+  {
+   "id": "351-n2-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "etiketler": [
+    "interpolasyon"
+   ],
+   "kod": "cv2.resize(roi, (400, 300), interpolation=cv2.INTER_NEAREST)",
+   "soru": "Doğru mu? `INTER_NEAREST` ile büyütünce pikseller basamaklı görünür; `INTER_CUBIC` kenarları daha yumuşak ve keskin taşır.",
+   "dogruMu": true,
+   "aciklama": "En yakın komşu yeni pikseli en yakın eski pikselden kopyalar: hızlıdır ama bloklu görünür. Cubic/Lanczos komşu piksellerden hesaplar; büyütmede daha doğal sonuç verir.",
+   "sinav": "Kaynak: Hafta 2 notları, Küçük Parametre Denemesi."
+  },
+  {
+   "id": "351-n2-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 2,
+   "etiketler": [
+    "roi",
+    "dilim"
+   ],
+   "kod": "roi = input_img[60:220, 120:280].copy()\noutput = cv2.resize(roi, (400, 300))",
+   "soru": "ROI'yi kırpıp büyütmenin ne işe yaradığı ve neden `.copy()` kullanılır?",
+   "aciklama": "ROI, görüntünün yalnız ilgilendiğimiz parçasıdır; gereksiz arka planı eleyip işlemi küçük bölgeye odaklar. Büyütme ayrıntıyı görünür kılar. `.copy()` olmazsa ROI orijinalin görünümüdür ve ROI'deki bir değişiklik asıl görüntüyü de bozar.",
+   "secenekler": [
+    "ROI orijinalin görünümüdür; `.copy()` olmazsa ROI'yi değiştirmek asıl görüntüyü de bozar",
+    "`.copy()` ROI'yi otomatik büyütür",
+    "`.copy()` görüntüyü griye çevirir",
+    "ROI her zaman zaten kopyadır, `.copy()` yalnız okunabilirlik içindir"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-n3-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "etiketler": [
+    "histogram-esitleme",
+    "equalizeHist"
+   ],
+   "kod": "cikti = cv2.equalizeHist(girdi)   # girdi: 25..110 arası gri görüntü",
+   "soru": "Bu çağrı görüntüye ne yapar?",
+   "secenekler": [
+    "Parlaklık dağılımını kümülatif dağılım (CDF) üzerinden [0,255] aralığına yayar",
+    "Her piksele sabit parlaklık ekler",
+    "Görüntüyü bulanıklaştırır",
+    "Gürültüyü medyanla siler"
+   ],
+   "dogru": 0,
+   "aciklama": "`equalizeHist` kümülatif histogramı kullanarak sık görülen gri seviyelerini birbirinden uzaklaştırır; dar aralığa sıkışmış görüntü tüm aralığa yayılır ve gizli ayrıntı belirginleşir."
+  },
+  {
+   "id": "351-n3-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "etiketler": [
+    "histogram-esitleme",
+    "dinamik-aralik"
+   ],
+   "kod": "g = np.tile(np.linspace(25, 110, 400).astype(np.uint8), (300, 1))\ne = cv2.equalizeHist(g)\nprint(e.min(), e.max())",
+   "soru": "25–110 arasında yayılan görüntü eşitlenince en küçük ve en büyük değer ne olur?",
+   "secenekler": [
+    "0 255",
+    "25 110",
+    "0 110",
+    "25 255"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: önce 25 110, sonra 0 255.",
+   "aciklama": "Eşitleme dönüşümü CDF'ye göre en düşük seviyeyi 0'a, en yükseği 255'e taşır; dar aralık tüm dinamik aralığa açılır."
+  },
+  {
+   "id": "351-n3-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "etiketler": [
+    "clahe",
+    "kontrast"
+   ],
+   "kod": "out = cv2.equalizeHist(gri)",
+   "soru": "Global eşitleme yerine CLAHE kullanırsak (`clipLimit=2.0, tileGridSize=(8, 8)`) ne değişir?",
+   "degisiklik": {
+    "eski": "cv2.equalizeHist(gri)",
+    "yeni": "cv2.createCLAHE(2.0, (8, 8)).apply(gri)"
+   },
+   "secenekler": [
+    "Kontrast yerel bloklarda dengelenir; clipLimit gürültünün aşırı yükselmesini sınırlar",
+    "Görüntü tamamen siyah-beyaza döner",
+    "Hiçbir fark olmaz",
+    "Yalnız kenarlar silinir"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 3 notları, Küçük Parametre Denemesi. CLAHE aşırı parlama ve gürültü artışını önler.",
+   "aciklama": "CLAHE görüntüyü ızgara bloklarına böler, her bloğu ayrı eşitler ve histogram tepelerini `clipLimit` ile keser. Global eşitleme tüm görüntüyü tek dönüşümle ele aldığından düz bölgelerde gürültüyü büyütebilir."
+  },
+  {
+   "id": "351-n3-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "etiketler": [
+    "equalizeHist",
+    "kanal"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_COLOR)\nout = cv2.equalizeHist(img)\ncv2.imwrite(\"cikti.png\", out)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: neden hata verir?",
+   "aciklama": "`cv2.equalizeHist` yalnız tek kanallı 8-bit görüntü kabul eder. Renkli (3 kanallı) görüntüye doğrudan uygulanamaz; gri okunmalı ya da yalnız parlaklık kanalı (ör. YCrCb'nin Y'si) eşitlenmelidir."
+  },
+  {
+   "id": "351-n3-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 3,
+   "etiketler": [
+    "histogram",
+    "kontrast"
+   ],
+   "kod": "cikti = cv2.equalizeHist(girdi)",
+   "soru": "Histogram eşitleme neden karanlıkta saklı ayrıntıyı ortaya çıkarır?",
+   "aciklama": "Karanlık görüntüde pikseller dar bir gri aralığında toplanır; birbirine çok yakın değerler gözle ayırt edilemez. Eşitleme bu yoğun aralığı genişletir, yakın seviyeleri birbirinden uzaklaştırır; yazı ve şekiller arka plandan ayrışır.",
+   "sinav": "Tanım: Histogram eşitleme, CDF ile gri seviyelerini tüm aralığa yayarak kontrastı artırır.",
+   "secenekler": [
+    "Eşitleme görüntüyü bulanıklaştırıp gürültüyü siler",
+    "Eşitleme her pikseli aynı değere çeker",
+    "Eşitleme yalnız en parlak pikselleri artırır",
+    "Dar gri aralığındaki yoğun değerleri 0–255'e yayar; yakın seviyeler ayrışır"
+   ],
+   "dogru": 3
+  },
+  {
+   "id": "351-n4-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "etiketler": [
+    "sobel",
+    "gradyan"
+   ],
+   "kod": "grad_x = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)\ngrad_y = cv2.Sobel(blurred, cv2.CV_32F, 0, 1, ksize=3)\nmag = cv2.magnitude(grad_x, grad_y)",
+   "soru": "`mag` neyi verir?",
+   "secenekler": [
+    "Yatay ve dikey türevlerden bileşke kenar kuvveti",
+    "Yalnız yatay kenarların sayısı",
+    "Gürültü miktarı",
+    "Görüntünün ortalama parlaklığı"
+   ],
+   "dogru": 0,
+   "aciklama": "`dx=1,dy=0` yatay yöndeki değişimi (dikey kenarları), `dx=0,dy=1` dikey yöndeki değişimi (yatay kenarları) bulur. `magnitude` ikisinden √(gx²+gy²) hesaplar.",
+   "sinav": "Formül: |∇f| = √(gx² + gy²)."
+  },
+  {
+   "id": "351-n4-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "etiketler": [
+    "sobel",
+    "kenar",
+    "ddepth"
+   ],
+   "kod": "step = np.zeros((9, 9), np.uint8); step[:, 5:] = 200   # soldan sağa 0 → 200\nprint(cv2.Sobel(step, cv2.CV_32F, 1, 0, ksize=3)[4])",
+   "soru": "Ortadaki satırın Sobel x çıktısı nedir?",
+   "secenekler": [
+    "[0 0 0 0 800 800 0 0 0]",
+    "[0 0 0 0 200 200 0 0 0]",
+    "[0 0 0 0 0 0 0 0 0]",
+    "[0 0 0 -800 -800 0 0 0 0]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [0. 0. 0. 0. 800. 800. 0. 0. 0.]; aynı basamak ters yönde (200→0) olsa [-800 -800] verir.",
+   "aciklama": "Sobel x çekirdeğinin ağırlık toplamı 1+2+1 = 4 olduğundan 200'lük sıçrama 4·200 = 800 olur. Basamağın iki yanındaki iki piksel de kenarı görür. Karanlıktan aydınlığa geçiş pozitif, tersi negatiftir."
+  },
+  {
+   "id": "351-n4-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "etiketler": [
+    "sobel",
+    "ddepth",
+    "tasma"
+   ],
+   "kod": "gx = cv2.Sobel(img, cv2.CV_32F, 1, 0, ksize=3)",
+   "soru": "Aynı basamak kenarında (200 → 0, aydınlıktan karanlığa) `ddepth` `cv2.CV_8U` olursa negatif türev ne olur?",
+   "degisiklik": {
+    "eski": "cv2.CV_32F",
+    "yeni": "cv2.CV_8U"
+   },
+   "secenekler": [
+    "0'a kırpılır: karanlığa giden kenarlar kaybolur",
+    "Mutlak değere çevrilir",
+    "255 ile sarılır",
+    "Hata verir"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: CV_8U ile pozitif kenar 255'e doygunlaşır; negatif yönlü türev 0 olarak kırpılır (CV_32F'te -800).",
+   "aciklama": "8-bit işaretsiz tür negatif sayı taşıyamaz: sonuç 0..255'e kırpılır. Bu yüzden türev hesabında `CV_32F` (veya `CV_16S`) kullanılır, sonra `magnitude`/`convertScaleAbs` ile 8-bite dönülür."
+  },
+  {
+   "id": "351-n4-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "etiketler": [
+    "gaussianblur",
+    "cekirdek-boyutu"
+   ],
+   "kod": "img = cv2.imread(yol, cv2.IMREAD_GRAYSCALE)\nblurred = cv2.GaussianBlur(img, (4, 4), 1.5)\nkenar = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun.",
+   "aciklama": "Gauss çekirdeği tek ve pozitif boyutlu olmalıdır (3, 5, 7…); merkez pikseli olmayan çift boyut `cv2.error` fırlatır. `(5, 5)` kullanılmalı."
+  },
+  {
+   "id": "351-n4-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "etiketler": [
+    "yumusatma",
+    "gurultu",
+    "kenar"
+   ],
+   "kod": "blurred = cv2.GaussianBlur(input_img, (5, 5), 1.5)\ngrad_x = cv2.Sobel(blurred, cv2.CV_32F, 1, 0, ksize=3)",
+   "soru": "Sobel'den önce neden Gauss ile yumuşatıyoruz?",
+   "aciklama": "Türev operatörleri ani değişimleri büyütür; gürültü de ani değişimdir. Yumuşatma gürültüyü bastırır, böylece Sobel yalnız gerçek nesne sınırlarını yakalar, kumlanmayı kenar sanmaz. Çekirdek büyüdükçe kenarlar kalınlaşır, küçük detay kaybolur.",
+   "secenekler": [
+    "Gauss Sobel'in çekirdeğini büyütür",
+    "Türev gürültüyü de büyütür; yumuşatma gürültüyü bastırıp yalnız gerçek sınırları bırakır",
+    "Gauss görüntüyü griye çevirir",
+    "Sobel yumuşatılmamış görüntüde hiç çalışmaz"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "351-n5-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 5,
+   "etiketler": [
+    "dft",
+    "fftshift"
+   ],
+   "kod": "dft = cv2.dft(np.float32(img), flags=cv2.DFT_COMPLEX_OUTPUT)\ndft_shift = np.fft.fftshift(dft)",
+   "soru": "`fftshift` neden çağrılır?",
+   "secenekler": [
+    "Sıfır frekansı (DC) köşelerden görüntünün merkezine taşımak için",
+    "Görüntüyü 90° döndürmek için",
+    "Gürültüyü silmek için",
+    "Spektrumu logaritmaya çevirmek için"
+   ],
+   "dogru": 0,
+   "aciklama": "DFT çıktısında düşük frekanslar dört köşede toplanır. `fftshift` kuadrantları yer değiştirerek DC bileşenini merkeze alır; spektrum insan gözüyle okunabilir olur."
+  },
+  {
+   "id": "351-n5-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 5,
+   "etiketler": [
+    "dft",
+    "sekil"
+   ],
+   "kod": "f = np.float32(gri)                      # (300, 400)\nd = cv2.dft(f, flags=cv2.DFT_COMPLEX_OUTPUT)\nprint(d.shape)",
+   "soru": "`d.shape` nedir?",
+   "secenekler": [
+    "(300, 400, 2)",
+    "(300, 400)",
+    "(400, 300, 2)",
+    "(300, 400, 3)"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: (300, 400, 2) float32.",
+   "aciklama": "`DFT_COMPLEX_OUTPUT` iki kanallı çıktı verir: kanal 0 gerçel, kanal 1 sanal kısım. `cv2.magnitude(d[:,:,0], d[:,:,1])` genliği hesaplar."
+  },
+  {
+   "id": "351-n5-3",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 5,
+   "etiketler": [
+    "dft",
+    "frekans",
+    "spektrum"
+   ],
+   "kod": "x = np.arange(400)\ns = 127 + 100*np.sin(2*np.pi*8*x/400)   # 400 sütun boyunca 8 periyot\nimg = np.tile(s, (300, 1)).astype(np.float32)\n# fftshift'li spektrumun DC dışındaki iki tepesi?",
+   "soru": "Merkez (y=150, x=200) dışındaki iki tepe hangi sütunlarda olur?",
+   "secenekler": [
+    "x = 192 ve 208 (merkezden ±8), y = 150",
+    "x = 8 ve 392",
+    "x = 100 ve 300",
+    "Tepe oluşmaz"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: tepeler (y,x) = (150,192) ve (150,208).",
+   "aciklama": "Yatay doğrultuda 8 periyotluk dalga frekans uzayında merkezden ±8 uzaklıkta iki simetrik tepe üretir. Tepe uzaklığı desenin sıklığı, tepelerin doğrultusu desenin yönelimidir."
+  },
+  {
+   "id": "351-n5-4",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 5,
+   "etiketler": [
+    "log-olcek",
+    "spektrum"
+   ],
+   "kod": "spec = cv2.log(mag + 1.0)\nout = cv2.normalize(spec, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)",
+   "soru": "`cv2.log` adımını çıkarırsak spektrum görüntüsü nasıl olur?",
+   "degisiklik": {
+    "eski": "spec = cv2.log(mag + 1.0)",
+    "yeni": "spec = mag"
+   },
+   "secenekler": [
+    "DC katsayısı baskın olur; merkez dışı hemen hemen siyah kalır",
+    "Tüm görüntü beyaz olur",
+    "Spektrum iki kat parlaklaşır",
+    "Hiçbir fark olmaz"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 5 notları, Küçük Parametre Denemesi. Gerçek koşu: rastgele görüntüde DC genliği diğer en büyük genliğin yaklaşık 2,5 katı; gerçek fotoğraflarda fark çok daha büyüktür.",
+   "aciklama": "Fourier genlikleri çok geniş bir aralığa yayılır. DC bileşeni diğerlerinden katbekat büyük olduğu için lineer ölçekte normalize edince geri kalan her şey siyaha yaklaşır. Logaritma dinamik aralığı sıkıştırıp ayrıntıyı görünür kılar."
+  },
+  {
+   "id": "351-n5-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 5,
+   "etiketler": [
+    "frekans-domeni",
+    "dc"
+   ],
+   "kod": "mag = cv2.magnitude(dft_shift[:, :, 0], dft_shift[:, :, 1])",
+   "soru": "Spektrumdaki merkez nokta (DC) ve çevresindeki parlak ışınlar neyi anlatır?",
+   "aciklama": "Merkez DC, görüntünün ortalama parlaklığıdır. Merkezden uzaklaştıkça frekans artar: kenar ve ayrıntı yüksek frekanstır. Işınlar görüntüdeki periyodik desenin yönüne dik uzanır; sıklaştıkça merkezden uzaklaşır.",
+   "secenekler": [
+    "Merkez nokta en yüksek frekanstır",
+    "Işınlar görüntüdeki gürültünün yerini gösterir",
+    "Merkez (DC) ortalama parlaklıktır; merkezden uzaklaştıkça frekans artar, ışınlar desen yönüne dik uzanır",
+    "Merkez görüntünün en parlak pikselidir"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-n6-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 6,
+   "etiketler": [
+    "alcak-geciren",
+    "gauss-maske"
+   ],
+   "kod": "d0 = 15.0\ndist_sq = (x_idx - cx)**2 + (y_idx - cy)**2\nmask = np.exp(-dist_sq / (2.0 * d0 * d0))",
+   "soru": "Bu maske hangi filtreyi tanımlar?",
+   "secenekler": [
+    "Gauss alçak geçiren: merkeze yakın (düşük) frekansları geçirir",
+    "Yüksek geçiren: kenarları vurgular",
+    "Bant durduran",
+    "Medyan"
+   ],
+   "dogru": 0,
+   "aciklama": "Merkezde 1, uzaklaştıkça Gauss biçiminde sıfıra inen bir maske, düşük frekansları korur, yüksek frekansları (ince ayrıntı, dalgalı parazit) bastırır. `d0` kesim yarıçapıdır."
+  },
+  {
+   "id": "351-n6-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 6,
+   "etiketler": [
+    "gauss-maske",
+    "d0"
+   ],
+   "kod": "d0 = 15.0\nmask = np.exp(-dist_sq / (2.0 * d0 * d0))\nprint(mask[150, 200], mask[150, 215])   # merkez, merkezden tam d0 uzakta",
+   "soru": "İki değer yaklaşık nedir?",
+   "secenekler": [
+    "1.0 ve 0.61",
+    "1.0 ve 0.5",
+    "1.0 ve 0.0",
+    "0.61 ve 1.0"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 1.0 ve 0.6065; 2·d0'da 0.135; 45 pikselde 0.011.",
+   "aciklama": "Merkezde uzaklık 0 → e⁰ = 1. Tam d0 uzaklıkta e^(−1/2) ≈ 0.607. Gauss maske ani kesme yapmaz, yumuşak düşer; bu yüzden ideal filtredeki halkalanma (ringing) oluşmaz.",
+   "sinav": "Formül: H(u,v) = exp(−D² / (2·D0²)); D = merkezden uzaklık."
+  },
+  {
+   "id": "351-n6-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 6,
+   "etiketler": [
+    "d0",
+    "kesim-frekansi"
+   ],
+   "kod": "d0 = 15.0",
+   "soru": "`d0` 15'ten 45'e çıkarılırsa sonuç nasıl değişir?",
+   "degisiklik": {
+    "eski": "d0 = 15.0",
+    "yeni": "d0 = 45.0"
+   },
+   "secenekler": [
+    "Daha çok frekans geçer: görüntü daha keskin kalır, dalgalı parazit görünür kalır",
+    "Daha çok yumuşar",
+    "Görüntü tamamen siyah olur",
+    "Hiçbir şey değişmez"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 6 notları, Küçük Parametre Denemesi. d0=8'de kenarlar daha çok yumuşar, d0=45'te parazit çizgileri görünür kalır.",
+   "aciklama": "Büyük d0 geniş bir frekans bandını geçirir; filtre zayıflar. Küçük d0 yalnız çok düşük frekansları korur; görüntü daha çok bulanıklaşır ama sinüzoidal parazit de silinir."
+  },
+  {
+   "id": "351-n6-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 6,
+   "etiketler": [
+    "idft",
+    "flags"
+   ],
+   "kod": "shifted = fft_shift(dft)\nfiltered = cv2.mulSpectrums(shifted, complex_mask, 0)\nimg_back = cv2.idft(fft_shift(filtered))\nout = np.clip(img_back, 0, 255).astype(np.uint8)",
+   "hataSatir": 3,
+   "soru": "Hatalı satıra dokun: sonuç görüntü neden çok koyu/bozuk olur?",
+   "aciklama": "`cv2.idft` bayraksız çağrılırsa çıktı ölçeklenmez ve iki kanallı kalır. Notlardaki doğru kullanım `flags=cv2.DFT_SCALE | cv2.DFT_REAL_OUTPUT`: `DFT_SCALE` 1/N ölçeklemesini yapar, `DFT_REAL_OUTPUT` yalnız gerçel kısmı verir."
+  },
+  {
+   "id": "351-n6-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 6,
+   "etiketler": [
+    "frekans-filtreleme",
+    "konvolusyon"
+   ],
+   "kod": "filtered = cv2.mulSpectrums(shifted, complex_mask, 0)",
+   "soru": "Frekans domeninde maskeyle çarpmak neden uzamsal domende filtre uygulamak demektir?",
+   "aciklama": "Konvolüsyon teoremi: uzamsal domende konvolüsyon, frekans domeninde eleman bazlı çarpmaya eşittir. Maske frekanslara ağırlık verir; ters DFT ile uzamsal domene dönünce sonuç aynı o filtreyle konvolüsyon yapılmış görüntüdür.",
+   "sinav": "Tanım: Konvolüsyon teoremi — f*g ⇔ F·G.",
+   "secenekler": [
+    "Konvolüsyon teoremi: uzamsal konvolüsyon, frekansta eleman bazlı çarpmadır",
+    "Maske pikselleri doğrudan siler",
+    "Çarpma ters DFT'yi gereksiz kılar",
+    "İki domen ayrı ayrı çalıştığı için sonuç aynıdır"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-n7-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 7,
+   "etiketler": [
+    "inrange",
+    "maske"
+   ],
+   "kod": "lower_white = np.array([250, 250, 250], np.uint8)\nupper_white = np.array([255, 255, 255], np.uint8)\nmask = cv2.inRange(input_img, lower_white, upper_white)",
+   "soru": "`mask` neyi gösterir?",
+   "secenekler": [
+    "Üç kanalı da 250–255 aralığındaki pikselleri 255, diğerlerini 0 yapan tek kanallı maske",
+    "Görüntünün ortalama rengi",
+    "Üç kanallı bulanık görüntü",
+    "Kenar haritası"
+   ],
+   "dogru": 0,
+   "aciklama": "`inRange` her piksel için bütün kanalların alt ve üst sınır içinde olup olmadığına bakar; sonuç 0/255 değerli tek kanallı bir maskedir. Beyaz çizikler bu maskeyle seçilir."
+  },
+  {
+   "id": "351-n7-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 7,
+   "etiketler": [
+    "inrange",
+    "maske"
+   ],
+   "kod": "b = np.zeros((4, 4, 3), np.uint8)\nb[0, 0] = (255, 255, 255); b[1, 1] = (250, 251, 252)\nb[2, 2] = (249, 255, 255); b[3, 3] = (255, 255, 200)\nmk = cv2.inRange(b, (250, 250, 250), (255, 255, 255))\nprint(int(mk.sum() // 255))",
+   "soru": "Kaç piksel maskede (255) olur?",
+   "secenekler": [
+    "2",
+    "4",
+    "3",
+    "1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: mask uint8, benzersiz değerler [0 255], 2 piksel.",
+   "aciklama": "Yalnız (255,255,255) ve (250,251,252) her kanalda 250–255 içindedir. (249,255,255)'in B kanalı 249, (255,255,200)'ün R kanalı 200 olduğundan dışarıda kalır. `inRange` bütün kanallar şartı birlikte arar."
+  },
+  {
+   "id": "351-n7-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 7,
+   "etiketler": [
+    "inpaint",
+    "telea",
+    "ns"
+   ],
+   "kod": "out = cv2.inpaint(input_img, mask, 3, cv2.INPAINT_TELEA)",
+   "soru": "Bayrağı `cv2.INPAINT_NS` yaparsak ne değişir?",
+   "degisiklik": {
+    "eski": "cv2.INPAINT_TELEA",
+    "yeni": "cv2.INPAINT_NS"
+   },
+   "secenekler": [
+    "Navier–Stokes tabanlı yöntem kullanılır; geniş hasarlı bölgelerde geçişler daha yumuşak olabilir",
+    "Çizikler beyaza boyanır",
+    "Maske kullanılmaz",
+    "Çıktı gri tonlamaya döner"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 7 notları, Küçük Parametre Denemesi. İki yöntem de aynı çağrı imzasını kullanır; yalnız bayrak değişir.",
+   "aciklama": "TELEA, hızlı yürüyen yöntemle maskenin sınırından içeri doğru komşu piksellerin gradyanına göre doldurur. NS ise akışkanlar dinamiğinden esinlenip yoğunluk çizgilerini (izofot) sürdürür. İkisi de maske içi pikselleri çevreden doldurur."
+  },
+  {
+   "id": "351-n7-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 7,
+   "etiketler": [
+    "inpaint",
+    "maske"
+   ],
+   "kod": "out = cv2.inpaint(img, mask, 3, cv2.INPAINT_TELEA)",
+   "soru": "Doğru mu? `cv2.inpaint` maske olarak 8-bit tek kanallı görüntü ister; sıfır olmayan pikseller onarılacak bölgedir.",
+   "dogruMu": true,
+   "aciklama": "`inpaintMask` 8-bit, tek kanallı olmalıdır; sıfırdan farklı pikseller doldurulur. Maske yanlış (3 kanallı ya da ters) verilirse yanlış bölge onarılır."
+  },
+  {
+   "id": "351-n7-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 7,
+   "etiketler": [
+    "inpaint",
+    "onarim"
+   ],
+   "kod": "mask = cv2.inRange(input_img, lower_white, upper_white)\nout = cv2.inpaint(input_img, mask, 3, cv2.INPAINT_TELEA)",
+   "soru": "Beyaz çizikleri silmenin iki adımı (maske, onarım) ve her birinin amacı nedir?",
+   "aciklama": "Bilgisayar neyin hasarlı olduğunu bilmez; önce hasarı bir maskeyle işaretleriz (beyaz çizik piksellerini renk aralığıyla seçeriz). Sonra inpaint yalnız o pikselleri çevre dokunun renk ve gradyanından doldurur, geri kalan görüntüye dokunmaz.",
+   "secenekler": [
+    "İnpaint tüm görüntüyü yeniden çizer; maske yalnız hızlandırır",
+    "Maske neyin hasarlı olduğunu işaretler; inpaint yalnız o pikselleri çevre dokudan doldurur",
+    "Maske çizikleri bulanıklaştırır, inpaint netleştirir",
+    "Önce onarım, sonra maske çıkarılır"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "351-n8-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 8,
+   "etiketler": [
+    "bilateral",
+    "pipeline"
+   ],
+   "kod": "denoised = cv2.bilateralFilter(input_img, 9, 75, 75)\nenhanced = clahe.apply(denoised)\nout = cv2.Canny(enhanced, 50, 140)",
+   "soru": "Boru hattının sırası ve amacı hangisi?",
+   "secenekler": [
+    "Gürültüyü kenar koruyarak sil → yerel kontrastı artır → kenar çıkar",
+    "Kenar çıkar → gürültü sil → kontrast artır",
+    "Kontrast artır → kenar çıkar → gürültü sil",
+    "Hepsi aynı anda"
+   ],
+   "dogru": 0,
+   "aciklama": "Önce gürültü temizlenir (bilateral kenarı korur), sonra CLAHE kontrastı yerel olarak güçlendirir, en sonda Canny temiz kenarları çıkarır. Gürültü silinmeden Canny'ye girerse kumlanma sahte kenarlar üretir."
+  },
+  {
+   "id": "351-n8-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 8,
+   "etiketler": [
+    "canny",
+    "ikili-cikti"
+   ],
+   "kod": "cn = cv2.Canny(gri, 50, 140)\nprint(np.unique(cn), cn.dtype)",
+   "soru": "Canny çıktısında hangi değerler bulunur?",
+   "secenekler": [
+    "[0 255] uint8: yalnız kenar ve kenar olmayan",
+    "0–255 arası tüm gri tonlar",
+    "[0 1] float",
+    "Yalnız 255"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [0 255] uint8, şekil (120, 160).",
+   "aciklama": "Canny histerezis eşiklemeden sonra ikili bir kenar haritası döndürür: kenar 255, diğeri 0. Bu yüzden çıktı 1 piksel kalınlığında beyaz çizgilerdir."
+  },
+  {
+   "id": "351-n8-3",
+   "tur": "ne-olur",
+   "ders": "EBLG351",
+   "hafta": 8,
+   "etiketler": [
+    "canny",
+    "esik"
+   ],
+   "kod": "out = cv2.Canny(enhanced, 50, 140)",
+   "soru": "Üst eşiği 140'tan 200'e çıkarırsak?",
+   "degisiklik": {
+    "eski": "cv2.Canny(enhanced, 50, 140)",
+    "yeni": "cv2.Canny(enhanced, 50, 200)"
+   },
+   "secenekler": [
+    "Yalnız en güçlü sınırlar 'kesin kenar' olur; zayıf kenarlar kaybolabilir",
+    "Daha çok kenar bulunur",
+    "Kenarlar kalınlaşır",
+    "Hata verir"
+   ],
+   "dogru": 0,
+   "kanit": "Kaynak: Hafta 8 notları, Küçük Parametre Denemesi. Üst eşik 200'de yalnız en keskin dış sınırlar, alt eşik 20'de hafif gölge geçişleri de kalır.",
+   "aciklama": "Üst eşiğin üstündeki gradyanlar kesin kenardır; alt ile üst arası yalnız kesin kenara bağlıysa tutulur (histerezis). Üst eşiği yükseltmek 'kesin kenar' sayısını azaltır, bağlı zayıf kenarlar da düşer."
+  },
+  {
+   "id": "351-n8-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 8,
+   "etiketler": [
+    "pipeline",
+    "sira"
+   ],
+   "kod": "edges = cv2.Canny(input_img, 50, 140)\ndenoised = cv2.bilateralFilter(edges, 9, 75, 75)\nenhanced = clahe.apply(denoised)",
+   "hataSatir": 1,
+   "soru": "Hatalı satıra dokun: boru hattının sırası neden bozuk?",
+   "aciklama": "Canny son adım olmalıdır. Kenar haritası zaten ikili çıktıdır; sonradan bilateral filtre ve CLAHE uygulamak anlamsızdır. Gürültüyü kenar çıkarmadan önce silmek gerekir."
+  },
+  {
+   "id": "351-n8-5",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 8,
+   "etiketler": [
+    "bilateral",
+    "kenar-koruma"
+   ],
+   "kod": "denoised = cv2.bilateralFilter(input_img, 9, 75, 75)",
+   "soru": "Bilateral filtre Gauss bulanıklığından nasıl farklıdır ve neden kenarı korur?",
+   "aciklama": "Gauss yalnız uzaklığa göre ağırlık verir; kenarın iki yanını da karıştırır. Bilateral ağırlığa ayrıca renk farkını katar: parlaklığı çok farklı komşuya düşük ağırlık verilir. Böylece düz bölgelerde gürültü silinir, kenar keskin kalır.",
+   "secenekler": [
+    "Bilateral filtre daha büyük çekirdek kullanır",
+    "Bilateral yalnız kenar pikselleri işler",
+    "Gauss rengi, bilateral uzaklığı dikkate alır",
+    "Bilateral ağırlığa renk farkını da katar; çok farklı komşular az ağırlık alır, kenar korunur"
+   ],
+   "dogru": 3
+  }
+ ]
+}

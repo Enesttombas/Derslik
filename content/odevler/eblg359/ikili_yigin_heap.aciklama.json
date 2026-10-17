@@ -1,0 +1,170 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "İkili Yığın Modülü Tanıtım Bloğu",
+    "aciklama": "Bu modül ikili min-yığın (min-heap) veri yapısını dizi üzerinde gerçekleştirir. Yığın ağacı gösterimi yerine ardışık bellek dizisi kullanılarak bellek tasarrufu sağlanır. Ebeveyn ve çocuk indeksleri işaretçi tutulmadan O(1) sürede aritmetik formüllerle doğrudan bulunur.",
+    "sinav": "Tanım: Min-yığın, her düğümün değerinin çocuklarının değerinden küçük veya eşit olduğu tam ikili ağaçtır.\nFormül: n düğümlü tam ikili ağacın yüksekliği zemin(log2(n)) kadardır.\nÖrnek: Kök düğümde daima tüm yığının en küçük elemanı yer alır.\nSık hata: Yığındaki elemanların dizi içinde baştan sona sıralı olduğunu varsaymak."
+  },
+  {
+    "satirlar": [9, 9],
+    "baslik": "Rastgele Sayı Modülü İçe Aktarımı",
+    "aciklama": "Python standart kütüphanesinde yer alan `random` modülü test aşamasında deterministik sayı üretmek için dahil edilir. Belirli bir çekirdek (`Random(7)`) kullanılarak testlerin her çalıştırmada aynı sonucu vermesi güvenceye alınır. Ek bir harici bağımlılık gerekmeden standart kütüphane araçlarıyla test gerçekleştirilir.",
+    "sinav": "Tanım: Test senaryolarının yinelenebilir olması için sözde rastgele sayı üreteçleri sabit çekirdekle başlatılır.\nÖrnek: `random.Random(7)` her çalıştırmada tamamen aynı rastgele dizi sırasını üretir.\nSık hata: Rastgelelik testlerinde sabit çekirdek belirlemeyip testlerin bazen geçip bazen kalmasına yol açmak."
+  },
+  {
+    "satirlar": [12, 15],
+    "baslik": "MinYığın Sınıfı ve İlklendirme",
+    "aciklama": "`MinYigin` sınıfı dinamik bir liste üzerinde çalışan öncelik kuyruğu yapısını temsil eder. Yapıcı metot `__init__`, elemanları saklayan `self.veri` listesini ve karşılaştırma maliyetini sayan `self.islem` değişkenini sıfırlar. Bu sayaç sayesinde algoritmanın kuramsal O(log n) karmaşıklığı deneysel adımlarla ölçülebilir.",
+    "sinav": "Tanım: İkili yığın dinamik dizi üzerinde ek bellek işaretçisi gerektirmeden verimli şekilde saklanabilir.\nFormül: Boş yapıda eleman sayısı 0 ve işlem sayacı 0 olarak ilklendirilir.\nÖrnek: `self.veri = []` boş yığın listesini başlatır.\nSık hata: Dizi tabanlı yığında düğüm nesneleri oluşturup fazladan işaretçi yükü getirmek."
+  },
+  {
+    "satirlar": [17, 18],
+    "baslik": "Yığın Eleman Sayısı Metodu",
+    "aciklama": "`__len__` metodu yığındaki toplam eleman adedini döndürür. Python iç listesinin uzunluğu doğrudan sorgulandığı için bu işlem O(1) karmaşıklığında anında tamamlanır. Yığının boş olup olmadığını kontrol ederken bu metot temel alınır.",
+    "sinav": "Tanım: Dinamik dizinin uzunluk sorgusu O(1) zamanda doğrudan dizi başlığından okunur.\nFormül: len(yigin) = len(self.veri).\nÖrnek: 10 elemanlı yığında `len(yigin)` çağrısı 10 döndürür.\nSık hata: Dizi uzunluğunu her seferinde düğümleri sayarak O(n) sürede bulmaya çalışmak."
+  },
+  {
+    "satirlar": [20, 23],
+    "baslik": "En Küçük Elemanı İnceleme",
+    "aciklama": "`en_kucuk` metodu min-yığının kökünde yer alan en küçük değeri yığından silmeden döndürür. Dizi tabanlı gösterimde kök daima 0. indekste yer aldığı için erişim süresi O(1) olmaktadır. Yığın boşken çağrılırsa `IndexError` fırlatılarak hatalı bellek erişimi engellenir.",
+    "sinav": "Tanım: Min-yığında kök düğüm daima minimum anahtara sahiptir ve silinmeden incelenebilir.\nFormül: En küçük eleman = self.veri[0].\nÖrnek: [5, 8, 12] dizisinde `en_kucuk()` doğrudan 5 değerini verir.\nSık hata: Boş yığında indeks hatasını kontrol etmeyip programın çökmesine neden olmak."
+  },
+  {
+    "satirlar": [25, 26],
+    "baslik": "Ebeveyn İndeksi Hesaplama Formülü",
+    "aciklama": "`_ebeveyn` metodu verilen `i` indeksindeki düğümün ata düğüm indeksini hesaplar. Sıfır tabanlı dizide ebeveyn bağıntısı tamsayı bölmesiyle O(1) sürede bulunur. Bu hesaplama sayesinde ağaç üzerinde yukarı doğru tırmanma işlemi son derece hızlı gerçekleşir.",
+    "sinav": "Tanım: Sıfır tabanlı ikili ağaç dizisinde ebeveyn indisi aritmetik bağıntıyla belirlenir.\nFormül: ebeveyn(i) = (i - 1) // 2.\nÖrnek: 4. indeksteki düğümün ebeveyni (4 - 1) // 2 = 1. indekstir.\nSık hata: Sıfır tabanlı indeks ile bir tabanlı indeks formüllerini karıştırmak."
+  },
+  {
+    "satirlar": [28, 29],
+    "baslik": "Sol Çocuk İndeksi Formülü",
+    "aciklama": "`_sol_cocuk` metodu `i` indeksindeki düğümün sol alt çocuğunun indisini türetir. Formül dizi üzerinde sol dalın konumunu doğrudan O(1) maliyetle belirler. Böylece yığın elemanları ağaç hiyerarşisinde eksiksiz eşlenir.",
+    "sinav": "Tanım: Sıfır tabanlı dizide bir düğümün sol çocuğu aritmetik bağıntıyla bulunur.\nFormül: sol(i) = 2 * i + 1.\nÖrnek: 2. indeksteki düğümün sol çocuğu 2 * 2 + 1 = 5. indekstir.\nSık hata: Dizi sınırını aşan çocuk indisinin var olduğunu varsayıp kontrolsüzce erişmek."
+  },
+  {
+    "satirlar": [31, 32],
+    "baslik": "Sağ Çocuk İndeksi Formülü",
+    "aciklama": "`_sag_cocuk` metodu verilen `i` indisli elemanın sağ dalındaki çocuk indeksini hesaplar. Sol çocuğun bir fazlası olan bu indis aritmetik işlemle O(1) zamanda elde edilir. Tam ikili ağacın tüm seviyeleri dizi hücrelerine soldan sağa kesintisiz doldurulur.",
+    "sinav": "Tanım: Sıfır tabanlı dizide sağ çocuk sol çocuğun ardındaki bitişik indiste bulunur.\nFormül: sag(i) = 2 * i + 2.\nÖrnek: 1. indeksteki düğümün sağ çocuğu 2 * 1 + 2 = 4. indekstir.\nSık hata: Sağ çocuk indisinin sol çocuktan 1 fazla olduğunu unutup yanlış formül yazmak."
+  },
+  {
+    "satirlar": [34, 36],
+    "baslik": "Yığına Yeni Eleman Ekleme",
+    "aciklama": "`ekle` metodu yeni gelen değeri önce dizinin sonuna ekler. Ardından heap özelliğini korumak için `_yukari_sizdir` çağrısı yaparak elemanı uygun seviyeye çıkarır. Bu ekleme işlemi ortalama ve en kötü durumda O(log n) zamanda tamamlanır.",
+    "sinav": "Tanım: Yığına ekleme işlemi ağacın en alt seviyesinin sonuna eleman koyup yukarı sızdırmakla yapılır.\nFormül: Ekleme zaman karmaşıklığı O(log n) kadardır.\nÖrnek: Yığına 2 eklendiğinde sona yazılır ve köke kadar yukarı tırmanabilir.\nSık hata: Elemanı doğrudan köke yazıp mevcut ağaç yapısını bozmak."
+  },
+  {
+    "satirlar": [38, 42],
+    "baslik": "Yukarı Sızdırma Karşılaştırma Döngüsü",
+    "aciklama": "`_yukari_sizdir` metodu eklenen elemanı ebeveyniyle kıyaslayarak yukarı taşır. Döngü her adımda `self.islem` sayacını bir artırarak eleman karşılaştırmasını kayıt altına alır. Eğer çocuk eleman ebeveynden küçükse min-yığın kuralı bozulmuş demektir ve düzeltme gerekir.",
+    "sinav": "Tanım: Yeni eklenen elemanın ebeveynleriyle kıyaslanıp yer değiştirmesine yukarı sızdırma (swim/sift-up) denir.\nFormül: En fazla ağaç yüksekliği kadar, yani log2(n) adım sürer.\nÖrnek: İndeks 3'teki değer ebeveyni indeks 1'den küçükse döngü takas adımına geçer.\nSık hata: Döngü koşulunda kök düğüme (i == 0) ulaşılınca durmayı unutup sonsuz döngüye girmek."
+  },
+  {
+    "satirlar": [43, 47],
+    "baslik": "Yukarı Sızdırma Takas ve İlerleme",
+    "aciklama": "Ebeveyninden küçük olan düğüm ebeveyniyle yer değiştirir ve sayaç takas işlemi için artırılır. Düğümün yeni indisi ebeveynin indisi yapılarak köke doğru tırmanma sürdürülür. Eğer eleman ebeveyninden büyük veya eşitse min-heap kuralı sağlanmıştır ve döngü erken sonlanır.",
+    "sinav": "Tanım: Takas adımı min-yığın değişmezini (invariable) her alt ağaçta yeniden tesis eder.\nFormül: Dizi içi takas `a, b = b, a` ile O(1) zamanda gerçekleşir.\nÖrnek: Değeri 3 olan çocuk ile değeri 8 olan ata yer değiştirir.\nSık hata: Takas sonrasında takip edilen `i` indeksini `p` olarak güncellememek."
+  },
+  {
+    "satirlar": [49, 53],
+    "baslik": "Kök Elemanı Çıkarma ve Değiştirme",
+    "aciklama": "`en_kucuk_cikar` metodu min-yığının kökündeki en küçük elemanı alır ve hafızada tutar. Dizinin son elemanı `pop` ile çekilerek kök pozisyonuna taşınır. Yığın boşken bu işlem denenirse `IndexError` ile kontrollü şekilde hata üretilir.",
+    "sinav": "Tanım: Öncelik kuyruğundan en küçük elemanı çekme işlemi kökü silip son yaprağı köke taşımaktır.\nFormül: Dizi sonundan eleman alma `pop()` işlemi amortize O(1) maliyettedir.\nÖrnek: Kök 3 çıkarılır, dizinin son elemanı olan 19 kök konumuna yazılır.\nSık hata: Kökü çıkardıktan sonra dizinin ilk elemanını `pop(0)` ile silip O(n) kaydırma maliyeti yaratmak."
+  },
+  {
+    "satirlar": [54, 58],
+    "baslik": "Aşağı Sızdırma Çağrısı ve Kökü Döndürme",
+    "aciklama": "Eğer yığında geriye eleman kalmışsa köke taşınan değer `_asagi_sizdir` metoduyla doğru seviyesine indirilir. Bu düzeltme sayesinde yığın değişmezi O(log n) sürede korunmuş olur. Başlangıçta saklanan en küçük değer kullanıcıya geri döndürülür.",
+    "sinav": "Tanım: Kökten eleman silindikten sonra yığının yeniden düzenlenmesi işlemidir.\nFormül: Çıkarma işleminin toplam karmaşıklığı O(log n) mertebesindedir.\nÖrnek: Tek elemanlı yığında son eleman çekilince aşağı sızdırma çağrılmaz ve doğrudan kök döner.\nSık hata: Yığın tamamen boşaldığında da gereksiz yere aşağı sızdırma çağırmak."
+  },
+  {
+    "satirlar": [60, 65],
+    "baslik": "Aşağı Sızdırma Adayları Belirleme",
+    "aciklama": "`_asagi_sizdir` metodu kökten başlayarak elemanı daha küçük olan çocuğun altına iter. Mevcut düğümün sol ve sağ çocuk indisleri heap boyut sınırına göre taranır. Başlangıçta en küçük eleman adayı olarak mevcut düğümün kendisi (`ebk = i`) varsayılır.",
+    "sinav": "Tanım: Aşağı sızdırma (sink/sift-down), kökteki büyük elemanı çocuklarının en küçüğüyle yer değiştirerek aşağı indirir.\nFormül: Sol çocuk 2*i + 1, sağ çocuk 2*i + 2 formülüyle denetlenir.\nÖrnek: İndeks 0 için sol çocuk 1, sağ çocuk 2 kontrol edilir.\nSık hata: Yalnızca tek bir çocukla kıyaslama yapıp iki çocuk arasındaki en küçüğü belirlemeyi atlamak."
+  },
+  {
+    "satirlar": [66, 69],
+    "baslik": "Sol Çocukla Karşılaştırma Adımı",
+    "aciklama": "Sol çocuğun dizide mevcut olup olmadığı indeks sınırıyla incelenir. Var ise `self.islem` sayacı artırılır ve sol çocuğun değeri en küçük aday ile karşılaştırılır. Şayet sol çocuk daha küçükse en küçük aday indisi `ebk` sol çocuğa güncellenir.",
+    "sinav": "Tanım: Min-yığında aşağı yönlü iniş daima küçük olan dal üzerinden devam etmelidir.\nFormül: `sol < len(self.veri)` koşulu yaprak sınırını aşmamayı garanti eder.\nÖrnek: Sol çocuktaki 7 değeri mevcut 15 değerinden küçükse aday sol çocuk olur.\nSık hata: Sol çocuk dizide yokken karşılaştırma yapıp sınır aşım hatası almak."
+  },
+  {
+    "satirlar": [70, 73],
+    "baslik": "Sağ Çocukla Karşılaştırma Adımı",
+    "aciklama": "Sağ çocuk indisi sınır dahilindeyse işlem sayacı bir artırılarak karşılaştırma yapılır. Sağ çocuk değeri şu ana kadarki en küçük adaydan daha küçükse `ebk` sağ çocuk olarak güncellenir. Böylece iki çocuk arasındaki en küçük değer hatasız seçilmiş olur.",
+    "sinav": "Tanım: Sağ çocuk kontrolü, sol çocuktan sonra iki çocuk arasındaki asgari değeri belirler.\nFormül: `sag < len(self.veri)` şartıyla sağ dalın varlığı teyit edilir.\nÖrnek: Sağ çocuktaki 4 değeri sol çocuktaki 7'den de küçükse `ebk = sag` yapılır.\nSık hata: Sağ çocuğun sol çocuktan daha küçük olma ihtimalini göz ardı etmek."
+  },
+  {
+    "satirlar": [74, 80],
+    "baslik": "En Küçük Çocukla Takas Döngüsü",
+    "aciklama": "Eğer en küçük aday mevcut düğümden farklıysa iki eleman takas edilir ve sayaç artırılır. İnceleme indisi yeni konuma (`i = ebk`) kaydırılarak aşağı iniş sürdürülür. Aksi halde eleman çocuklarından küçük demektir ve sızdırma işlemi erken sonlanır.",
+    "sinav": "Tanım: Aşağı sızdırmada takas işlemi ağaç yüksekliği olan O(log n) derinliğe kadar sürebilir.\nFormül: Maksimum takas sayısı zemin(log2(n)) kadardır.\nÖrnek: 15 değeri 4 değeriyle takas edilir ve 15 aşağı seviyeye iner.\nSık hata: Değişken eşit olduğunda döngüyü kırmayıp gereksiz işlemler yürütmek."
+  },
+  {
+    "satirlar": [81, 86],
+    "baslik": "Floyd Yöntemi ile Yığın Kurma",
+    "aciklama": "`listeden_kur` metodu verilen rastgele diziyi asagidan yukari Floyd algoritmasiyla min-yığına çevirir. Yaprak düğümler zaten tek başlarına yığın sayıldığından son iç düğümden (`(n - 2) // 2`) köke doğru aşağı sızdırma çağrılır. Bu yöntem ardışıl eklemenin O(n log n) maliyeti yerine O(n) sürede tamamlanır.",
+    "sinav": "Tanım: Floyd yığın kurma yöntemi (heapify), yaprak olmayan son düğümden köke doğru sızdırma uygular.\nFormül: Son iç düğüm indisi `(n - 2) // 2` bağıntısıyla hesaplanır ve toplam maliyet O(n) olur.\nÖrnek: 10 elemanlı dizide iç düğümler 4, 3, 2, 1, 0 indisleridir.\nSık hata: Yığın kurmayı yaprak düğümlerden başlatıp gereksiz yere işlem sayısını artırmak."
+  },
+  {
+    "satirlar": [89, 92],
+    "baslik": "Yığın Sıralaması Fonksiyonu",
+    "aciklama": "`yigin_siralama` fonksiyonu verilen listeyi alarak önce O(n) sürede bir min-yığın kurar. Ardından n adet elemanı sırayla `en_kucuk_cikar` ile çekerek sıralı bir liste oluşturur. Her çekme O(log n) sürdüğünden algoritmanın toplam zaman karmaşıklığı O(n log n) olmaktadır.",
+    "sinav": "Tanım: Yığın sıralaması (heapsort), öncelik kuyruğundan sürekli kök elemanı çekerek sıralama yapar.\nFormül: Kurulum O(n) + Çıkarma n * O(log n) = Toplam O(n log n) zaman karmaşıklığı.\nÖrnek: [9, 3, 7] dizisinden sırayla 3, 7, 9 çekilerek sıralı liste elde edilir.\nSık hata: Yığın sıralamasının kararlı (stable) bir sıralama olduğunu varsaymak."
+  },
+  {
+    "satirlar": [95, 101],
+    "baslik": "Test Verisi ve Ardışıl Ekleme",
+    "aciklama": "`main` fonksiyonu içinde `random.Random(7)` ile 1000 elemanlık deterministik rastgele veri kümesi üretilir. Elemanlar `ekle` metodu ile tek tek yığına eklenerek ardışıl kurma maliyeti hesaplanır. Bu aşamadaki toplam işlem sayısı `ardisil_islem` değişkeninde saklanır.",
+    "sinav": "Tanım: Ardışıl ekleme yöntemi her elemanı sonuna koyup yukarı sızdırarak yığın inşa eder.\nFormül: n elemanın ardışıl eklenmesi en kötü durumda O(n log n) işlem üretir.\nÖrnek: 1000 eleman için ardışıl eklemede yaklaşık 3500 işlem gerçekleşir.\nSık hata: Ardışıl eklemenin Floyd algoritması kadar hızlı çalışacağını sanmak."
+  },
+  {
+    "satirlar": [103, 109],
+    "baslik": "Yığın Değişmez Özelliği Doğrulaması",
+    "aciklama": "Bu döngüde yığının her indeksindeki elemanın çocuklarından küçük ya da eşit olduğu `assert` ile denetlenir. Sol ve sağ çocuk sınırları kontrol edilerek min-yığın kuralının her düğümde sağlandığı kanıtlanır. Böylece veri yapısının doğruluğu ampirik olarak ispatlanır.",
+    "sinav": "Tanım: Yığın kuralı (heap property), ebeveynin her iki çocuğundan da küçük veya eşit olmasını gerektirir.\nFormül: `veri[i] <= veri[2*i+1]` ve `veri[i] <= veri[2*i+2]` her i için sağlanmalıdır.\nÖrnek: İndeks 0'daki kök, indeks 1 ve 2'deki değerlerden büyük olamaz.\nSık hata: Sadece kökün doğruluğunu test edip alt seviyelerdeki bozulmaları gözden kaçırmak."
+  },
+  {
+    "satirlar": [111, 112],
+    "baslik": "Sıralı Çıkış Listesi Doğrulaması",
+    "aciklama": "Yığından sırayla çekilen 1000 eleman `sirali` listesinde toplanır ve Python'un yerleşik `sorted` sonucuyla kıyaslanır. İki listenin birebir eşit olduğu `assert` ifadesiyle kesinleştirilir. Bu kontrol yığın sıralamasının matematiksel doğruluğunu garanti altına alır.",
+    "sinav": "Tanım: Min-yığından sürekli minimum elemanın çekilmesi artan sırada sıralı bir dizi üretir.\nFormül: `sirali == sorted(veri)` eşitliği algoritmanın kusursuz çalıştığını teyit eder.\nÖrnek: 1000 eleman en küçükten en büyüğe doğru eksiksiz sıralanır.\nSık hata: Eşit elemanların varlığında yığının sıralama özelliğini bozacağını düşünmek."
+  },
+  {
+    "satirlar": [114, 119],
+    "baslik": "Boş Yığından Çıkarma Hata Denetimi",
+    "aciklama": "Boş bir `MinYigin` örneği oluşturularak `en_kucuk_cikar` çağrısının davranışı sınanır. Beklenen `IndexError` hatasının fırlatıldığı `try-except` bloğuyla doğrulanır. Hata fırlatılmazsa `assert False` devreye girerek testin başarısız olmasını sağlar.",
+    "sinav": "Tanım: Sınır durum (edge case) testleri boş veri yapılarında programın beklenen istisnayı vermesini ölçer.\nFormül: Boş yapıda çıkarma işlemi `raise IndexError` fırlatmalıdır.\nÖrnek: Eleman kalmayan yığında `en_kucuk_cikar()` çağrısı istisna fırlatır.\nSık hata: İstisna durumunu yakalamayıp programın beklenmedik şekilde çökmesine izin vermek."
+  },
+  {
+    "satirlar": [121, 124],
+    "baslik": "Floyd Kurulumu Sayısı Karşılaştırması",
+    "aciklama": "Aynı veri kümesi bu defa `listeden_kur` metodu kullanılarak Floyd yöntemiyle yığına dönüştürülür. Floyd kurulumundaki işlem sayısı ölçülür ve ardışıl ekleme işlem sayısından kesinlikle az olduğu `assert` ile doğrulanır. Böylece kuramsal O(n) avantajı pratikte kanıtlanmış olur.",
+    "sinav": "Tanım: Floyd yığın kurma yöntemi matematiksel olarak ardışıl eklemeden daha az işlem yapar.\nFormül: `floyd_islem < ardisil_islem` koşulu her zaman doğru olmalıdır.\nÖrnek: 1000 elemanda Floyd yöntemi yaklaşık 2600 işlemde tamamlanır.\nSık hata: Yığın kurma yöntemleri arasında işlem sayısı farkı olmayacağını varsaymak."
+  },
+  {
+    "satirlar": [126, 131],
+    "baslik": "İlk Sonuç Raporu ve Çıktılar",
+    "aciklama": "Testin genel sonuçları, eleman sayısı, ardışıl ve Floyd işlem sayıları ekrana yazdırılır. İki yöntemin adım sayıları oranlanarak Floyd'un kaç kat daha verimli çalıştığı raporlanır. Sıralanan dizinin ilk ve son beş elemanı gösterilerek doğruluk görselleştirilir.",
+    "sinav": "Tanım: Algoritma analizinde teorik karmaşıklık deneysel işlem adımlarıyla raporlanır.\nFormül: Verimlilik oranı = Ardisil Islem / Floyd Islem şeklinde hesaplanır.\nÖrnek: 3557 / 2591 hesaplanarak yaklaşık 1.37 kat verimlilik elde edilir.\nSık hata: Performans değerlendirmesinde yalnızca süreye bakıp işletim sistemi gürültüsünü hesaba katmamak."
+  },
+  {
+    "satirlar": [132, 137],
+    "baslik": "Ölçekleme Karşılaştırma Tablosu Başlığı",
+    "aciklama": "Bu satırlarda farklı girdi büyüklüklerinde iki yaklaşımı kıyaslayan tablonun başlığı yazdırılır. N = 100, 500, 1000 gibi artan boyutlar için döngü açılarak veri ölçeklenebilirliği sınanır. Tablo formatı sonuçların rahat okunmasını sağlar.",
+    "sinav": "Tanım: Ölçeklenebilirlik analizi, veri miktarı arttıkça algoritmaların davranışını izler.\nFormül: N arttıkça O(n log n) ile O(n) eğrileri arasındaki makas açılır.\nÖrnek: N = 100, 500, 1000 değerleri için işlem sayıları kıyaslanır.\nSık hata: Algoritmaları tek bir küçük N değeri için test edip genel performans hakkında karar vermek."
+  },
+  {
+    "satirlar": [138, 142],
+    "baslik": "Boyuta Göre Adım Sayısı Yazdırma",
+    "aciklama": "Her bir test boyutu için rastgele dizi oluşturulup hem ardışıl hem de Floyd yığınları kurulur. Elde edilen işlem adımları ve göreli oran satır satır biçimlendirilerek ekrana basılır. Bu deneysel sonuçlar O(n) karmaşıklığının büyük verideki üstünlüğünü ortaya koyar.",
+    "sinav": "Tanım: Deneysel karmaşıklık analizi teorik asimptotik sınırları teyit etmek için kullanılır.\nFormül: Tablo satırı formatı: N, ardışıl adımlar, Floyd adımları ve oran.\nÖrnek: N = 1000 için 3482 adıma karşılık 2609 adım ölçülür.\nSık hata: Döngü içinde sayaçları sıfırlamayı unutup kümülatif değerler yazdırmak."
+  },
+  {
+    "satirlar": [144, 145],
+    "baslik": "Ana Program Başlatıcı Bloğu",
+    "aciklama": "Python'un standart çalışma koşulu `__name__ == '__main__'` ile dosyanın doğrudan çalıştırıldığı kontrol edilir. Koşul sağlandığında `main()` fonksiyonu tetiklenerek tüm doğrulama süreci başlatılır. Modül başka bir dosyadan içe aktarıldığında testlerin otomatik çalışması önlenir.",
+    "sinav": "Tanım: `if __name__ == '__main__':` deyimi betiğin bağımsız mı yoksa kütüphane olarak mı çağrıldığını ayırır.\nÖrnek: `python ikili_yigin_heap.py` komutuyla doğrudan ana fonksiyon yürütülür.\nSık hata: Bu kontrolü yazmayıp modül içe aktarıldığında tüm testlerin kontrolsüzce çalışmasına yol açmak."
+  }
+]

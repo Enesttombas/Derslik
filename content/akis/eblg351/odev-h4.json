@@ -1,0 +1,671 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "351-o-h4-1-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-1",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    51,
+    54
+   ],
+   "etiketler": [
+    "prewitt",
+    "gx"
+   ],
+   "soru": "`kx = [[-1,0,1],[-1,0,1],[-1,0,1]]` hangi kenarlara duyarlıdır?",
+   "secenekler": [
+    "Dikey kenarlar: sütunlar arası (soldan sağa) parlaklık değişimini ölçer",
+    "Yatay kenarlar",
+    "Yalnız köşeler",
+    "Tüm kenarlara eşit"
+   ],
+   "dogru": 0,
+   "aciklama": "Her satırda sağ sütun (+1) eksi sol sütun (−1) alınır; yani x yönündeki türev. Parlaklık soldan sağa değişiyorsa (dikey bir çizgi) yanıt büyür; yatay çizgide satırlar aynı olduğundan 0 çıkar."
+  },
+  {
+   "id": "351-o-h4-1-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-1",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    51,
+    54
+   ],
+   "etiketler": [
+    "prewitt",
+    "gx",
+    "basamak"
+   ],
+   "soru": "Solu 0, sağı 100 olan dikey bir basamak kenarında kenara komşu pikselde Prewitt Gx kaçtır?",
+   "secenekler": [
+    "300",
+    "100",
+    "0",
+    "-300"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: dikey basamak 0|100 → Gx = 300 (Sobel 400).",
+   "aciklama": "3 satırın her birinde (100·1) + (0·−1) = 100; üç satır toplamı 300. Aynı kenarda Gy 0'dır çünkü aynı sütunun üst-alt farkı yoktur."
+  },
+  {
+   "id": "351-o-h4-1-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-1",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    51,
+    54
+   ],
+   "etiketler": [
+    "prewitt",
+    "isaretli-goruntu"
+   ],
+   "kod": "gx = cv2.filter2D(girdi_f, cv2.CV_32F, kx)\ngx_vis = gx.astype(np.uint8)   # görselleştirme\ncv2.imwrite('gx.png', gx_vis)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: negatif türevler neden bozulur?",
+   "aciklama": "Gx işaretli float32'dir (kenarın yönüne göre ±). Doğrudan `astype(np.uint8)` negatifleri sarar (örn. −300 → 212) ya da kırpar; koyu→parlak ve parlak→koyu kenarlar karışır. Kod bu yüzden `isaretli_goruntu_uint8` ile 0'ı 128'e kaydırıp ölçekler."
+  },
+  {
+   "id": "351-o-h4-1-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-1",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    51,
+    52
+   ],
+   "etiketler": [
+    "prewitt",
+    "toplam-sifir"
+   ],
+   "kod": "kx = [[-1, 0, 1],\n      [-1, 0, 1],\n      [-1, 0, 1]]\nkx.sum()  # ?",
+   "soru": "Prewitt çekirdeğinin katsayıları toplamı 0'dır; bu yüzden düz bölgede yanıt 0 çıkar.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Toplam sıfır olduğundan sabit parlaklıkta (−1 + 0 + 1) × 3 = 0 olur. Yalnız parlaklık değiştiği yerde sıfırdan farklı çıktı üretir; bu türev filtrelerinin ortak özelliğidir."
+  },
+  {
+   "id": "351-o-h4-2-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-2",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    52,
+    55
+   ],
+   "etiketler": [
+    "prewitt",
+    "gy"
+   ],
+   "soru": "`ky` çekirdeği `kx`'ten nasıl farklıdır ve ne ölçer?",
+   "secenekler": [
+    "`kx`'in transpozudur; alt satır eksi üst satır, yani yatay kenarlara duyarlı y-türevi",
+    "Aynıdır",
+    "Negatiftir ve aynı kenarları bulur",
+    "Yalnız çaprazları bulur"
+   ],
+   "dogru": 0,
+   "aciklama": "ky üst satır −1, alt satır +1: satırlar arası (yukarıdan aşağıya) değişimi ölçer. Yatay bir çizgide büyük yanıt verir; dikey çizgide sütunlar aynı olduğundan 0."
+  },
+  {
+   "id": "351-o-h4-2-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-2",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    51,
+    56
+   ],
+   "etiketler": [
+    "prewitt",
+    "yatay-kenar"
+   ],
+   "soru": "Üst yarı 0, alt yarı 100 olan yatay kenarda kenar pikselinde `(gx, gy)` ne olur?",
+   "secenekler": [
+    "(0, 300)",
+    "(300, 0)",
+    "(300, 300)",
+    "(0, 0)"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: yatay basamak → Gx = 0, Gy = 300, hypot = 300.",
+   "aciklama": "Sütunlar kendi içinde sabit olduğundan x-türevi 0'dır. Satırlar arası fark 100 ve üç sütun toplamı 300. Büyüklük sqrt(0²+300²) = 300."
+  },
+  {
+   "id": "351-o-h4-2-3",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-2",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    52,
+    55
+   ],
+   "etiketler": [
+    "prewitt",
+    "cekirdek"
+   ],
+   "kod": "kx = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]], dtype=np.float32)\nky = kx   # y çekirdeği\ngy = cv2.filter2D(girdi_f, cv2.CV_32F, ky)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: Gy neden yatay kenarları bulmaz?",
+   "aciklama": "`ky = kx` olursa Gy ile Gx aynı olur ve yalnız dikey kenarlar görünür. Doğru ky, kx'in transpozudur: `[[-1,-1,-1],[0,0,0],[1,1,1]]` (veya `kx.T`)."
+  },
+  {
+   "id": "351-o-h4-2-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-2",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    54,
+    56
+   ],
+   "etiketler": [
+    "gradyan",
+    "buyukluk"
+   ],
+   "soru": "Neden iki ayrı türev (Gx, Gy) hesaplayıp `np.hypot` ile birleştiriyoruz?",
+   "aciklama": "Tek bir çekirdek yalnız bir yönü yakalar. Gx dikey, Gy yatay kenarları bulur; eğik kenarda ikisi de sıfırdan farklıdır. `hypot = sqrt(Gx² + Gy²)` yönden bağımsız kenar şiddeti verir. Örnek: (3, 4) → 5.",
+   "secenekler": [
+    "Gx ve Gy aynı kenarları bulur",
+    "`hypot` yalnız hız içindir",
+    "Her çekirdek tek yönü yakalar; `sqrt(Gx²+Gy²)` yönden bağımsız şiddet verir",
+    "Gy gürültüyü siler"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-o-h4-3-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-3",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    84,
+    89
+   ],
+   "etiketler": [
+    "sobel",
+    "ksize"
+   ],
+   "soru": "`cv2.Sobel(girdi_f, cv2.CV_32F, 1, 0, ksize=3)` hangi türevi hesaplar?",
+   "secenekler": [
+    "x yönünde birinci türev (Gx)",
+    "y yönünde birinci türev (Gy)",
+    "Laplacian",
+    "Gauss yumuşatma"
+   ],
+   "dogru": 0,
+   "aciklama": "`dx=1, dy=0` x türevi ister; `dx=0, dy=1` y türevi. ksize=3 Sobel'in 3×3 çekirdeğidir (satır ağırlıkları 1, 2, 1). `CV_32F` işaretli sonucu korur."
+  },
+  {
+   "id": "351-o-h4-3-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-3",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    84,
+    89
+   ],
+   "etiketler": [
+    "sobel",
+    "prewitt",
+    "basamak"
+   ],
+   "soru": "Aynı 0|100 dikey basamakta Sobel Gx ile Prewitt Gx değerleri?",
+   "secenekler": [
+    "Sobel 400, Prewitt 300",
+    "Sobel 300, Prewitt 400",
+    "İkisi de 300",
+    "İkisi de 400"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: Sobel Gx = 400, Prewitt Gx = 300.",
+   "aciklama": "Sobel orta satıra 2 ağırlık verir: (1+2+1)·100 = 400. Prewitt eşit ağırlıkla 3·100 = 300. Merkeze fazla ağırlık, hem yumuşatma etkisi hem de biraz daha güçlü yanıt demektir."
+  },
+  {
+   "id": "351-o-h4-3-3",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-3",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    90,
+    90
+   ],
+   "etiketler": [
+    "sobel",
+    "hypot"
+   ],
+   "kod": "hypot = np.hypot(gx, gy).astype(np.float32)\n# gx = 3, gy = 4 ise hypot = ?",
+   "soru": "`gx = 3`, `gy = 4` olan pikselde gradyan büyüklüğü 7'dir (3 + 4).",
+   "dogruMu": false,
+   "aciklama": "Yanlış. Büyüklük Öklid normudur: sqrt(3² + 4²) = 5. Toplam |gx|+|gy| = 7 daha hızlı ama yönden bağımlı (L1) bir yaklaşıktır; kod `hypot` ile gerçek L2 değerini kullanır."
+  },
+  {
+   "id": "351-o-h4-3-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-3",
+   "dosya": "hafta4/4.3-sobel/cozum.py",
+   "satirlar": [
+    48,
+    52
+   ],
+   "etiketler": [
+    "sobel",
+    "ikili-esik"
+   ],
+   "kod": "gx, gy, mag = sobel(gri, yumusat=True)\nikili = gradyan_ikili(gx, esik_orani=0.2)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: ikili kenar haritası neden eksik kalır?",
+   "aciklama": "Eşik `gx` üzerinden alınırsa yalnız dikey kenarlar ve işaretli (negatif) değerler hesaba girer; yatay kenarlar kaybolur. Kenar haritası tüm yönleri kapsayan büyüklükten (`mag`) üretilmeli: `gradyan_ikili(mag, ...)`."
+  },
+  {
+   "id": "351-o-h4-4-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-4",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    48,
+    56
+   ],
+   "etiketler": [
+    "prewitt",
+    "sobel",
+    "karsilastirma"
+   ],
+   "soru": "`prewitt()` ile `sobel()` yapısı nasıl benzer?",
+   "secenekler": [
+    "İkisi de (isteğe bağlı Gauss) → gx, gy → hypot döndürür; yalnız çekirdek ağırlıkları farklıdır",
+    "İkisi de yalnız gx döndürür",
+    "Biri Gauss uygular diğeri uygulamaz",
+    "Biri ikinci türev alır"
+   ],
+   "dogru": 0,
+   "aciklama": "Aynı arayüz sayesinde 4.4'te iki yöntem aynı eşik ve aynı girdiyle adil karşılaştırılır. Fark çekirdeğin orta satır/sütun ağırlığıdır (Prewitt 1-1-1, Sobel 1-2-1)."
+  },
+  {
+   "id": "351-o-h4-4-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-4",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    84,
+    89
+   ],
+   "etiketler": [
+    "prewitt",
+    "sobel",
+    "oran"
+   ],
+   "soru": "Basamak kenarında Sobel/Prewitt yanıt oranı kaçtır?",
+   "secenekler": [
+    "4/3 ≈ 1.33",
+    "2",
+    "1",
+    "3/4"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 400 / 300 = 1.33.",
+   "aciklama": "Sobel (1+2+1)·100 = 400, Prewitt (1+1+1)·100 = 300. Oran sabittir; yani karşılaştırmada ikili eşik tepe değere oranla verildiği için bu ölçek farkı sonucu bozmaz."
+  },
+  {
+   "id": "351-o-h4-4-3",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-4",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    76,
+    80
+   ],
+   "etiketler": [
+    "sobel",
+    "gurultu"
+   ],
+   "kod": "# Sobel: merkez satır ağırlığı 2\n# Prewitt: tüm satırlar eşit ağırlık 1",
+   "soru": "Sobel, merkeze daha fazla ağırlık verdiği için Prewitt'e göre gürültüye biraz daha dirençlidir.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Sobel'in (1,2,1) ağırlıkları dik yönde hafif bir Gauss benzeri yumuşatma yapar. Prewitt'in kutu ortalaması daha az seçici. Pratikte ikisi benzerdir; fark yüksek gürültüde belirginleşir."
+  },
+  {
+   "id": "351-o-h4-4-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-4",
+   "dosya": "hafta4/4.3-sobel/cozum.py",
+   "satirlar": [
+    48,
+    52
+   ],
+   "etiketler": [
+    "karsilastirma",
+    "ortak-esik"
+   ],
+   "soru": "Karşılaştırmada iki yöntem için aynı `esik_orani=0.2` neden kullanılır?",
+   "aciklama": "Sobel yanıtı Prewitt'ten daha büyük ölçekli. Eşik sabit mutlak sayı olsaydı Sobel daha çok piksel geçirirdi. Eşiği tepe değerin %20'si yapınca iki yöntem kendi ölçeğinde normalize edilir; fark yalnız kenarın konumu/kalınlığında ve gürültü davranışında kalır.",
+   "secenekler": [
+    "Eşik tepe değerin oranı olduğu için iki yöntem kendi ölçeğinde normalize edilir",
+    "Sobel ve Prewitt aynı ölçektedir",
+    "Eşiği mutlak sayı yapmak yasaktır",
+    "0.2 en iyi sonucu veren sabit sayıdır"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "351-o-h4-5-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    113,
+    114
+   ],
+   "etiketler": [
+    "laplacian",
+    "cekirdek-toplami"
+   ],
+   "soru": "Laplacian çekirdeğinin katsayıları toplamı kaçtır ve bunun anlamı?",
+   "secenekler": [
+    "0: düz bölgede yanıt 0, yalnız parlaklık değiştiği yerde tepki verir",
+    "1: parlaklık korunur",
+    "−4: sürekli negatif",
+    "4: kenarı güçlendirir"
+   ],
+   "dogru": 0,
+   "aciklama": "0+1+0+1−4+1+0+1+0 = 0. Sabit parlaklıkta 4·(−4v+4v) kadar komşu telafi eder → 0. 2. türev olduğu için kenarda işaret değiştirir (zero-crossing)."
+  },
+  {
+   "id": "351-o-h4-5-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    113,
+    114
+   ],
+   "etiketler": [
+    "laplacian",
+    "tek-nokta"
+   ],
+   "soru": "5×5 siyah görüntüde ortada tek piksel 10 ise Laplacian merkezde ve sol komşuda kaç verir?",
+   "secenekler": [
+    "Merkez −40, sol komşu +10",
+    "Merkez 40, sol komşu −10",
+    "Merkez 10, sol komşu 0",
+    "Her ikisi 0"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: laplacian(spike)[2,2] = −40, [2,1] = +10.",
+   "aciklama": "Merkez: −4·10 = −40 (komşular 0). Sol komşu: kendisi 0 ama merkez komşusu 10 → +10. İşaret desenli bu tepki (−,+) tek nokta gürültüsünü de kenar sanabilir; bu yüzden Gauss ön yumuşatma önemlidir."
+  },
+  {
+   "id": "351-o-h4-5-3",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/4.5-laplacian/cozum.py",
+   "satirlar": [
+    47,
+    56
+   ],
+   "etiketler": [
+    "laplacian",
+    "gurultu"
+   ],
+   "soru": "Gauss'suz ve Gauss'lu Laplacian neden yan yana üretilir?",
+   "aciklama": "İkinci türev gürültüyü kuvvetle yükseltir. Gauss'suz sonuç görüntüdeki her küçük bozuntuyu kenar gibi gösterir; Gauss'lu sonuç ise yalnız gerçek kenarlarda sıfır geçişi verir. Yan yana koymak gürültü duyarlılığının görsel kanıtıdır.",
+   "secenekler": [
+    "Gauss'lu hep daha hızlıdır",
+    "İkinci türev gürültüyü büyütür; Gauss'suz sonuç gürültüyü kenar sanır, yan yana bu gösterilir",
+    "Gauss'suz sonuç hiç kenar bulamaz",
+    "İkisi her zaman aynı çıktıyı verir"
+   ],
+   "dogru": 1
+  },
+  {
+   "id": "351-o-h4-5-4",
+   "tur": "hata-bul",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-5",
+   "dosya": "hafta4/4.5-laplacian/cozum.py",
+   "satirlar": [
+    47,
+    56
+   ],
+   "etiketler": [
+    "laplacian",
+    "sifir-gecis"
+   ],
+   "kod": "lap_g = laplacian(gri, yumusat=True)\nlap_g_zc = sifir_gecis(lap_g, esik_orani=0.0)",
+   "hataSatir": 2,
+   "soru": "Hatalı satıra dokun: sıfır geçişi haritası neden aşırı kalabalık çıkar?",
+   "aciklama": "Dinamik eşik 0 olursa en küçük işaret değişimi bile kenar sayılır; düz bölgelerdeki sayısal titreşim de sıfır geçişi üretir. Kodun varsayılanı tepe mutlak değerin %5'idir (`esik_orani=0.05`)."
+  },
+  {
+   "id": "351-o-h4-6-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    139,
+    145
+   ],
+   "etiketler": [
+    "log",
+    "ortalama-cikar"
+   ],
+   "soru": "`k = k - k.mean()` satırı neden var?",
+   "secenekler": [
+    "Çekirdek toplamını 0 yapar, böylece düz bölgelerde yanıt 0 olur",
+    "Çekirdeği pozitif yapar",
+    "Çekirdeği büyütür",
+    "Hızı artırır"
+   ],
+   "dogru": 0,
+   "aciklama": "7×7'ye kırpılmış analitik LoG'un toplamı tam 0 olmaz. Ortalamayı çıkarmak toplamı sıfırlar; sabit parlaklık bölgesinde sahte yanıt kalmaz."
+  },
+  {
+   "id": "351-o-h4-6-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    133,
+    147
+   ],
+   "etiketler": [
+    "log",
+    "cekirdek"
+   ],
+   "soru": "`log_cekirdegi()` için `shape`, `abs().sum()` ve merkez değerin işareti?",
+   "secenekler": [
+    "(7, 7), 1.0, negatif (≈ −0.226)",
+    "(7, 7), 0, pozitif",
+    "(3, 3), 1.0, negatif",
+    "(7, 7), 4, pozitif"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: shape (7,7), toplam ≈ −2e−9 (≈0), mutlak toplam 1.0, merkez −0.226.",
+   "aciklama": "Mutlak toplam 1'e normalize edilir, ortalama çıkarıldığı için net toplam ≈ 0. Merkez negatif, çevresi pozitif halka olan 'Meksika şapkası' biçimi."
+  },
+  {
+   "id": "351-o-h4-6-3",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    150,
+    166
+   ],
+   "etiketler": [
+    "log",
+    "gauss"
+   ],
+   "kod": "girdi_f = gri.astype(np.float32, copy=False)\nreturn cv2.filter2D(girdi_f, cv2.CV_32F, log_cekirdegi(), borderType=cv2.BORDER_REFLECT_101)",
+   "soru": "LoG'u uygulamadan önce ayrıca Gauss yumuşatma yapmak zorunludur.",
+   "dogruMu": false,
+   "aciklama": "Yanlış. LoG çekirdeği Gauss yumuşatmayı matematiksel yapısında barındırır (sigma=1.0). Ek Gauss gereksiz yere bulanıklık ekleyip ince kenarları siler."
+  },
+  {
+   "id": "351-o-h4-6-4",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-6",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    133,
+    139
+   ],
+   "etiketler": [
+    "log",
+    "sigma"
+   ],
+   "soru": "LoG'da `sigma` büyürse sonuç nasıl değişir?",
+   "aciklama": "Sigma yumuşatma ölçeğini belirler. Büyük sigma ince detay ve gürültüyü siler, yalnız kalın kenarları yakalar; küçük sigma ince kenarları ve gürültüyü korur. Bu yüzden 7×7 çekirdek sigma=1 için seçildi: pencere yaklaşık ±3σ'yı kapsar.",
+   "secenekler": [
+    "Sigma büyürse ince detay artar",
+    "Sigma yalnız parlaklığı değiştirir",
+    "Sigma değişince hiçbir şey değişmez",
+    "Sigma büyürse ince detay ve gürültü silinir, kalın kenarlar kalır"
+   ],
+   "dogru": 3
+  },
+  {
+   "id": "351-o-h4-7-1",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-7",
+   "dosya": "hafta4/kenarlar.py",
+   "satirlar": [
+    184,
+    188
+   ],
+   "etiketler": [
+    "canny",
+    "histerezis"
+   ],
+   "soru": "`cv2.Canny(islenmis, 50, 100, apertureSize=3, L2gradient=True)` eşikleri nasıl çalışır?",
+   "secenekler": [
+    "Gradyan ≥100 kesin kenar; 50–100 arası yalnız kesin kenara bağlıysa kenar; <50 elenir",
+    "50 altı kenar, 100 üstü gürültü",
+    "Her piksel 50 ve 100 ile ayrı ayrı çarpılır",
+    "Eşikler Gauss sigma'sıdır"
+   ],
+   "dogru": 0,
+   "aciklama": "Histerezis eşikleme: üst eşik güçlü kenarı, alt eşik zayıf ama bağlı devamı seçer. Bu sayede kopuk, parçalı kenarlar birleşir; gürültü tepeleri elenir. L2gradient=True büyüklüğü sqrt(Gx²+Gy²) ile alır."
+  },
+  {
+   "id": "351-o-h4-7-2",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-7",
+   "dosya": "hafta4/4.7-canny/cozum.py",
+   "satirlar": [
+    79,
+    96
+   ],
+   "etiketler": [
+    "olcum",
+    "csv"
+   ],
+   "soru": "9 varyant × 3 test görüntüsü için son `print` kaç ölçüm satırı bildirir?",
+   "secenekler": [
+    "27",
+    "9",
+    "12",
+    "3"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: 9 varyant × 3 görüntü = 27 satır.",
+   "aciklama": "Prewitt (T/F), Sobel (T/F), Laplacian (T/F), LoG (T), Canny (T/F) = 9 varyant. Üç görüntü: kamera, sentetik, sentetik gürültülü. Hepsi CSV'ye yazılır."
+  },
+  {
+   "id": "351-o-h4-7-3",
+   "tur": "kod-oku",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-7",
+   "dosya": "hafta4/4.7-canny/cozum.py",
+   "satirlar": [
+    43,
+    53
+   ],
+   "etiketler": [
+    "olcum",
+    "medyan-sure"
+   ],
+   "soru": "Süre ölçümü neden 3 ısınma + 20 ölçümün medyanıdır?",
+   "aciklama": "İlk çağrılar önbellek ve CPU frekansı yüzünden yavaş olabilir; ısınma bunu atar. Tek ölçüm gürültülüdür, ortalama ise ara sıra gelen yavaş bir tekrardan bozulur. Medyan aykırı ölçümlere dayanıklıdır. `cv2.setNumThreads(1)` ile de çok iş parçacığı belirsizliği kaldırılır.",
+   "secenekler": [
+    "Isınma süreyi uzatmak içindir",
+    "Ortalama medyandan daha dayanıklıdır",
+    "Isınma önbellek/frekans etkisini atar; medyan ara sıra gelen yavaş tekrarlardan etkilenmez",
+    "Tek ölçüm yeterlidir"
+   ],
+   "dogru": 2
+  },
+  {
+   "id": "351-o-h4-7-4",
+   "tur": "sinav",
+   "ders": "EBLG351",
+   "hafta": 4,
+   "odev": "h4-7",
+   "dosya": "hafta4/4.7-canny/cozum.py",
+   "satirlar": [
+    126,
+    131
+   ],
+   "etiketler": [
+    "precision-recall",
+    "f1"
+   ],
+   "kod": "p, r, f1 = kenar_skoru(tahmin, ref, tolerans=1)",
+   "soru": "Precision yüksek, recall düşükse yöntem az sayıda ama çoğu doğru kenar bulmuş demektir.",
+   "dogruMu": true,
+   "aciklama": "Doğru. Precision = bulunanların kaçı doğru; recall = gerçek kenarların kaçı bulundu. Yüksek P, düşük R: temkinli ama eksik. F1 ikisinin harmonik ortalamasıdır; 1 piksel tolerans konum kaymasını affeder."
+  }
+ ]
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekran ölçümü</title>
+<style>
+  body { font: 16px/1.5 system-ui, sans-serif; margin: 0; padding: 16px; background: #fafaf9; color: #1c1917; }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p { margin: 0 0 12px; color: #57534e; font-size: 14px; }
+  table { border-collapse: collapse; width: 100%; max-width: 640px; }
+  td { padding: 8px 10px; border-bottom: 1px solid #e7e5e4; font-variant-numeric: tabular-nums; }
+  td:first-child { color: #57534e; width: 55%; }
+  td:last-child { font-weight: 700; font-family: ui-monospace, monospace; }
+  #kopya { margin-top: 14px; padding: 12px 18px; font-size: 16px; border-radius: 10px; border: 0; background: #1c1917; color: #fff; }
+</style>
+</head>
+<body>
+<h1>Ekran ölçümü</h1>
+<p>Bu sayfayı tablette önce dikey, sonra yatay aç. Aşağıdaki sayılar kendiliğinden güncellenir.</p>
+<table id="t"></table>
+<button id="kopya" type="button">Sonucu kopyala</button>
+<script>
+const satirlar = () => {
+  const m = (q) => matchMedia(q).matches;
+  return [
+    ["Pencere (CSS px) genişlik × yükseklik", innerWidth + " × " + innerHeight],
+    ["Ekran (CSS px)", screen.width + " × " + screen.height],
+    ["devicePixelRatio", String(devicePixelRatio)],
+    ["Fiziksel piksel (tahmini)", Math.round(screen.width * devicePixelRatio) + " × " + Math.round(screen.height * devicePixelRatio)],
+    ["Yön", innerWidth > innerHeight ? "yatay" : "dikey"],
+    ["Dokunmatik (pointer: coarse)", m("(pointer: coarse)") ? "evet" : "hayır"],
+    ["Fare (pointer: fine)", m("(pointer: fine)") ? "evet" : "hayır"],
+    ["Hover var", m("(hover: hover)") ? "evet" : "hayır"],
+    ["Tailwind lg (≥1024)", innerWidth >= 1024 ? "evet" : "hayır"],
+    ["Özel 900 eşiği", innerWidth >= 900 ? "evet" : "hayır"],
+    ["Tarayıcı", navigator.userAgent.replace(/^Mozilla\/5.0 /, "").slice(0, 90)],
+  ];
+};
+const t = document.getElementById("t");
+const goster = () => { t.innerHTML = satirlar().map(([a, b]) => "<tr><td>" + a + "</td><td>" + b + "</td></tr>").join(""); };
+goster(); addEventListener("resize", goster); addEventListener("orientationchange", goster);
+document.getElementById("kopya").onclick = () => {
+  const s = satirlar().map(([a, b]) => a + ": " + b).join("\n");
+  (navigator.clipboard ? navigator.clipboard.writeText(s) : Promise.reject()).catch(() => prompt("Kopyala:", s));
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+[
+  {
+    "satirlar": [1, 7],
+    "baslik": "Modül Başlığı ve Kullanım Belgesi",
+    "aciklama": "Bu modül docstring bloğu ile başlar. `StatikDizi` sınıfının kullanım amacını, sabit kapasiteli veri yapısını ve işlem sayacı mantığını özetler. Kodun bağımsız bir betik olarak doğrudan nasıl çalıştırılacağını açıklar.",
+    "sinav": "Tanım: Modül docstring belgesi, dosyanın amacını ve kullanım şeklini belirten ilk metin bloğudur.\nÖrnek: Dosya başında üç tırnak ile yazılan açıklama.\nSık hata: Docstring bloğunu kod satırlarından sonraya yazmak veya kapatmayı unutmak."
+  },
+  {
+    "satirlar": [10, 13],
+    "baslik": "Statik Dizi Sınıfı ve Doğrulama",
+    "aciklama": "`StatikDizi` sınıfının kurucu metodu girilen `kapasite` parametresinin geçerliliğini denetler. Kapasite sıfır veya negatif girilirse `ValueError` fırlatılarak geçersiz durumlar önlenir. Bu kontrol veri yapısının kararlı bir başlangıç yapmasını sağlar.",
+    "sinav": "Tanım: Statik dizi, bellekte ardışık ve sabit boyutlu bir bellek bloğu tahsis eden temel veri yapısıdır.\nFormül: Bellek boyutu = Kapasite * Eleman boyutu\nÖrnek: 10 elemanlık tamsayı dizisi için 10 * 4 = 40 bayt.\nSık hata: Negatif veya sıfır kapasite değerlerini denetlemeden bellek ayırmaya çalışmak."
+  },
+  {
+    "satirlar": [14, 17],
+    "baslik": "Temel Nitelikler ve Sayaç Tanımı",
+    "aciklama": "`self.kapasite` dizinin alabileceği en fazla eleman sayısını, `self.veri` sabit boyutlu iç listeyi, `self.boy` ise mevcut eleman sayısını saklar. `self.islem` sayacı her okuma, yazma ve kaydırma adımında artırılarak gerçek maliyeti ölçer. Bu sayaç algoritmaların zaman karmaşıklığını deneysel olarak gözlemlememizi sağlar.",
+    "sinav": "Tanım: Kapasite ayrılan toplam alanı, boy ise halihazırda dolu olan hücre sayısını gösterir.\nÖrnek: Kapasitesi 5 olan dizide 3 eleman varsa boy 3 olur.\nSık hata: Kapasite ile boy kavramlarını birbirine karıştırıp dizi sınırını aşmak."
+  },
+  {
+    "satirlar": [19, 23],
+    "baslik": "İndeksle Eleman Getirme İşlemi",
+    "aciklama": "`getir` metodu verilen `i` indeksindeki elemanı doğrudan döndürür. İndeks geçerli aralıkta değilse `IndexError` hatası verir. Dizi elemanlarına doğrudan bellek adresi hesaplanarak ulaşıldığı için işlem O(1) sabit zamanda tamamlanır.",
+    "sinav": "Tanım: Dizi elemanına indeksi ile doğrudan erişim sağlayan temel sorgu metodudur.\nFormül: T(n) = O(1)\nÖrnek: 0. indeksteki elemanı okumak tek bir adres hesaplama işlemidir.\nSık hata: Dizi boyutunu aşan indekslerde hata fırlatmayıp tanımsız veri döndürmek."
+  },
+  {
+    "satirlar": [25, 29],
+    "baslik": "İndekse Değer Atama İşlemi",
+    "aciklama": "`ata` metodu belirli bir `i` indeksindeki mevcut veriyi yeni `x` değeriyle günceller. İndeks kontrolü yapılarak sınır dışı yazmalar engellenir. Hücreye doğrudan indeks tabanlı erişilip yazıldığı için bu işlemin karmaşıklığı O(1) düzeyindedir.",
+    "sinav": "Tanım: Statik dizide var olan bir hücrenin içeriğini doğrudan güncelleyen metottur.\nFormül: T(n) = O(1)\nÖrnek: dizi.ata(1, 42) çağrısı birinci indeksi 42 yapar.\nSık hata: Henüz eklenmemiş bir indekse atama yaparak boyut tutarlılığını bozmak."
+  },
+  {
+    "satirlar": [31, 36],
+    "baslik": "Dizi Sonuna Eleman Ekleme",
+    "aciklama": "`sona_ekle` metodu dizinin sonuna yeni bir `x` elemanı yerleştirir. Dizi kapasitesi tamamen dolmuşsa `IndexError` fırlatır. Kaydırma gerektirmediği ve doğrudan `self.boy` konumuna yazıldığı için O(1) zaman karmaşıklığıyla çalışır.",
+    "sinav": "Tanım: Statik dizinin son boş gözüne yeni bir veri yerleştirip boyutu bir artıran işlemdir.\nFormül: T(n) = O(1)\nÖrnek: Boyutu 2 olan diziye sona_ekle çağrısı 2. indekse yazar.\nSık hata: Dizi tamamen doluyken ekleme yapmaya çalışıp bellek aşımı üretmek."
+  },
+  {
+    "satirlar": [38, 42],
+    "baslik": "Araya Ekleme Sınır Denetimleri",
+    "aciklama": "`araya_ekle` metodu önce dizinin dolu olup olmadığını denetler. Ardından hedeflenen `i` indeksinin geçerli aralıkta `0 <= i <= self.boy` olup olmadığını kontrol eder. Hatalı durumlarda `IndexError` fırlatarak dizinin bütünlüğünü korur.",
+    "sinav": "Tanım: Araya ekleme öncesinde kapasite ve indeks aralığının geçerliliğini doğrulayan emniyet adımıdır.\nÖrnek: Boy 3 iken i=4 indeksine araya ekleme yapılamaz.\nSık hata: Sona eklemeye izin veren i == boy sınır durumunu geçersiz indeks saymak."
+  },
+  {
+    "satirlar": [43, 48],
+    "baslik": "Elemanları Kaydırma ve Ekleme",
+    "aciklama": "Araya ekleme yapılırken `i` indeksinden sonraki elemanlar sondan başlanarak birer hücre sağa kaydırılır. Her kaydırmada `self.islem` artırılır. Elemanlar taşındıktan sonra `i` konumuna `x` yerleştirilir; bu nedenle en kötü durumda karmaşıklık O(n) olur.",
+    "sinav": "Tanım: Yeni elemana yer açmak için var olan elemanların sağa ötelenmesi işlemidir.\nFormül: En kötü durum T(n) = O(n)\nÖrnek: Başa eklerken dizideki tüm n eleman birer adım sağa kaydırılır.\nSık hata: Kaydırmayı baştan başlatıp verilerin birbirinin üzerine yazılmasına yol açmak."
+  },
+  {
+    "satirlar": [50, 53],
+    "baslik": "Eleman Silme İndeks Kontrolü",
+    "aciklama": "`sil` metodu çıkarılacak elemanın indeksinin `0 <= i < self.boy` sınırları içinde olduğunu teyit eder. Geçersiz indekste `IndexError` fırlatılır. Silinecek değer daha sonra döndürülmek üzere geçici bir değişkende saklanır.",
+    "sinav": "Tanım: Diziden bir elemanı çıkarmadan önce geçerli bir hücreye işaret edildiğini doğrulayan adımdır.\nÖrnek: Boş dizide i=0 için silme çağrısı indeks hatası üretir.\nSık hata: Silinecek indeksin geçerliliğini denetlemeden dizi sınırını aşmak."
+  },
+  {
+    "satirlar": [54, 60],
+    "baslik": "Sola Kaydırma ve Bellek Temizleme",
+    "aciklama": "Silinen elemanın oluşturduğu boşluğu kapatmak için sağdaki elemanlar birer basamak sola kaydırılır. Boşalan en son hücre `None` ile temizlenir ve `self.boy` azaltılır. Tüm elemanlar kaydırılabileceğinden bu işlemin karmaşıklığı O(n) olmaktadır.",
+    "sinav": "Tanım: Silinen hücrenin yerini doldurmak için sağdaki verileri sola çekme işlemidir.\nFormül: En kötü durum T(n) = O(n)\nÖrnek: Sıfırıncı indeks silindiğinde n-1 eleman sola ötelenir.\nSık hata: Son hücreyi None yapmayarak bellek sızıntısına (loitering) sebep olmak."
+  },
+  {
+    "satirlar": [62, 67],
+    "baslik": "Doğrusal Arama Algoritması",
+    "aciklama": "`ara` metodu dizideki elemanları sırayla baştan sona tarar. Her karşılaştırmada `self.islem` sayacı bir artırılır. Aranan eleman bulunursa indeksi döndürülür, bulunamazsa -1 döner; bu doğrusal arama O(n) zaman alır.",
+    "sinav": "Tanım: Sırasız statik dizide bir değeri bulmak için baştan sona yapılan doğrusal taramadır.\nFormül: En kötü durum T(n) = O(n)\nÖrnek: 100 elemanlı dizide olmayan değeri aramak 100 karşılaştırma gerektirir.\nSık hata: Eleman bulunamadığında hata fırlatmak yerine standart -1 sonucunu unutmak."
+  },
+  {
+    "satirlar": [70, 74],
+    "baslik": "Ana Fonksiyon Test Kurulumu",
+    "aciklama": "`main` fonksiyonu 5 kapasiteli bir `StatikDizi` nesnesi oluşturur. Sırasıyla 10 ve 20 elemanlarını ekler, ardından 1. indekse 15 değerini araya ekler. Dizi elemanları ekrana yazdırılarak ilk durum görselleştirilir.",
+    "sinav": "Tanım: Veri yapısının temel işlevlerini örnek veriyle doğrulayan sürücü fonksiyon başlangıcıdır.\nÖrnek: Kapasite 5 ile oluşturulan dizide [10, 15, 20] elemanlarının birikmesi.\nSık hata: Test senaryosunda birden fazla işlem adımı arasında durumu takip etmemek."
+  },
+  {
+    "satirlar": [75, 78],
+    "baslik": "Silme İşleminin Çıktısını İnceleme",
+    "aciklama": "Sıfırıncı indeksteki 10 elemanı silinerek ekrana basılır. Silme sonrasında dizinin güncel elemanları konsolda listelenir. Böylece kaydırma mekanizmasının doğru çalıştığı gözlemlenir.",
+    "sinav": "Tanım: Silme işleminin geri dönüş değerini ve listenin son halini ekranda gösteren test adımıdır.\nÖrnek: İlk eleman silinince dizide [15, 20] elemanlarının kalması.\nSık hata: Silinen elemanın geriye döndürülüp döndürülmediğini kontrol etmemek."
+  },
+  {
+    "satirlar": [80, 83],
+    "baslik": "Doğrulama ve İddia Kontrolleri",
+    "aciklama": "`assert` ifadeleri dizinin boyutunun 2 kaldığını ve elemanların sırasını doğrular. Ayrıca mevcut ve mevcut olmayan elemanlar için arama sonuçları test edilir. Bu iddialar kodun doğruluğunu otomatik olarak garanti eder.",
+    "sinav": "Tanım: Kodun beklenen davranışını çalışma zamanında doğrulayan assert denetimleridir.\nÖrnek: assert d.boy == 2 ifadesi boyutun doğru eksildiğini teyit eder.\nSık hata: Assert denetimlerini atlayarak sessizce yanlış sonuç üreten kod yazmak."
+  },
+  {
+    "satirlar": [85, 91],
+    "baslik": "Dolu Diziye Ekleme Testi",
+    "aciklama": "Kapasitesi 1 olan bir diziye ikinci eleman eklenmeye çalışılır. `try-except` bloğu beklenen `IndexError` istisnasını yakalar. Hata fırlatılmazsa `assert False` ile testin başarısız olması sağlanır.",
+    "sinav": "Tanım: Kapasite sınırını aşan durumlarda sistemin kontrollü hata üretmesini sınayan testtir.\nÖrnek: 1 kapasiteli diziye 2. elemanı eklemeye çalışmak IndexError verir.\nSık hata: Kapasite aşımında sessizce veriyi yutmak veya bellek hatası vermek."
+  },
+  {
+    "satirlar": [93, 97],
+    "baslik": "Sınır Dışı İndeks Testi",
+    "aciklama": "Var olmayan 10. indekse erişim denemesi yapılır. Sistem doğru şekilde `IndexError` üretirse test başarıyla geçer. Bu kenar durum kontrolü dizinin güvenilirliğini pekiştirir.",
+    "sinav": "Tanım: Dizinin geçerli eleman aralığı dışındaki erişim isteklerini reddetme güvencesidir.\nÖrnek: Boyutu 2 olan dizide 10. indeksi istemek IndexError fırlatır.\nSık hata: Sınır dışı indekslerde rastgele çöp değer dönmesine izin vermek."
+  },
+  {
+    "satirlar": [99, 101],
+    "baslik": "Performans Karşılaştırma Tablosu Başlığı",
+    "aciklama": "Büyüyen veri boyutlarında sona ekleme ile başa ekleme arasındaki maliyet farkını gösteren tablo başlığı basılır. Başlıkta N, O(1) maliyet ve O(n) maliyet sütunları yer alır. Bu tablo karmaşıklık farkını somutlaştırır.",
+    "sinav": "Tanım: Farklı algoritmik karmaşıklıkların deneysel adımlarını karşılaştıran tablo formatıdır.\nÖrnek: Sona ekleme O(1) ile başa ekleme O(n) karşılaştırması.\nSık hata: Çıktı başlıklarını okunaksız ve hizasız biçimlendirmek."
+  },
+  {
+    "satirlar": [102, 108],
+    "baslik": "Deneysel Karmaşıklık Ölçümü ve Çıktı",
+    "aciklama": "N=100 ve N=1000 için sona ekleme ve başa ekleme işlem sayıları ölçülür. Sona eklemede işlem sayısı N kadar olurken başa eklemede kaydırmalar nedeniyle yaklaşık N^2 / 2 işlem gerçekleşir. Sonuçlar formatlı bir tablo olarak konsola yazdırılır.",
+    "sinav": "Tanım: Teorik karmaşıklık modellerini sayaç verileriyle doğrulayan deneysel ölçekleme testidir.\nFormül: Başa ekleme toplam işlem = n*(n+1)/2\nÖrnek: N=100 için 5050 işlem, N=1000 için 500500 işlem ölçülür.\nSık hata: Döngü içinde sayaçları sıfırlamadan kümülatif hatalı veri toplamak."
+  },
+  {
+    "satirlar": [111, 112],
+    "baslik": "Program Başlatıcı Ana Koşul",
+    "aciklama": "Python dosyasının doğrudan çalıştırılıp çalıştırılmadığını `__name__ == '__main__'` koşuluyla denetler. Betik doğrudan çağrıldığında `main` fonksiyonunu tetikler. Bu yapı dosyanın başka modüllerce kütüphane gibi içe aktarılmasına olanak tanır.",
+    "sinav": "Tanım: Python betiklerinin doğrudan yürütüldüğünü belirten standart giriş noktası koşuludur.\nÖrnek: python dizi_statik.py komutu verildiğinde main() çalışır.\nSık hata: Bu bloğu eklemeyip içe aktarıldığında test kodlarının otomatik çalışmasına yol açmak."
+  }
+]

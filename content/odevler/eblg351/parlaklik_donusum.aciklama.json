@@ -1,0 +1,92 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring y=0.75x+20 dönüşümünün çarpma ve toplama etkilerini ayrı ayrı karşılaştırma hedefini, komut biçimini ve varsayılan yolları anlatır. Dosya yolu verilmezse dama.jpg okunup sonuçlar cikti klasörüne yazılır. Doğrusal dönüşümde çarpan kontrast ölçeğini, sabit terim parlaklık kaymasını etkiler.",
+    "sinav": "Tanım: Doğrusal parlaklıkta katsayı kontrastı, sabit terim aydınlığı belirler.\nFormül: `y = 0.75 * x + 20`\nSık hata: Dönüşüm sonrası değerleri `[0, 255]` aralığına kırpmayı unutmak.",
+    "baslik": "Doğrusal parlaklık dönüşümü docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      7
+    ],
+    "aciklama": "argparse terminalden girdi ve çıktı konumlarını alır, Path yol nesneleri üzerinde klasör işlemlerini sağlar. Bu iki modül dış girdileri standart biçimde yönetmek için kullanılır. Konumsal argümanlara varsayılan vermek dosya yolları yazılmadan da betiğin çalışmasını sağlar.",
+    "sinav": "Tanım: `argparse` komut satırı girdilerini işler; `Path` işletim sisteminden bağımsız dosya yolları üretir.\nSık hata: İsteğe bağlı argümana `default` değeri atamayıp argümansız çağrıda hata almak.",
+    "baslik": "Argüman ve yol modüllerini aktar"
+  },
+  {
+    "satirlar": [
+      9,
+      12
+    ],
+    "aciklama": "cv2 görüntü okuma, yeniden boyutlandırma ve yazma işlerini; np piksel aritmetiğini ve istatistikleri yürütür. KLASOR betiğin bulunduğu klasörü bulur ve varsayılan dosya yollarının tabanı olur. Gri görüntüler NumPy matrisinde tek yoğunluk değerini piksel başına saklar.",
+    "sinav": "Tanım: `Path(__file__).resolve().parent` betiğin bulunduğu klasörün mutlak yolunu verir.\nÖrnek: `uint8` türü 0–255 aralığında piksel tutar.\nSık hata: Betik dizini yerine mevcut çalışma dizinine güvenip dosyayı bulamamak.",
+    "baslik": "Görüntü ve matris işlemlerini bağla"
+  },
+  {
+    "satirlar": [
+      15,
+      20
+    ],
+    "aciklama": "parlaklik_donusumleri uint8 pikselleri önce np.float32 yaparak çarpma ve toplama sırasında ara taşmayı önler. Üç çıktı sırasıyla 0.75 ile çarpma, 20 ekleme ve y=0.75x+20 dönüşümüdür; her biri np.clip ile 0–255'e doyurulup uint8'e çevrilir. Çarpan birden küçük olduğu için değer aralığını daraltır, sabit ekleme ise koyu bölgeleri de aydınlatır.",
+    "sinav": "Tanım: `np.clip` değerleri belirtilen aralıkta tutar; `float32` ara türü `uint8` taşmasını engeller.\nFormül: `y = np.clip(0.75 * f + 20, 0, 255).astype(np.uint8)`\nÖrnek: `x = 255` için `0.75*255 + 20 = 211.25` olup `211` değerini alır.",
+    "baslik": "Parlaklık dönüşümlerini float32 ile uygula"
+  },
+  {
+    "satirlar": [
+      23,
+      28
+    ],
+    "aciklama": "karsilastirma_gorseli dört başlıkla görüntü listesini eşleştirip her hücrenin genişliğini 600 pikseli aşmayacak şekilde belirler. Yeni yükseklik en-boy oranıyla hesaplandığından küçültme resmi ezip uzatmaz; max(1,...) boyutun sıfır olmasını önler. Aynı gösterim ölçüsünü kullanmak dönüşümlerin görsel karşılaştırmasını kolaylaştırır.",
+    "sinav": "Tanım: En-boy oranını korumak için yükseklik aynı ölçek oranıyla hesaplanır.\nFormül: `hucre_h = int(h * (hucre_w / w))`\nSık hata: Sabit boyutlara zorlayarak görüntünün en-boy oranını bozmak.",
+    "baslik": "Karşılaştırma hücresi boyutunu hesapla"
+  },
+  {
+    "satirlar": [
+      29,
+      33
+    ],
+    "aciklama": "cv2.resize görüntüyü gerektiğinde küçültür; INTER_AREA küçültme sırasında alan katkılarını birleştirerek aliasing etkisini azaltır. copyMakeBorder üst tarafa siyah etiket şeridi ekler, putText hücre adını yazar ve hücre listesine ekler. Sonunda hconcat yatay çiftleri, vconcat bu çiftleri dikey birleştirerek 2×2 karşılaştırma matrisi üretir.",
+    "sinav": "Tanım: `cv2.hconcat` aynı yükseklikteki matrisleri yatay, `cv2.vconcat` aynı genişlikteki satırları dikey birleştirir.\nSık hata: Farklı boyutlardaki görüntü matrislerini birleştirmeye çalışarak boyut hatası almak.",
+    "baslik": "Hücreleri ölçekle ve matrisi birleştir"
+  },
+  {
+    "satirlar": [
+      36,
+      41
+    ],
+    "aciklama": "main girdi ve çıktı yollarını argparse ile alıp cv2.imread(..., IMREAD_GRAYSCALE) üzerinden tek kanallı resmi yükler. None kontrolü başarısız dosya okumayı sonraki aritmetik ve shape erişimlerinden önce durdurur. Bu doğrulama, hatanın gerçek kaynağını anlaşılır bir mesajla gösterir.",
+    "sinav": "Tanım: `IMREAD_GRAYSCALE` resmi tek kanallı `(H, W)` matrisi olarak okur; 3. boyut (kanal) bulunmaz.\nÖrnek: Okuma başarısız olduğunda `cv2.imread` `None` döner.\nSık hata: `None` kontrolü yapmadan matris erişimi yapmaya çalışmak.",
+    "baslik": "Argümanları al ve resmi doğrula"
+  },
+  {
+    "satirlar": [
+      42,
+      47
+    ],
+    "aciklama": "Üç parlaklık sonucu hesaplanır, mkdir çıktı yolunu hazırlar ve dosyalar listesi adları sonuç dizileriyle eşleştirir. Listedeki son öğe özgün ve dönüştürülmüş görselleri dört panelli bir karşılaştırmaya dönüştürür. Ad ile diziyi birlikte tutmak yazma döngüsünün her sonucu doğru dosya adıyla kaydetmesini sağlar.",
+    "sinav": "Tanım: Dönüşüm matrisleri ad-veri çiftleri olarak gruplanarak toplu kaydedilir.\nFormül: `carp = 0.75*x`, `topla = x + 20`, `birlikte = 0.75*x + 20`\nÖrnek: `x = 40` için `carp = 30`, `topla = 60`, `birlikte = 50` sonucunu üretir.",
+    "baslik": "Sonuçları hesapla ve listeyi hazırla"
+  },
+  {
+    "satirlar": [
+      48,
+      52
+    ],
+    "aciklama": "Döngü her görüntüyü cv2.imwrite ile kaydeder ve başarısız bool sonucunda dosya yolunu belirten hata verir. Ardından mean ortalama parlaklığı, min ve max ise en koyu ve en açık pikseli önce/sonra karşılaştırır. Birleşik dönüşümde 255'e kırpılan değerler istatistiklerin doğrusal beklentiden sapmasına yol açabilir.",
+    "sinav": "Tanım: `min`, `max` ve `mean` parlaklık dağılımı istatistiklerini özetler.\nÖrnek: `x = 255` için `0.75*255 + 20 = 211.25` olup `uint8` ile `211` çıkar.\nSık hata: Kesirli değerlerin `uint8` türüne çevrilirken aşağı yuvarlandığını unutmak.",
+    "baslik": "Görüntüleri kaydet ve istatistikleri yazdır"
+  },
+  {
+    "satirlar": [
+      55,
+      56
+    ],
+    "aciklama": "__name__ ile __main__ metinlerinin eşitliği main akışını yalnız betik doğrudan çalıştırıldığında yürütür. Dosya modül olarak import edilirse varsayılan görüntü okunmaz, çıktı klasörü oluşturulmaz. Bu yapı fonksiyonları başka çalışmalarda yan etki olmadan kullanmayı sağlar.",
+    "sinav": "Tanım: `__name__ == '__main__'` deyimi, dosya komut satırından doğrudan çağrıldığında ana fonksiyonu yürütür.\nSık hata: Bu denetimi koymayıp dosya `import` edildiğinde tüm işlemlerin istemsizce çalışmasına yol açmak.",
+    "baslik": "Doğrudan çalıştırma kontrolü"
+  }
+]

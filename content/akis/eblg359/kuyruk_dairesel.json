@@ -1,0 +1,163 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-kuyruk-modulo-kod-oku",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    22,
+    29
+   ],
+   "etiketler": [
+    "kuyruk",
+    "modulo",
+    "dairesel"
+   ],
+   "soru": "`kuyruga_ekle` içindeki `(self.bas + self.boy) % self.kapasite` neyi hesaplar?",
+   "secenekler": [
+    "Yeni elemanın yazılacağı dizi indeksini; sona gelince başa sarar.",
+    "Kuyruğun kaç eleman içerdiğini.",
+    "Çıkarılacak elemanın indeksini.",
+    "Kuyruğun doluluk oranını."
+   ],
+   "dogru": 0,
+   "aciklama": "`bas` ilk elemanı, `boy` eleman sayısını verir; ikisinin toplamı ilk boş hücredir. Mod işlemi dizinin sonunu aşınca indeksi başa sarar, böylece eleman kaydırmaya gerek kalmaz.",
+   "sinav": "Dairesel kuyrukta ekleme indeksi = (bas + boy) mod kapasite. Sık hata: indeks formülünde mod'u unutmak."
+  },
+  {
+   "id": "359-kuyruk-modulosuz-ne-olur",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    22,
+    29
+   ],
+   "etiketler": [
+    "kuyruk",
+    "modulo",
+    "tasma"
+   ],
+   "soru": "Kapasite 3: 1, 2, 3 ekleniyor, bir eleman çıkarılıyor, sonra 4 ekleniyor. Mod işlemi kaldırılırsa (`self.bas + self.boy`) ne olur?",
+   "degisiklik": {
+    "eski": "(self.bas + self.boy) % self.kapasite",
+    "yeni": "self.bas + self.boy"
+   },
+   "secenekler": [
+    "Dizi taşar: indeks 3, kapasite 3 olduğu için IndexError oluşur.",
+    "4, boşalan ilk hücreye yazılır, sonuç aynı kalır.",
+    "Kuyruk sessizce 4'ü yok sayar.",
+    "Kapasite otomatik büyür."
+   ],
+   "dogru": 0,
+   "aciklama": "Çıkarmadan sonra bas=1, boy=2 olur; yeni indeks 1+2=3, ama geçerli indeksler 0-2'dir. Mod'lu sürümde 3 % 3 = 0 çıkar ve eleman başta boşalan hücreye yazılır. Mod, sabit boyutlu diziyi halka gibi kullanmayı sağlar.",
+   "kanit": "bas+boy = 3, kapasite = 3 -> dizi[3] = 4 satırı 'IndexError: list assignment index out of range' verdi."
+  },
+  {
+   "id": "359-kuyruk-durum-cikti",
+   "tur": "cikti-tahmin",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    22,
+    40
+   ],
+   "etiketler": [
+    "kuyruk",
+    "dairesel",
+    "durum"
+   ],
+   "soru": "Kapasite 3: 1, 2, 3 eklenir; `kuyruktan_cikar()` bir kez çağrılır; sonra 4 eklenir. `dizi`, `bas`, `boy` değerleri nedir?",
+   "secenekler": [
+    "dizi=[4, 2, 3], bas=1, boy=3",
+    "dizi=[2, 3, 4], bas=0, boy=3",
+    "dizi=[None, 2, 3], bas=1, boy=2",
+    "dizi=[4, 2, 3], bas=0, boy=3"
+   ],
+   "dogru": 0,
+   "aciklama": "Çıkarma 0. hücreyi None yapar ve bas=1 olur. Ekleme indeksi (1+2) % 3 = 0, yani 4 başa yazılır. Veri kaydırılmaz; yalnız bas ve boy güncellenir.",
+   "kanit": "Kod çalıştırıldı: dizi=[4, 2, 3], bas=1, boy=3; çıkarılan değer 1"
+  },
+  {
+   "id": "359-kuyruk-cikar-karmasiklik",
+   "tur": "karmasiklik",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    31,
+    40
+   ],
+   "etiketler": [
+    "kuyruk",
+    "o(1)",
+    "karmasiklik"
+   ],
+   "soru": "`kuyruktan_cikar` metodunun zaman karmaşıklığı nedir?",
+   "secenekler": [
+    "O(1)",
+    "O(n)",
+    "O(log n)",
+    "O(n²)"
+   ],
+   "dogru": 0,
+   "aciklama": "Metot yalnız bir hücreyi okur, `bas` indeksini bir artırır ve sayaçları günceller; eleman kaydırma yoktur. Liste başından silen `pop(0)` ise kalan elemanları kaydırdığı için O(n) olurdu."
+  },
+  {
+   "id": "359-kuyruk-neden-acikla",
+   "tur": "kod-oku",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    13,
+    20
+   ],
+   "etiketler": [
+    "kuyruk",
+    "dairesel",
+    "bellek"
+   ],
+   "soru": "Dairesel kuyruk neden `bas` ve `boy` alanlarıyla sabit boyutlu dizide tutulur?",
+   "aciklama": "Çıkarmada elemanları sola kaydırmak yerine yalnız `bas` ilerletilir; böylece her işlem O(1) kalır. `boy` doluluğu ayırt eder (bas=ekle indeksi olduğunda hem boş hem dolu olabilir). Kapasite sabit olduğundan bellek kullanımı önceden bellidir; bedeli, dolu kuyruğa eklemede hata vermektir.",
+   "sinav": "Anahtar noktalar: kaydırma yok, modulo ile halka, boy sayacı dolu/boş ayrımı, sabit kapasite.",
+   "secenekler": [
+    "Çıkarmada kaydırma yok, yalnız `bas` ilerler (O(1)); `boy` dolu/boş ayrımını yapar",
+    "Dizi dinamik büyüdüğü için",
+    "`boy` gereksizdir, `bas` yeter",
+    "Sabit boyut yalnız hız yavaşlatır"
+   ],
+   "dogru": 0
+  },
+  {
+   "id": "359-kuyruk-dolu-sinav",
+   "tur": "sinav",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds6",
+   "dosya": "kuyruk_dairesel.py",
+   "satirlar": [
+    53,
+    55
+   ],
+   "etiketler": [
+    "kuyruk",
+    "dolu",
+    "tanim"
+   ],
+   "soru": "Doğru mu yanlış mı: Bu kuyrukta `dolu_mu` sonucu `boy == kapasite` koşuluyla belirlenir.",
+   "dogruMu": true,
+   "aciklama": "Doğru. `boy` eleman sayısını tuttuğu için dolu/boş ayrımı basitçe sayaç karşılaştırmasıyla yapılır. Yalnız bas ve ekleme indeksine bakılsaydı boş ve dolu durum karışırdı."
+  }
+ ]
+}

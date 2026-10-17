@@ -1,0 +1,9 @@
+=== Ödev 7: İki Yığın ile Kuyruk Doğrulama ===
+1. FIFO sıralaması ve ara ekleme davranışı doğrulandı.
+2. Boş kuyruktan eleman çıkarma IndexError fırlattı.
+3. En kotu tekil cikarma maliyeti O(n) kanitlandi: 501 islem.
+4. n=1000 karisik ekle/cikar FIFO dogrulandi, toplam aktarim=1000 <= 1000.
+
+Senaryo          Eleman   Aktarım   Akt/Eleman
+Tek Boşaltma     500      500       1.00      
+Karışık Akış     1000     1000      1.00      

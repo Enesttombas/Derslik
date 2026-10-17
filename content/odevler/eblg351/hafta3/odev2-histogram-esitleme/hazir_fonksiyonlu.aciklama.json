@@ -1,0 +1,38 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "baslik": "Gerekli modülleri bağla ve dizini ayarla",
+    "aciklama": "Pathlib dosya sistemi erişimini güvenli hale getirirken, cv2 görüntü işleme ve histogram eşitleme fonksiyonunu sunar. Klasör değişkeni betiğin bulunduğu konumu referans alarak göreli yolların her ortamda doğru çözülmesini sağlar. Bu modüller görüntü analizinin temel altyapısını oluşturur.",
+    "sinav": "Tanım: Modül içe aktarımı betiğin çalışma kapsamını genişletir; `cv2` OpenCV C++ çekirdeğine Python arayüzü sağlar.\nSık hata: `cv2` kütüphanesini sistemde kurulu olmadan çalıştırmaya kalkışmak."
+  },
+  {
+    "satirlar": [
+      7,
+      8
+    ],
+    "baslik": "Görüntüleri tek kanallı olarak oku",
+    "aciklama": "Döngü dağ ve sis dosyalarını sırayla ele alarak girdi klasöründen gri tonlama modunda yükler. cv2.IMREAD_GRAYSCALE seçeneği her pikseli 0-255 aralığında parlaklık değeri içeren 2 boyutlu bir matris olarak döner. Histogram eşitleme tek bir yoğunluk kanalı üzerinde global kümülatif dağılım fonksiyonuyla çalışır.",
+    "sinav": "Tanım: Histogram eşitleme tek kanallı gri matrisler üzerinde piksel yoğunluk dağılımını düzleştirmeyi amaçlar.\nSık hata: Çok kanallı BGR renkli görüntüyü kanallara ayırmadan `equalizeHist`e verip hata almak."
+  },
+  {
+    "satirlar": [
+      10,
+      10
+    ],
+    "baslik": "cv2.equalizeHist ile histogramı eşitle",
+    "aciklama": "cv2.equalizeHist fonksiyonu görüntünün kümülatif dağılım fonksiyonunu (CDF) hesaplar ve piksel yoğunluklarını tüm gri skalaya olabildiğince düzgün dağıtır. Düşük kontrastlı görüntülerde sıkışmış olan pikseller daha geniş bir alana yayılarak detaylar belirginleşir. Bu işlem özellikle sisli veya aydınlatması yetersiz sahnelerde kontrastı dramatik biçimde artırır.",
+    "sinav": "Tanım: Global histogram eşitleme, görüntünün kümülatif dağılım fonksiyonunu (CDF) doğrusal bir dağılıma dönüştürür.\nÖrnek: Dar alana yığılmış sisli pikseller tüm skalaya yayılarak standart sapma artar.\nSık hata: Aşırı aydınlık veya karanlık arka planlarda gürültünün de eşitlemeyle birlikte aşırı belirginleşmesi."
+  },
+  {
+    "satirlar": [
+      12,
+      13
+    ],
+    "baslik": "Çıktıyı diske yaz ve standart sapmayı ölç",
+    "aciklama": "Eşitlenmiş görüntü cikti klasörüne kaydedilir ve işlem öncesi ile sonrasındaki standart sapma değerleri ekrana yazdırılır. Standart sapmanın artması, piksel değerlerinin ortalamadan daha geniş bir alana yayıldığını ve dolayısıyla kontrastın yükseldiğini sayısal olarak doğrular. Sis görüntüsünde standart sapma 37.28'den 74.33'e fırlayarak kontrast artışını açıkça kanıtlar.",
+    "sinav": "Tanım: Standart sapma (`std`) piksel parlaklıklarının dağılım genişliğini ölçer; yüksek sapma genellikle yüksek kontrast göstergesidir.\nÖrnek: `sis: std 37.28 -> 74.33` (kontrast iki katına çıkmıştır).\nSık hata: Standart sapmanın artışını tek başına görüntü kalitesinin arttığı şeklinde mutlak doğrulamak."
+  }
+]

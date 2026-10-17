@@ -1,0 +1,137 @@
+[
+  {
+    "satirlar": [
+      1,
+      5
+    ],
+    "aciklama": "Docstring dört görüntü parçasına farklı parlaklık dönüşümleri uygulayıp sıralı ve thread seçeneklerini karşılaştırma amacını belirtir. İsteğe bağlı --tekrar ölçüm sayısını seçer ve belirtilmezse 20 defa ölçüm yapılır. Bu kullanım örneği hem veri akışını hem performans deneyinin parametresini anlatır.",
+    "sinav": "Tanım: Görüntü kadranlara bölünerek bağımsız işlemler iş parçacıklarına dağıtılır.\nÖrnek: Varsayılan `--tekrar 20` ile ortalama süre ölçülür.\nSık hata: Küçük işlerde thread havuzu kurma maliyetinin kazancı aşıp süreyi uzatabileceğini unutmak.",
+    "baslik": "Parça thread ödevi docstring'i"
+  },
+  {
+    "satirlar": [
+      6,
+      9
+    ],
+    "aciklama": "argparse terminal girdilerini, ThreadPoolExecutor iş havuzunu, Path dosya yollarını ve perf_counter geçen süre ölçümünü sağlar. Bunlar sırasıyla kullanıcı arayüzü, eşzamanlı görev yürütme, dosya konumu ve performans hesabı için kullanılır. Standart araçları ayrı sorumluluklarla kullanmak akışı izlemeyi kolaylaştırır.",
+    "sinav": "Tanım: `ThreadPoolExecutor` iş parçacığı havuzu oluşturur; `perf_counter` hassas süre farkı ölçer.\nSık hata: CPU yoğun Python kodunda iş parçacığı kullanmanın Global Interpreter Lock (GIL) nedeniyle otomatik hızlanma sağlayacağını sanmak.",
+    "baslik": "Gerekli kütüphaneleri içe aktar"
+  },
+  {
+    "satirlar": [
+      11,
+      14
+    ],
+    "aciklama": "cv2 görüntü okuma ve yazma için, np piksel dizilerinde sayısal hesaplar için içe aktarılır. KLASOR, __file__ yolunun çözümlenmiş üst klasörü olduğundan varsayılan dama.jpg ve cikti yolları betiğin konumuna göre kurulur. Böylece göreli yollar terminaldeki mevcut klasöre bağımlı kalmaz.",
+    "sinav": "Tanım: `numpy` piksel matris işlemlerini, `cv2` dosya okuma ve yazmayı yürütür.\nÖrnek: `Path(__file__).resolve().parent` betik klasörünü verir.\nSık hata: Betik dizini yerine geçerli çalışma dizinine güvenip resim dosyasını bulamamak.",
+    "baslik": "Görüntü ve yol araçlarını hazırla"
+  },
+  {
+    "satirlar": [
+      17,
+      19
+    ],
+    "aciklama": "_bol gri görüntünün h ve w boyutlarını, ardından y ve x orta koordinatlarını hesaplar. // 2 tam sayı bölmesi koordinatları aşağı alır; ölçü tek sayıysa alt veya sağ bölüm bir piksel daha büyük olabilir. Dört aralığı kesişimsiz kurmak, her pikseli tam bir iş parçasına atar.",
+    "sinav": "Tanım: Tamsayı bölme (`//`) boyutu ikiye bölerek dilimleme sınırlarını saptar.\nFormül: `my = h // 2`, `mx = w // 2` (5 için `5 // 2 = 2`)\nSık hata: Tamsayı bölme yerine `/` kullanıp indeksleme hatası almak.",
+    "baslik": "Görüntüyü dört kadran dilimine ayır"
+  },
+  {
+    "satirlar": [
+      20,
+      23
+    ],
+    "aciklama": "Her dilim görüntünün bir kadranını seçer ve yanına sonuçları yerleştirmek için satır-sütun slice sınırlarını ekler. NumPy dilimleme satırları ilk, sütunları ikinci eksende seçer; bu sıra görüntü shape gösterimiyle uyumludur. Konumu saklamak, işlenmiş kadranı özgün tuvalde doğru yere geri yazmayı sağlar.",
+    "sinav": "Tanım: `slice` nesneleri parçaların matristeki koordinatlarını saklar.\nFormül: `sonuc[konum] = parca` (örneğin `(slice(0, my), slice(0, mx))`)\nSık hata: NumPy matris indekslemesinde `[satır, sütun]` sırasını karıştırmak.",
+    "baslik": "Kadran dilimlerini ve konumları eşle"
+  },
+  {
+    "satirlar": [
+      26,
+      31
+    ],
+    "aciklama": "_isle gelen ikiliden sıra numarasını ve parça dizisini ayırıp x değerlerini np.float32 yapar. İlk kadrana 50 eklenir, ikinci kadrandan 50 çıkarılır; kayan nokta ara türü uint8 üzerinde aritmetik taşmayı önler. Sıra numarası her kadrana uygulanacak dönüşümü belirler.",
+    "sinav": "Tanım: `float32` ara türü `uint8` üzerindeki aritmetik taşmaları önler.\nFormül: Kadran 0 için `x += 50`, Kadran 1 için `x -= 50`\nSık hata: `uint8` üzerinde doğrudan toplayıp 255 aşımında sıfıra sarma (wrap-around) yaşamak.",
+    "baslik": "Kadran 1 ve 2 parlaklık işlemi"
+  },
+  {
+    "satirlar": [
+      32,
+      37
+    ],
+    "aciklama": "Üçüncü kadranda 255−x dönüşümü gri değerleri tersine çevirir; dördüncüde sqrt(x/255)×255, normalize edilmiş girdiye Gamma 0.5 uygular. np.clip sonuçları 0–255 aralığında doyurur, astype(np.uint8) kesirli kısmı atarak piksel türüne çevirir. float32 ara hesaplama ve son kırpma, negatif veya aşırı değerlerin geçersiz görünmesini engeller.",
+    "sinav": "Tanım: Kadran 2'de negatif (`255 - x`), Kadran 3'te Gama 0.5 uygulanır; `np.clip` aralığı sınırlar.\nFormül: `y = np.sqrt(x / 255) * 255` (x=64 için 127)\nSık hata: `np.clip` ile doyurmadan doğrudan `uint8` türüne dönüştürmek.",
+    "baslik": "Kadran 3 ve 4 parlaklık dönüşümü"
+  },
+  {
+    "satirlar": [
+      40,
+      45
+    ],
+    "aciklama": "parcalari_isle önce kadranları ve her kadran için sıra numaralı görev listesini hazırlar. paralel=True ise ThreadPoolExecutor(max_workers=4) dört işi havuzda çalıştırır; havuz context bloğundan çıkarken kapatılır. NumPy'nin yerel sayısal işlemleri GIL'i bırakabildiği için thread yarar sağlayabilir, fakat Python ve havuz yükü de süreye eklenir.",
+    "sinav": "Tanım: `ThreadPoolExecutor(max_workers=4)` 4 iş parçacıklı havuz açar; `map` girdi sırasını korur.\nÖrnek: Her görev `(i, parca)` demeti olarak havuza verilir.\nSık hata: GIL ve görev maliyetine rağmen thread havuzunun her durumda daha hızlı olacağını varsaymak.",
+    "baslik": "Dört thread ile paralel işle"
+  },
+  {
+    "satirlar": [
+      46,
+      51
+    ],
+    "aciklama": "Paralel seçenek kapalıysa aynı görev listesi _isle fonksiyonuna birer birer verilir. np.empty_like sonuç görüntüsüyle aynı şekil ve türde bellek ayırır, fakat başlangıç değerleri tanımlı değildir. for döngüsü her kadranı saklanan dilimine yazar; bütün dilimler yazılınca döndürülen görüntünün her pikseli tanımlanmış olur.",
+    "sinav": "Tanım: `np.empty_like` aynı şekil ve türde başlatılmamış dizi açar; `zip` ile dilimler eşlenir.\nSık hata: `np.empty_like` dizisinin sıfırlandığını varsayıp yazılmayan piksellerde çöp veri bırakmak.",
+    "baslik": "Sıralı işle ve tuvale yerleştir"
+  },
+  {
+    "satirlar": [
+      54,
+      58
+    ],
+    "aciklama": "_sure_olc perf_counter değerini işlem başlamadan önce alır ve parcalari_isle çağrısını tekrar kez çalıştırır. Bitiş-başlangıç farkını tekrar sayısına bölmek her çağrı için ortalama süreyi verir; son çağrının resmi de döndürülür. Tekrar etmek zamanlayıcı ve anlık işletim sistemi dalgalanmalarının etkisini azaltır.",
+    "sinav": "Tanım: Tekrarlı ölçüm sistem dalgalanmalarını filtreleyerek ortalama süreyi hesaplar.\nFormül: `ortalama = (bitis - baslangic) / tekrar`\nSık hata: Tek ölçüm yapıp anlık CPU ve işletim sistemi dalgalanmalarını hesaba katmamak.",
+    "baslik": "Tekrarlı ortalama süre ölçümü"
+  },
+  {
+    "satirlar": [
+      61,
+      66
+    ],
+    "aciklama": "main girdi ve çıktı yollarını, ayrıca varsayılanı 20 olan --tekrar seçeneğini argparse ile tanımlar. type=Path yol nesneleri üretir; varsayılan dosyalar KLASOR üzerinden betik klasörüne bağlanır. Kullanıcı girdilerinin tek noktada tanımlanması terminal arayüzünün davranışını açık eder.",
+    "sinav": "Tanım: `argparse` konumsal ve opsiyonel argümanları yönetir; `nargs='?'` konumsal yolu isteğe bağlı kılar.\nÖrnek: Varsayılan `--tekrar` 20 tamsayısıdır.\nSık hata: `--tekrar` için `type=int` verilmediğinde argümanın dizge (`str`) kalacağını unutmak.",
+    "baslik": "Komut satırı argümanlarını yapılandır"
+  },
+  {
+    "satirlar": [
+      67,
+      71
+    ],
+    "aciklama": "Tekrar sayısı 1'den küçükse program süreyi sıfıra bölme veya anlamsız ölçüm yapmamak için hata verir. Görüntü IMREAD_GRAYSCALE olarak okunur; cv2.imread başarısızsa None kontrolü sonraki NumPy işlemlerini engeller. Girdi doğrulaması geçersiz veriyi hesaplama katmanından önce yakalar.",
+    "sinav": "Tanım: Girdi doğrulama geçersiz parametre durumunda programı güvenle sonlandırır.\nÖrnek: `args.tekrar < 1` durumunda ortalama paydası sıfır olamayacağı için çıkış yapılır.\nSık hata: `imread` çıktısının `None` olabileceğini denetlemeyip programı çökertmek.",
+    "baslik": "Girdi ve tekrar sayısını doğrula"
+  },
+  {
+    "satirlar": [
+      72,
+      76
+    ],
+    "aciklama": "Önce False ile sıralı, sonra True ile dört thread yolu _sure_olc üzerinden ölçülür; ikinci yolun son görüntüsü sonuc değişkeninde tutulur. mkdir çıktı klasörünü oluşturur ve cv2.imwrite paralel sonucun PNG dosyasını yazar. Yazma bool değeri kontrol edildiğinden hata sessizce geçilmez.",
+    "sinav": "Tanım: Sıralı ve paralel ölçümler aynı girdiyle karşılaştırılır; `imwrite` sonucu dosyaya yazar.\nÖrnek: `parca_sonuc.png` dosyası 4 thread çıktısından üretilir.\nSık hata: `cv2.imwrite` başarısızlığının kontrol edilmeyip yazma hatalarının gözden kaçması.",
+    "baslik": "Sıralı ve paralel süreyi ölç"
+  },
+  {
+    "satirlar": [
+      77,
+      78
+    ],
+    "aciklama": "Terminal çıktısı tekrar sayısıyla birlikte sıralı ve dört thread ortalamalarını saniye cinsinden gösterir. NumPy yerel işlemleri GIL'i bırakabildiğinden iş parçacıkları örtüşebilir, ama kadranlara bölme ve havuz açma maliyeti de vardır. Bu yüzden hızlanma varsayılmamalı, ölçülen iş yükü üzerinden yorumlanmalıdır.",
+    "sinav": "Tanım: Global Interpreter Lock (GIL) bayt kodunu kilitler; NumPy yerel C işlemleri GIL'i serbest bırakabilir.\nSık hata: Küçük görüntülerde iş parçacığı havuzu yönetim yükünün paralel hızlanma kazancını yok edebileceğini unutmak.",
+    "baslik": "Ölçüm sürelerini terminale yazdır"
+  },
+  {
+    "satirlar": [
+      81,
+      82
+    ],
+    "aciklama": "__name__ ile __main__ metinlerinin eşitliği main akışını yalnız dosya doğrudan çalıştırıldığında başlatır. Modül olarak içe aktarmada terminal argümanları okunmaz ve çıktı dosyası üretilmez. Bu kalıp fonksiyonları başka koddan kullanırken betik yan etkilerini ayırır.",
+    "sinav": "Tanım: `__name__ == '__main__'` denetimi doğrudan çalıştırmayı `import` işleminden ayırır.\nSık hata: Bu denetimi koymayıp dosya modül olarak içe aktarıldığında tüm süre testlerinin ve dosya yazımlarının istemsizce çalışması.",
+    "baslik": "Doğrudan çalıştırma kontrolü"
+  }
+]

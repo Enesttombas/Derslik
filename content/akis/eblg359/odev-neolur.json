@@ -1,0 +1,275 @@
+{
+ "surum": 1,
+ "kartlar": [
+  {
+   "id": "359-o-ds1-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds1",
+   "dosya": "dizi_statik.py",
+   "satirlar": [
+    99,
+    108
+   ],
+   "etiketler": [
+    "statik-dizi",
+    "olcek"
+   ],
+   "soru": "Karşılaştırmada N 100 yerine 200 olursa, N elemanın başa eklenmesinin toplam işlem sayısı ne olur?",
+   "degisiklik": {
+    "eski": "N = 100",
+    "yeni": "N = 200"
+   },
+   "secenekler": [
+    "20100 (yaklaşık 4 kat)",
+    "10100 (2 kat)",
+    "200",
+    "40000"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: N=100 → 5050; N=200 → 20100 (n(n−1)/2 + n).",
+   "aciklama": "Başa ekleme O(n²): N iki katına çıkınca maliyet yaklaşık dört katına çıkar (5050 → 20100). Sona ekleme ise yalnız 2 kat (100 → 200)."
+  },
+  {
+   "id": "359-o-ds2-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 1,
+   "odev": "ds2",
+   "dosya": "vector_dinamik.py",
+   "satirlar": [
+    27,
+    29
+   ],
+   "etiketler": [
+    "dinamik-dizi",
+    "buyume-carpani"
+   ],
+   "soru": "Büyüme çarpanı 2 yerine 3 olursa 1024 eleman eklemede toplam kopya ve son kapasite?",
+   "degisiklik": {
+    "eski": "kapasite * 2",
+    "yeni": "kapasite * 3"
+   },
+   "secenekler": [
+    "1093 kopya, kapasite 2187",
+    "1023 kopya, kapasite 1024",
+    "2186 kopya, kapasite 2187",
+    "1024 kopya, kapasite 3072"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: 1+3+9+…+729 = 1093 kopya; son kapasite 2187.",
+   "aciklama": "Kapasite 1,3,9,…,2187 büyür; kopyalar 1+3+…+729 = 1093. Çarpan değişse de büyüme geometrik olduğundan ekleme başına amortize O(1) kalır; yalnız bellek israfı artar (2187 yer, 1024 eleman)."
+  },
+  {
+   "id": "359-o-ds3-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds3",
+   "dosya": "bagli_liste_tek.py",
+   "satirlar": [
+    73,
+    83
+   ],
+   "etiketler": [
+    "tek-bagli-liste",
+    "ters-cevirme"
+   ],
+   "soru": "[20, 30] listesinde `ters_cevir()` iki kez art arda çağrılırsa `listeye_cevir()` çıktısı?",
+   "degisiklik": {
+    "eski": "bir kez ters_cevir()",
+    "yeni": "iki kez ters_cevir()"
+   },
+   "secenekler": [
+    "[20, 30]",
+    "[30, 20]",
+    "[]",
+    "Sonsuz döngü"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: iki ters çevirme sonrası [20, 30]; son.deger = 30.",
+   "aciklama": "İki ters çevirme birbirini iptal eder. `son` işaretçisi her çağrıda eski başa taşındığı için liste tutarlı kalır; bu da kodun `self.son = self.bas` satırının neden gerekli olduğunu gösterir."
+  },
+  {
+   "id": "359-o-ds4-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 2,
+   "odev": "ds4",
+   "dosya": "bagli_liste_cift.py",
+   "satirlar": [
+    37,
+    41
+   ],
+   "etiketler": [
+    "cift-bagli-liste",
+    "ekleme"
+   ],
+   "soru": "`basa_ekle` ile 10, 20, 30 sırayla eklenirse baştan sona ve sondan başa liste?",
+   "degisiklik": {
+    "eski": "sona_ekle(10, 20, 30)",
+    "yeni": "basa_ekle(10, 20, 30)"
+   },
+   "secenekler": [
+    "[30, 20, 10] ve [10, 20, 30]",
+    "[10, 20, 30] ve [30, 20, 10]",
+    "[20, 10, 30] ve [30, 10, 20]",
+    "[30, 10, 20] ve [20, 10, 30]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: Baştan sona [30, 20, 10]; sondan başa [10, 20, 30].",
+   "aciklama": "Her `basa_ekle` yeni düğümü baş nöbetçinin hemen ardına koyar; son eklenen en öne gelir. Sondan başa okuma `onceki` oklarıyla ilk eklenenle başlar."
+  },
+  {
+   "id": "359-o-ds7-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 3,
+   "odev": "ds7",
+   "dosya": "kuyruk_iki_yigin.py",
+   "satirlar": [
+    24,
+    38
+   ],
+   "etiketler": [
+    "kuyruk",
+    "aktarim"
+   ],
+   "soru": "`_aktar` yalnız `giden` boşken değil HER çıkarmada gelen yığını `giden`'e boşaltırsa (1,2,3 ekle, çıkar, 4 ekle, 3 kez çıkar) çıkış sırası?",
+   "degisiklik": {
+    "eski": "if not self.giden: aktar",
+    "yeni": "her çıkarmada aktar"
+   },
+   "secenekler": [
+    "1, 4, 2, 3 (FIFO bozulur)",
+    "1, 2, 3, 4",
+    "1, 2, 4, 3",
+    "4, 3, 2, 1"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: çıkışlar [1, 4, 2, 3].",
+   "aciklama": "İlk çıkarmadan sonra `giden`=[3,2]. 4 eklenip aktarılınca `giden`=[3,2,4] olur ve tepe 4'tür; 4, 2'nin önüne geçer. `giden` boşalmadan aktarmak sırayı bozar."
+  },
+  {
+   "id": "359-o-ds8-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds8",
+   "dosya": "hash_tablosu.py",
+   "satirlar": [
+    13,
+    14
+   ],
+   "etiketler": [
+    "hash",
+    "baslangic-kapasite"
+   ],
+   "soru": "Başlangıç kapasitesi 4 yerine 64 olursa 20 anahtar sonunda yeniden hashleme sayısı, kova sayısı ve yük oranı?",
+   "degisiklik": {
+    "eski": "baslangic_kapasite=4",
+    "yeni": "baslangic_kapasite=64"
+   },
+   "secenekler": [
+    "0, 64, 0.3125",
+    "3, 32, 0.625",
+    "1, 128, 0.156",
+    "0, 64, 1.0"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: yeniden_hash 0, kova 64, yük oranı 0.3125 (20/64).",
+   "aciklama": "20/64 = 0.3125, 0.75 eşiğinin çok altında; hiç yeniden hashleme olmaz. Bedeli bellek: 64 kova, 20 eleman. Küçük başlangıç belleği az kullanır ama çok büyütme gerektirir."
+  },
+  {
+   "id": "359-o-ds9-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds9",
+   "dosya": "ikili_yigin_heap.py",
+   "satirlar": [
+    38,
+    47
+   ],
+   "etiketler": [
+    "heap",
+    "max-heap"
+   ],
+   "soru": "`_yukari_sizdir` karşılaştırması `<` yerine `>` olsaydı 5, 3, 8, 1 ekleme sonrası `veri`?",
+   "degisiklik": {
+    "eski": "veri[i] < veri[p]",
+    "yeni": "veri[i] > veri[p]"
+   },
+   "secenekler": [
+    "[8, 3, 5, 1] (max-heap)",
+    "[1, 3, 8, 5]",
+    "[8, 5, 3, 1]",
+    "[5, 3, 8, 1]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: [8, 3, 5, 1].",
+   "aciklama": "Karşılaştırmayı ters çevirmek min-heap'i max-heap yapar: kök en büyük olur. Yığın kuralı yalnız ebeveyn ≥ çocuk olur; liste hâlâ tam sıralı değildir."
+  },
+  {
+   "id": "359-o-ds10-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 4,
+   "odev": "ds10",
+   "dosya": "ikili_arama_agaci.py",
+   "satirlar": [
+    24,
+    44
+   ],
+   "etiketler": [
+    "bst",
+    "ekleme-sirasi"
+   ],
+   "soru": "5, 4, 3, 2, 1 sırayla eklenirse `yukseklik()` ve `ortanca_dolasim()`?",
+   "degisiklik": {
+    "eski": "50,30,70,… dengeli sıra",
+    "yeni": "5,4,3,2,1 azalan sıra"
+   },
+   "secenekler": [
+    "5 ve [1, 2, 3, 4, 5]",
+    "3 ve [1, 2, 3, 4, 5]",
+    "5 ve [5, 4, 3, 2, 1]",
+    "1 ve [5]"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek koşu: yükseklik 5; ortanca dolaşım [1, 2, 3, 4, 5].",
+   "aciklama": "Azalan sıra her düğümü solda zincirler: yükseklik n, ağaç bağlı listeye döner (arama O(n)). Ortanca dolaşım ağaç şekline bakmadan her zaman artan sıralı verir."
+  },
+  {
+   "id": "359-o-ds11-5",
+   "tur": "ne-olur",
+   "ders": "EBLG359",
+   "hafta": 5,
+   "odev": "ds11",
+   "dosya": "karsilastirma.py",
+   "satirlar": [
+    113,
+    116
+   ],
+   "etiketler": [
+    "karmasiklik",
+    "kaydirma"
+   ],
+   "soru": "Boyutlar (2000, 4000, 8000) yerine N=4000 için tek satırda `kaydirma` değeri?",
+   "degisiklik": {
+    "eski": "N = 2000",
+    "yeni": "N = 4000"
+   },
+   "secenekler": [
+    "7998000",
+    "3999000",
+    "4000",
+    "16000000"
+   ],
+   "dogru": 0,
+   "kanit": "Gerçek hesap: 4000·3999/2 = 7998000.",
+   "aciklama": "Kaydırma n(n−1)/2: N iki katına çıkınca 1999000 → 7998000 (yaklaşık 4 kat). Deque ve bağlı liste N adım (4000) kalır."
+  }
+ ]
+}
