@@ -1,6 +1,6 @@
 # Security
 
-This repository is **private** and holds a personal study platform. Nothing here is a
+This repository is public for viewing. It holds a personal study platform. Nothing here is a
 service for third parties.
 
 ## Model
@@ -23,13 +23,11 @@ service for third parties.
 - **Out of the repo on purpose**: university syllabi, generated study-guide PDFs,
   agent working notes and local logs.
 
-## Before making this repo public
+## Public repository notes
 
-1. Rotate any key that ever lived in a `.dev.vars` on a shared machine.
-2. Re-run a secret scan (`trufflehog git file://. --only-verified`).
-3. Review `public/odevler` (own coursework outputs) and `content/` for material you do not
-   want public.
-4. Decide on a licence; the current `LICENSE` is all-rights-reserved.
+The repository is public for viewing. It contains no secrets (checked with a pattern scan; real
+values live only in `.dev.vars` / Cloudflare secrets). `public/odevler` and `content/` hold the
+owner's own coursework outputs and notes. The licence is all-rights-reserved.
 
 ## Reporting
 

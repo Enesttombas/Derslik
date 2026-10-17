@@ -1,14 +1,13 @@
 <div align="center">
 
-# Enes Derslik
+# Derslik
 
-**A private, mobile-first study platform: spaced repetition, a TikTok-style question feed, and course notes in one place.**
+**A personal, mobile-first study platform: spaced repetition, a TikTok-style question feed, and course notes in one place.**
 
 ![Next.js 16](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%2B%20D1%20%2B%20R2-F38020?logo=cloudflare&logoColor=white)
 ![Drizzle](https://img.shields.io/badge/Drizzle-ORM-C5F74F)
 ![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8)
-![Private](https://img.shields.io/badge/repo-private-critical)
 
 <img src="docs/media/akis-mobil.gif" alt="Akış feed on a phone" width="300">
 &nbsp;&nbsp;
@@ -110,4 +109,4 @@ public/odevler  image-processing coursework outputs (own work)
 
 ## Status
 
-Personal project, actively used. Private repository; all rights reserved ([LICENSE](LICENSE)).
+Personal project, actively used. Source is public for viewing; all rights reserved ([LICENSE](LICENSE)).
