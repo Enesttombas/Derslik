@@ -1,112 +1,86 @@
-<div align="center">
+<p align="center"><img src="docs/media/banner.png" width="100%" alt="Derslik: a mobile-first study platform with spaced repetition and a swipe question feed"></p>
+<p align="center"><b>English</b> · <a href="README.tr.md">Türkçe</a></p>
 
-# Derslik
+Derslik turns a semester of university slides and PDFs into small answerable cards, schedules them with SM-2 spaced repetition, and serves them in a TikTok-style feed you can swipe on a phone. It is a personal project, built for one student and a short invite list.
 
-**A personal, mobile-first study platform: spaced repetition, a TikTok-style question feed, and course notes in one place.**
-
-![Next.js 16](https://img.shields.io/badge/Next.js-16-000?logo=nextdotjs)
-![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers%20%2B%20D1%20%2B%20R2-F38020?logo=cloudflare&logoColor=white)
-![Drizzle](https://img.shields.io/badge/Drizzle-ORM-C5F74F)
-![PWA](https://img.shields.io/badge/PWA-installable-5A0FC8)
-
-<img src="docs/media/akis-mobil.gif" alt="Akış feed on a phone" width="300">
+<p align="center"><img src="docs/media/akis-mobil.gif" width="300" alt="The Akış feed on a phone: swipe between question cards">
 &nbsp;&nbsp;
-<img src="docs/media/panel-masaustu.gif" alt="Desktop dashboard" width="560">
+<img src="docs/media/panel-masaustu.gif" width="540" alt="Desktop dashboard with course cards"></p>
 
-<sub>Full-quality clips: [`akis-mobil.mp4`](docs/media/akis-mobil.mp4) · [`panel-masaustu.mp4`](docs/media/panel-masaustu.mp4)</sub>
+## What it does
 
-</div>
+**Akış, a swipe feed of questions.** Full-screen snap-scrolling cards: read code, predict output, find the bug, answer exam-style questions. 295 cards for EBLG351 (image processing) and EBLG359 (algorithm analysis), with a scope picker and instant answer reveal.
 
----
+<p align="center"><img src="docs/media/m-kart1.png" width="200" alt="A hata-bul card: tap the wrong line of Python code">
+<img src="docs/media/m-cevap.png" width="200" alt="Answer and explanation view">
+<img src="docs/media/m-hata.png" width="200" alt="Wrong-answer feedback"></p>
 
-## Why it exists
+**Spaced repetition.** Rate recall 1 to 4. `app/api/reviews/route.ts` updates each card's interval and ease factor; due cards show up on the dashboard.
 
-University material arrives as slides and PDFs. Reading them is not learning them. Derslik turns a semester of courses into small, answerable cards, schedules each one with SM-2, and serves them in a feed you can swipe through on a bus.
+**Course workspace and study chat.** Units, notes and PDF sources (stored in R2), Markdown with KaTeX and Mermaid. Chat works with any OpenAI-compatible endpoint and falls back to a local mock answer when no key is set.
 
-## Features
+<p align="center"><img src="docs/media/d-ders.png" width="420" alt="Course view on desktop">
+<img src="docs/media/d-koyu-menu.png" width="420" alt="Theme menu on desktop in dark mode"></p>
 
-| | |
-|---|---|
-| **Akış feed** | Full-screen, snap-scrolling cards. 295 curated questions (code reading, "what happens?", output prediction) for EBLG351 and EBLG359, with scope selector and instant answer reveal. |
-| **Spaced repetition** | SM-2 scheduling. Rate recall 1–4; due cards surface on the dashboard. |
-| **Course workspace** | Units, notes, PDF sources (R2), formula-friendly Markdown with KaTeX and Mermaid. |
-| **Study chat** | Ask about the card or code in front of you. Any OpenAI-compatible endpoint; built-in mock answer when no key is set. |
-| **Four themes** | Light, Dark, Sage (sepia) and Twilight, persisted per device. |
-| **Installable** | PWA shell with offline fallback banner. |
-| **Private by design** | Owner + invited allowlist, per-user data isolation. See [SECURITY.md](SECURITY.md). |
+Four themes (Light, Dark, Sage, Twilight), an installable PWA shell, and an owner plus invitee allowlist with per-user data isolation ([SECURITY.md](SECURITY.md)).
 
-## Tour
+## How it works
 
-<table>
-<tr>
-<td align="center"><img src="docs/media/m-panel.png" width="220"><br><sub>Dashboard</sub></td>
-<td align="center"><img src="docs/media/m-kapsam.png" width="220"><br><sub>Scope picker</sub></td>
-<td align="center"><img src="docs/media/m-kart1.png" width="220"><br><sub>Question card</sub></td>
-<td align="center"><img src="docs/media/m-cevap.png" width="220"><br><sub>Answer + explanation</sub></td>
-</tr>
-<tr>
-<td align="center"><img src="docs/media/m-koyu.png" width="220"><br><sub>Dark theme</sub></td>
-<td align="center"><img src="docs/media/m-hata.png" width="220"><br><sub>Wrong-answer feedback</sub></td>
-<td colspan="2" align="center"><img src="docs/media/d-panel.png" width="460"><br><sub>Desktop dashboard</sub></td>
-</tr>
-<tr>
-<td colspan="2" align="center"><img src="docs/media/d-ders.png" width="380"><br><sub>Course view</sub></td>
-<td colspan="2" align="center"><img src="docs/media/d-koyu-menu.png" width="380"><br><sub>Theme menu</sub></td>
-</tr>
-</table>
+<p align="center"><img src="docs/media/architecture.svg" width="860" alt="Architecture: browser to Worker to API routes, content, D1, R2 and chat endpoint"></p>
 
-## Architecture
+- The app runs on Cloudflare Workers through vinext (Next.js 16 on Vite 8).
+- `proxy.ts` is the access gate (`OWNER_EMAIL`, `ALLOWED_EMAILS`); the site returns 503 without an owner.
+- Route handlers in `app/api/*` scope every query by `userId`. Study data lives in D1 through Drizzle (`db/schema.ts`); uploaded PDFs live in R2.
+- The Akış bank is plain JSON in `content/akis/`, validated by `scripts/check-akis.mjs`.
 
-```
-Browser (PWA, React 19)
-   │  swipe / rate / ask
-   ▼
-Cloudflare Worker  ── vinext (Next.js 16 on Vite 8)
-   ├─ proxy.ts            access gate: OWNER_EMAIL + ALLOWED_EMAILS
-   ├─ app/api/*           cards · courses · feed · chat   (every query scoped by userId)
-   ├─ D1 (SQLite)         study items, reviews, feed events  — Drizzle ORM
-   ├─ R2                  uploaded PDFs
-   └─ content/            curriculum, notes, Akış question bank (JSON, checked by `check-akis.mjs`)
-```
+## Numbers
 
-## Run it locally
+<p align="center"><img src="docs/media/akis-bank.svg" width="860" alt="Bar chart of 295 Akış cards by type and course"></p>
+
+Measured on 2026-10-20 (Windows 11, Node v24.18.0). Raw data is in [`docs/media/data/`](docs/media/data/).
+
+| Command | Exit code | Result |
+|---|---|---|
+| `node scripts/check-akis.mjs` | 0 | 15 packages, 295 cards, 0 errors |
+| `node --test lib/*.test.ts` | 0 | 48 tests, 48 pass, 0 fail (about 0.4 s) |
+| `npm run lint` | 0 | 0 errors, 6 warnings |
+| `npm run build` | 0 | Worker and client bundle built |
+| `node scripts/check-curriculum.mjs` | 1 | EBLG351.1 notes parse to 0 questions, so the check fails (see Limits) |
+| `node scripts/akis-stats.mjs` | 0 | Source of the chart above |
+
+## Quick start
 
 ```bash
-node -v            # >= 22.13
+node -v                          # >= 22.13
 npm run install:ci
-cp .dev.vars.example .dev.vars   # fill OWNER_EMAIL; CHAT_API_KEY is optional
+cp .dev.vars.example .dev.vars   # set OWNER_EMAIL; CHAT_API_KEY is optional
 npm run dev                      # http://localhost:5173
 ```
 
-Open `/signin-with-chatgpt?return_to=/` for the simulated local sign-in. Build and preview the Worker with `npm run build && npm start`. Platform notes inherited from the starter are in [docs/STARTER-NOTES.md](docs/STARTER-NOTES.md).
+Open `/signin-with-chatgpt?return_to=/` for the simulated local sign-in. To build and preview the Worker locally: `npm run build && npm start`. Starter platform notes and the original technical README are in [docs/NOTES.md](docs/NOTES.md) and [docs/STARTER-NOTES.md](docs/STARTER-NOTES.md).
 
-### Checks
+## Usage
 
-```bash
-npm run lint
-node scripts/check-akis.mjs         # question-bank schema + answers
-node scripts/check-curriculum.mjs   # course/unit integrity
-```
-
-## Configuration
+Sign in, pick a course on the dashboard, and open **Akış**. Swipe up for the next card, tap a line or an option to answer, and rate your recall so the card comes back at the right time.
 
 | Variable | Purpose |
 |---|---|
-| `OWNER_EMAIL` | Account allowed in; site returns 503 without it |
+| `OWNER_EMAIL` | Account allowed in |
 | `ALLOWED_EMAILS` | Optional comma-separated invitees |
-| `CHAT_API_KEY` | Optional. Without it chat uses a local mock |
+| `CHAT_API_KEY` | Optional; without it chat uses a local mock |
 | `CHAT_API_BASE` / `CHAT_MODEL` | OpenAI-compatible endpoint and model |
-| `CHAT_REASONING_EFFORT(_URET)` | `low` / `medium` / `high` |
+| `CHAT_REASONING_EFFORT(_URET)` | `low`, `medium` or `high` |
 
-## Repository layout
+## Limits
 
-```
-app/          routes + API handlers          components/   UI (akis/, study feed, themes)
-db/ drizzle/  schema + migrations            content/      Akış bank, notes, assignments
-lib/          SRS, scoring, helpers          scripts/      checks, dev proxies, exporters
-public/odevler  image-processing coursework outputs (own work)
-```
+- Personal project: no public hosted demo, no sign-up. The source is public for viewing.
+- The Akış bank covers two courses only (EBLG351, EBLG359). The other four courses have notes but no Akış cards.
+- `scripts/check-curriculum.mjs` currently fails because the EBLG351.1 notes yield 0 curriculum questions; EBLG351 is served from the Akış bank instead.
+- There is no `npm test` script yet; unit tests run with `node --test lib/*.test.ts`.
+- Real chat answers and production deployment need your own API key and Cloudflare account; neither was exercised for this README.
 
-## Status
+## License
 
-Personal project, actively used. Source is public for viewing; all rights reserved ([LICENSE](LICENSE)).
+All rights reserved. See [LICENSE](LICENSE).
+
+Older technical notes: [docs/NOTES.md](docs/NOTES.md)

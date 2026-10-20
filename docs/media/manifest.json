@@ -1,0 +1,75 @@
+[
+  {
+    "dosya": "banner.png",
+    "tur": "png",
+    "kaynaklar": [
+      {
+        "yol": "docs/media/m-kart1.png",
+        "sha256": "b13c4ccb6cff500aa59df4384d1f7f30389645da81a9ccd11b5176277ac12bb6"
+      }
+    ],
+    "komut": "headless Chrome screenshot of an HTML card (1280x640)",
+    "tarih": "2026-10-20",
+    "boyut": 106188
+  },
+  {
+    "dosya": "architecture.svg",
+    "tur": "svg",
+    "kaynaklar": [
+      {
+        "yol": "proxy.ts",
+        "sha256": "ef6587688bc2215f5fae01d37847c7e26ac32a3e36cbf0147583f2d922b79a27"
+      },
+      {
+        "yol": "db/schema.ts",
+        "sha256": "586bfe0d0b56e2c9d21bd96c47fe5bc62c5d735ed6b8334a64a29adb389ff534"
+      },
+      {
+        "yol": "app/api/reviews/route.ts",
+        "sha256": "c193c2f8ad2db2363b8a027dd800ec60879055881ce8c32207381aea809edd80"
+      }
+    ],
+    "komut": "hand-built SVG from repository layout",
+    "tarih": "2026-10-20",
+    "boyut": 4775
+  },
+  {
+    "dosya": "akis-bank.svg",
+    "tur": "svg",
+    "kaynaklar": [
+      {
+        "yol": "scripts/akis-stats.mjs",
+        "sha256": "653f7deee20380bff0d719265a32db56daecd7160a66b135631e6be23c94e400"
+      }
+    ],
+    "komut": "node scripts/akis-stats.mjs",
+    "tarih": "2026-10-20",
+    "boyut": 4650
+  },
+  {
+    "dosya": "akis-mobil.gif",
+    "tur": "gif",
+    "kaynaklar": [
+      {
+        "yol": "docs/media/akis-mobil.mp4",
+        "sha256": "57ede1a5f83dab96790a0a6a27c9248f962edacbb5f041858e7edc6d2c61f301"
+      }
+    ],
+    "komut": "existing recording (reused)",
+    "tarih": "2026-10-20",
+    "boyut": 3172470
+  },
+  {
+    "dosya": "panel-masaustu.gif",
+    "tur": "gif",
+    "kaynaklar": [
+      {
+        "yol": "docs/media/panel-masaustu.mp4",
+        "sha256": "e18389fd695a9521822b0f9d906061a9229ecf2e7945ac563d00474aea58b4ad"
+      }
+    ],
+    "komut": "existing recording (reused)",
+    "tarih": "2026-10-20",
+    "boyut": 2512294
+  }
+]

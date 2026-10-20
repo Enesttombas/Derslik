@@ -1,0 +1,12 @@
+{
+  "motif": "hata-bul code card + marker highlight + sticky chips",
+  "palet": {
+    "ink": "#15171c",
+    "paper": "#f6f1e4",
+    "aksan": "#0066cc",
+    "marker": "#f5c518"
+  },
+  "font": "Georgia serif headings, Consolas chips",
+  "gecis": "none (static assets; GIFs reused from real recordings)",
+  "not": "chosen by the agent, not by Enes"
+}

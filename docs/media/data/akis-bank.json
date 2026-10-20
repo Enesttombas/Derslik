@@ -1,0 +1,30 @@
+{
+  "metrik": "akis kart sayisi (tur ve ders)",
+  "deger": {
+    "courses": {
+      "EBLG351": {
+        "kod-oku": 63,
+        "ne-olur": 21,
+        "cikti-tahmin": 41,
+        "hata-bul": 21,
+        "sinav": 12
+      },
+      "EBLG359": {
+        "kod-oku": 23,
+        "ne-olur": 17,
+        "cikti-tahmin": 37,
+        "karmasiklik": 19,
+        "sinav": 22,
+        "hata-bul": 15,
+        "acikla": 3,
+        "odev": 1
+      }
+    },
+    "total": 295
+  },
+  "birim": "kart",
+  "komut": "node scripts/akis-stats.mjs",
+  "rc": 0,
+  "tarih": "2026-10-20",
+  "makine": "Windows 11, Node v24.18.0"
+}

@@ -70,3 +70,6 @@ tsconfig.tsbuildinfo
 /public/syllabi/
 /public/study-guides/
 /research/
+
+# showcase scratch
+/.vitrin/

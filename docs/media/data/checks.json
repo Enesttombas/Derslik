@@ -1,0 +1,32 @@
+{
+  "metrik": "dogrulama kosulari",
+  "deger": {
+    "check-akis": {
+      "rc": 0,
+      "cikti": "15 paket, 295 kart, 0 hata"
+    },
+    "node --test lib/*.test.ts": {
+      "rc": 0,
+      "test": 48,
+      "gecen": 48,
+      "sure_ms": 363.5
+    },
+    "lint": {
+      "rc": 0,
+      "hata": 0,
+      "uyari": 6
+    },
+    "build": {
+      "rc": 0
+    },
+    "check-curriculum": {
+      "rc": 1,
+      "not": "EBLG351.1 not dosyasinda 0 soru; script esik (<10) nedeniyle hata verir"
+    }
+  },
+  "birim": "-",
+  "komut": "npm run lint; npm run build; node scripts/check-akis.mjs; node scripts/check-curriculum.mjs; node --test lib/*.test.ts",
+  "rc": "karisik",
+  "tarih": "2026-10-20",
+  "makine": "Windows 11, Node v24.18.0"
+}
