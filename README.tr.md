@@ -45,7 +45,6 @@ Dört tema (Açık, Koyu, Sage, Alacakaranlık), kurulabilir PWA kabuğu, sahip 
 | `node --test lib/*.test.ts` | 0 | 48 test, 48 geçti, 0 kaldı (yaklaşık 0,4 sn) |
 | `npm run lint` | 0 | 0 hata, 6 uyarı |
 | `npm run build` | 0 | Worker ve istemci paketi derlendi |
-| `node scripts/check-curriculum.mjs` | 1 | EBLG351.1 notları 0 soru üretiyor, kontrol başarısız (bkz. Sınırlar) |
 | `node scripts/akis-stats.mjs` | 0 | Yukarıdaki grafiğin kaynağı |
 
 ## Hızlı başlangıç

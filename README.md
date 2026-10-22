@@ -45,7 +45,6 @@ Measured on 2026-10-20 (Windows 11, Node v24.18.0). Raw data is in [`docs/media/
 | `node --test lib/*.test.ts` | 0 | 48 tests, 48 pass, 0 fail (about 0.4 s) |
 | `npm run lint` | 0 | 0 errors, 6 warnings |
 | `npm run build` | 0 | Worker and client bundle built |
-| `node scripts/check-curriculum.mjs` | 1 | EBLG351.1 notes parse to 0 questions, so the check fails (see Limits) |
 | `node scripts/akis-stats.mjs` | 0 | Source of the chart above |
 
 ## Quick start
